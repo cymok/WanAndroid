@@ -1,5 +1,7 @@
 package com.example.flamingo.index.main
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,6 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     fun Greeting(name: String) {
+        val current = LocalContext.current
 
         val viewModel: MainViewModel = viewModel()
         val res by viewModel.uiImage.observeAsState()
@@ -196,6 +200,28 @@ class MainActivity : AppCompatActivity() {
             ) {
                 Text(
                     text = "不裁剪 - 拍照",
+                )
+            }
+            Divider(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = {
+                    val pkg = "com.tencent.mm"
+                    val intent = try {
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?q=${pkg}")
+                        )
+                    } catch (e: Exception) {
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=${pkg}")
+                        )
+                    }
+                    current.startActivity(intent)
+                },
+            ) {
+                Text(
+                    text = "跳转到 AppStore",
                 )
             }
         }

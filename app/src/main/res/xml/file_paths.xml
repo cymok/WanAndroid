@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+    TAG_ROOT_PATH 对应了常量 root-path,
+    而 DEVICE_ROOT 则对应了 new File("/")
+    没错，虽然官方文档没有写出来，
+    但是代码里竟然留了个 <root-path> 的根标签，
+    而它的路径对应的是 DEVICE_ROOT 指向的整个存储的根路径。
+    -->
+    <!--suppress AndroidElementNotAllowed -->
+    <root-path
+        name="name"
+        path=""/>
+</paths>

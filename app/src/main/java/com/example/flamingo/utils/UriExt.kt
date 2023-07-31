@@ -5,7 +5,7 @@ import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.UriUtils
 import java.io.File
 
-fun Uri.getFile(): File {
+fun Uri.getFile(): File? {
     return UriUtils.uri2File(this)
 }
 

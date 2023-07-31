@@ -3,8 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
-apply from: "../config_compose.gradle"
-
 android {
     namespace 'com.example.base'
     compileSdk 33
@@ -47,40 +45,5 @@ android {
 }
 
 dependencies {
-
-    api platform('org.jetbrains.kotlin:kotlin-bom:1.8.+')
-    api 'com.google.android.material:material:1.9.0'
-    api 'androidx.core:core-ktx:1.10.1'
-    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    api 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    api 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1'
-//    api 'androidx.lifecycle:lifecycle-extensions:2.2.0' // 会把 lifecycle 里面的一堆库引用进来 包含 lifecycle-process lifecycle-service 其它未知
-    api 'androidx.lifecycle:lifecycle-process:2.6.1'
-    api 'androidx.lifecycle:lifecycle-service:2.6.1'
-    api 'androidx.appcompat:appcompat:1.6.1'
-    api 'androidx.constraintlayout:constraintlayout:2.1.4'
-    api 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    api 'androidx.navigation:navigation-ui-ktx:2.6.0'
-    testApi 'junit:junit:4.13.2'
-    androidTestApi 'androidx.test.ext:junit:1.1.5'
-    androidTestApi 'androidx.test.espresso:espresso-core:3.5.1'
-    // 网络
-    api 'com.squareup.okhttp3:okhttp:4.11.0'
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.squareup.retrofit2:converter-gson:2.9.0'
-    api 'com.squareup.retrofit2:converter-scalars:2.9.0'
-    api 'com.google.code.gson:gson:2.10.1'
-    // 图片
-    // https://github.com/bumptech/glide
-    api 'com.github.bumptech.glide:glide:4.15.1'
-    api 'com.github.bumptech.glide:okhttp3-integration:4.15.1'
-    api 'jp.wasabeef:glide-transformations:4.3.0'
-    // 权限
-    // https://github.com/guolindev/PermissionX
-    api 'com.guolindev.permissionx:permissionx:1.7.1'
-    // 消息
-    // https://github.com/JeremyLiao/LiveEventBus
-    api 'io.github.jeremyliao:live-event-bus-x:1.8.0'
 
 }

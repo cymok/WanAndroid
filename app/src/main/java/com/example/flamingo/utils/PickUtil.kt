@@ -1,3 +1,4 @@
+/*
 package com.example.flamingo.utils
 
 import android.Manifest
@@ -10,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.ToastUtils
-import com.example.utils.reqPermissions
-import com.example.utils.toast
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
@@ -97,3 +96,4 @@ object PickUtil {
     }
 
 }
+*/

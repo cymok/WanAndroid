@@ -20,9 +20,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Flamingo"
-include ':module_base'
-include ':module_utils'
 include ':app'
-include ':app_lifecycle'
-include ':app_coroutine'
-include ':app_compose'
+include ':module_lint'

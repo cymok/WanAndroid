@@ -1,8 +1,10 @@
 package com.example.flamingo.index.second
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.flamingo.base.BaseViewModel
 
-class SecondViewModel : ViewModel() {
+class SecondViewModel : BaseViewModel() {
+
     val test = MutableLiveData("")
+
 }

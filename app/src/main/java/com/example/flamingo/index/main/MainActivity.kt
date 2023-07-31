@@ -4,14 +4,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -34,14 +34,23 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.FileUtils
+import com.blankj.utilcode.util.PathUtils
+import com.blankj.utilcode.util.Utils
+import com.bumptech.glide.Glide
 import com.example.flamingo.R
-import com.example.flamingo.index.first.FirstAty
+import com.example.flamingo.base.BaseActivity
+import com.example.flamingo.index.first.FirstActivity
+import com.example.flamingo.index.second.SecondActivity
+import com.example.flamingo.index.third.ThirdActivity
 import com.example.flamingo.ui.theme.AppTheme
-import com.example.utils.getViewModel
-import com.example.utils.toJson
-import com.example.utils.toast
+import com.example.flamingo.utils.getViewModel
+import com.example.flamingo.utils.toJson
+import com.example.flamingo.utils.toast
+import kotlin.concurrent.thread
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private val mainViewModel by lazy {
         getViewModel(MainViewModel::class.java)
@@ -98,7 +107,9 @@ class MainActivity : AppCompatActivity() {
         val viewModel: MainViewModel = viewModel()
         val res by viewModel.uiImage.observeAsState()
 
+        val scrollState = rememberScrollState(0)
         Column(
+            modifier = Modifier.verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -120,13 +131,17 @@ class MainActivity : AppCompatActivity() {
                         .clip(CircleShape),
                 )
             }
-            Text(
-                text = "Hello $name!",
-                modifier = Modifier.clickable {
-                    ActivityUtils.startActivity(FirstAty::class.java)
+            Divider(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = {
+                    val testSize = ConvertUtils.byte2FitMemorySize(123456789, 2)
+                    toast(testSize)
                 },
-                maxLines = 1,
-            )
+            ) {
+                Text(
+                    text = "Test Button",
+                )
+            }
             Divider(modifier = Modifier.height(10.dp))
             Button(
                 onClick = {
@@ -182,6 +197,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 Text(
                     text = "不裁剪 - 文件",
+                    color = Color.Red
                 )
             }
             Button(
@@ -223,6 +239,53 @@ class MainActivity : AppCompatActivity() {
                 Text(
                     text = "跳转到 AppStore",
                 )
+            }
+            Divider(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = {
+                    // cache 目录
+                    FileUtils.deleteAllInDir(PathUtils.getInternalAppCachePath())
+                    FileUtils.deleteAllInDir(PathUtils.getExternalAppCachePath())
+                    // glide
+                    Glide.get(Utils.getApp()).clearMemory()
+                    thread {
+                        Glide.get(Utils.getApp()).clearDiskCache()
+                    }
+                    // coil
+
+                    // 无论成功与否 先toast成功再设置UI为0KB
+                    toast("清理成功")
+                },
+            ) {
+                Text(
+                    text = "清理缓存",
+                )
+            }
+            Divider(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = {
+                    ActivityUtils.startActivity(FirstActivity::class.java)
+                },
+            ) {
+                Text(
+                    text = "FirstAty",
+                )
+            }
+            Button(
+                onClick = {
+                    ActivityUtils.startActivity(SecondActivity::class.java)
+                },
+            ) {
+                Text(
+                    text = "SecondActivity",
+                )
+            }
+            Button(
+                onClick = {
+                    ActivityUtils.startActivity(ThirdActivity::class.java)
+                },
+            ) {
+                Text(text = "ThirdActivity")
             }
         }
 

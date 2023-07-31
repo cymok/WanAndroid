@@ -2,13 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- Android 11+ -->
+    <queries>
+        <package android:name="com.tencent.mm" />
+    </queries>
 
     <!-- 适配 Android 10 沙盒
     android:requestLegacyExternalStorage="true"
@@ -28,8 +36,7 @@
 
         <activity
             android:name=".index.main.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MyTheme">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,15 +44,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".index.first.FirstAty"
-            android:exported="false"
-            android:theme="@style/Theme.MyTheme" />
+            android:name=".index.first.FirstActivity"
+            android:exported="false" />
         <activity
             android:name=".index.second.SecondActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MyTheme" />
+            android:exported="false" />
+        <activity
+            android:name=".index.third.ThirdActivity"
+            android:exported="false" />
+        <activity
+            android:name=".index.coroutine.CoroutineActivity"
+            android:exported="false" />
 
-        <activity android:name="com.yalantis.ucrop.UCropActivity" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:exported="false" />
+
+        <!--wechat start-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true"
+            android:taskAffinity="${applicationId}"
+            android:launchMode="singleTask">
+        </activity>
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true"
+            android:taskAffinity="${applicationId}"
+            android:launchMode="singleTask">
+        </activity>
+        <!--wechat end-->
 
         <provider
             android:name="androidx.core.content.FileProvider"

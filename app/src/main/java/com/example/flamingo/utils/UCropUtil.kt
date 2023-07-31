@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
-import com.example.utils.toast
 import com.yalantis.ucrop.UCrop
 
 object UCropUtil {

@@ -5,10 +5,10 @@ import android.os.Build
 import android.os.Bundle
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.addCallback
-import androidx.appcompat.app.AppCompatActivity
+import com.example.flamingo.base.BaseActivity
 import com.example.flamingo.databinding.ActivitySecondBinding
 
-class SecondActivity : AppCompatActivity() {
+class SecondActivity : BaseActivity() {
 
     private val binding by lazy {
         ActivitySecondBinding.inflate(layoutInflater)

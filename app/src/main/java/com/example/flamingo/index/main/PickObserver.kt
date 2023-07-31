@@ -14,12 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.example.flamingo.CoilImageEngine
+import com.example.flamingo.config.matiss.CoilImageEngine
 import com.example.flamingo.data.PickData
 import com.example.flamingo.utils.getFile
 import com.example.flamingo.utils.getUri
-import com.example.utils.getViewModel
-import com.example.utils.reqPermissions
+import com.example.flamingo.utils.getViewModel
+import com.example.flamingo.utils.reqPermissions
+import com.example.flamingo.utils.toast
 import com.yalantis.ucrop.UCrop
 import github.leavesczy.matisse.Matisse
 import github.leavesczy.matisse.MatisseContract
@@ -69,7 +70,7 @@ class PickObserver : DefaultLifecycleObserver {
                 .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { atyResult ->
                     if (atyResult.resultCode == AppCompatActivity.RESULT_OK) {
                         val uri = atyResult.data?.data ?: cropPictureUri
-                        onResult(uri)
+                        onEndResult(uri)
                     } else {
                         // 取消裁剪
                     }
@@ -81,11 +82,17 @@ class PickObserver : DefaultLifecycleObserver {
                 .registerForActivityResult(ActivityResultContracts.TakePicture()) { result ->
                     if (result) {
                         val uri = takePictureUri
-                        viewModel.takeUri.postValue(PickData(crop, uri, uri.getFile().absolutePath))
-                        if (crop) {
-                            crop(uri)
+                        val file = uri.getFile()
+                        if (file != null) {
+                            viewModel.takeUri.postValue(PickData(crop, uri, file.absolutePath))
+                            if (crop) {
+                                crop(uri)
+                            } else {
+                                onEndResult(uri)
+                            }
                         } else {
-                            onResult(uri)
+                            // 文件无效
+                            toast("文件无效")
                         }
                     } else {
                         // 取消拍照
@@ -97,14 +104,20 @@ class PickObserver : DefaultLifecycleObserver {
             (if (owner is FragmentActivity) (owner as FragmentActivity) else (owner as Fragment))
                 .registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                     if (uri != null) {
-                        viewModel.fileUri.postValue(PickData(crop, uri, uri.getFile().absolutePath))
-                        if (crop) {
-                            crop(uri)
+                        val file = uri.getFile()
+                        if (file != null) {
+                            viewModel.fileUri.postValue(PickData(crop, uri, file.absolutePath))
+                            if (crop) {
+                                crop(uri)
+                            } else {
+                                onEndResult(uri)
+                            }
                         } else {
-                            onResult(uri)
+                            // 文件无效
+                            toast("文件无效")
                         }
                     } else {
-                        // 取消选择 或 文件无效
+                        // 取消选择
                     }
                 }
 
@@ -115,20 +128,21 @@ class PickObserver : DefaultLifecycleObserver {
                     if (atyResult.resultCode == AppCompatActivity.RESULT_OK) {
                         val uri = atyResult.data?.data
                         if (uri != null) {
-                            viewModel.pickUri.postValue(
-                                PickData(
-                                    crop,
-                                    uri,
-                                    uri.getFile().absolutePath
-                                )
-                            )
-                            if (crop) {
-                                crop(uri)
+                            val file = uri.getFile()
+                            if (file != null) {
+                                viewModel.pickUri.postValue(PickData(crop, uri, file.absolutePath))
+                                if (crop) {
+                                    crop(uri)
+                                } else {
+                                    onEndResult(uri)
+                                }
                             } else {
-                                onResult(uri)
+                                // 文件无效
+                                toast("文件无效")
                             }
                         } else {
                             // 文件无效
+                            toast("文件无效")
                         }
                     } else {
                         // 取消选择
@@ -145,16 +159,15 @@ class PickObserver : DefaultLifecycleObserver {
                         if (crop) {
                             crop(uri)
                         } else {
-                            onResult(uri)
+                            onEndResult(uri)
                         }
                     }
                 }
 
     }
 
-    private fun onResult(uri: Uri) {
-        val file = uri.getFile()
-        val data = PickData(crop, uri, file.absolutePath)
+    private fun onEndResult(uri: Uri) {
+        val data = PickData(crop, uri, uri.getFile()?.absolutePath ?: "")
         viewModel.uiImage.postValue(data)
     }
 
@@ -162,7 +175,8 @@ class PickObserver : DefaultLifecycleObserver {
 
         cropPictureUri = outUri
             ?: let {
-                val file = File(context.externalCacheDir, "crop_${inUri.getFile().name}")
+                val fileName = "crop_${inUri.getFile()?.name ?: "${Random.nextLong()}"}"
+                val file = File(context.externalCacheDir, fileName)
                 file.getUri()
             }
 

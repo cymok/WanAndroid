@@ -1,12 +1,11 @@
 package com.example.flamingo.index.main
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.data.PickData
 import github.leavesczy.matisse.MediaResource
 
-class MainViewModel(app: Application) : AndroidViewModel(app) {
+class MainViewModel : BaseViewModel() {
 
     val uiImage = MutableLiveData<PickData>()
 

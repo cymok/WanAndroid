@@ -4,25 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import coil.load
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
+import com.blankj.utilcode.util.ConvertUtils
 import com.example.flamingo.R
+import com.example.flamingo.base.BaseFragment
+import com.example.flamingo.databinding.FragmentSecondBinding
+import com.example.flamingo.utils.getViewModel
 
-class SecondFragment : Fragment() {
-
-    val testVM = SecondViewModel()
+class SecondFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = SecondFragment()
     }
 
-    private lateinit var viewModel: SecondViewModel
+    private val viewModel by lazy {
+        getViewModel(SecondViewModel::class.java)
+    }
+
+    private val binding by lazy {
+        FragmentSecondBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[SecondViewModel::class.java]
-        // TODO: Use the ViewModel
-        testVM.test.observe(this){
+        viewModel.test.observe(this) {
 
         }
     }
@@ -31,7 +38,16 @@ class SecondFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_second, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.iv.load("https://pic1.zhimg.com/v2-087b76d6a57befbf484e3aa8138037fa_1440w.jpg?source=172ae18b") {
+            crossfade(true)
+            transformations(CircleCropTransformation())
+            placeholder(R.mipmap.ic_launcher)
+//            transformations(RoundedCornersTransformation(ConvertUtils.dp2px(16f).toFloat()))
+        }
     }
 
 }

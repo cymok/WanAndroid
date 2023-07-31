@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.example.flamingo.config
 
 import android.content.Context

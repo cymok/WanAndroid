@@ -5,8 +5,9 @@ plugins {
     // compose options kotlinCompilerExtensionVersion
     // 1.3.2 -> kotlin 1.7.20
     // 1.4.8 -> kotlin 1.8.22
-//    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
-//    id 'org.jetbrains.kotlin.jvm' version '1.7.20' apply false
-    id 'org.jetbrains.kotlin.android' version '1.8.22' apply false
+    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.7.20' apply false
+//    id 'org.jetbrains.kotlin.android' version '1.8.22' apply false
 //    id 'org.jetbrains.kotlin.jvm' version '1.8.22' apply false
+
 }

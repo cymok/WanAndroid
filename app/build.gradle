@@ -47,9 +47,9 @@ android {
         jvmTarget = '1.8'
     }
     // AGP8后Kotlin的JVM版本
-    kotlin {
-        jvmToolchain(8)
-    }
+//    kotlin {
+//        jvmToolchain(8)
+//    }
     buildFeatures {
         compose true
         viewBinding true
@@ -58,17 +58,31 @@ android {
         // plugins kotlin
         // 1.3.2 -> kotlin 1.7.20
         // 1.4.8 -> kotlin 1.8.22
-//        kotlinCompilerExtensionVersion '1.3.2'
-        kotlinCompilerExtensionVersion '1.4.8'
+        kotlinCompilerExtensionVersion '1.3.2'
+//        kotlinCompilerExtensionVersion '1.4.8'
     }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+/*
+    lintOptions {
+        textReport true // 输出lint报告
+        textOutput 'stdout'
+        abortOnError false // 遇到错误不停止
+    }
+*/
 }
 
 dependencies {
+    // 依赖项配置
+    // https://developer.android.google.cn/studio/build/dependencies?hl=zh-cn&agpversion=4.0#dependency_configurations
+
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.+')
     implementation 'com.google.android.material:material:1.9.0'
@@ -88,12 +102,34 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    // Android 快乐库
+    // https://github.com/LouisCAD/Splitties
+    def splitties_version = "3.0.0"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-base:${splitties_version}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-base-with-views-dsl:${splitties_version}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-appcompat:${splitties_version}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-appcompat-with-views-dsl:${splitties_version}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components:${splitties_version}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components-with-views-dsl:${splitties_version}"
+
+    // https://github.com/Blankj/AndroidUtilCode
+    implementation 'com.blankj:utilcodex:1.31.1'
+
     // 网络
     implementation 'com.squareup.okhttp3:okhttp:4.11.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    // 图片
+    // https://github.com/bumptech/glide
+    def glide_version = "4.15.1"
+    implementation "com.github.bumptech.glide:glide:${glide_version}"
+    kapt "com.github.bumptech.glide:compiler:${glide_version}"
+    implementation "com.github.bumptech.glide:okhttp3-integration:${glide_version}"
+    implementation 'com.github.bumptech.glide:compose:1.0.0-alpha.1'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
 
     // 权限
     // https://github.com/guolindev/PermissionX
@@ -107,9 +143,6 @@ dependencies {
     // https://github.com/grzegorzojdana/SpacingItemDecoration
     implementation 'com.github.grzegorzojdana:SpacingItemDecoration:1.1.0'
 
-    // https://github.com/Blankj/AndroidUtilCode
-    implementation 'com.blankj:utilcodex:1.31.1'
-
     // https://github.com/Yalantis/uCrop
     implementation 'com.github.yalantis:ucrop:2.2.8'
 
@@ -118,13 +151,12 @@ dependencies {
     // 微信
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.24'
 
-    // 图片
-    // https://github.com/bumptech/glide
-    def glide_version = "4.15.1"
-    implementation "com.github.bumptech.glide:glide:${glide_version}"
-    kapt "com.github.bumptech.glide:compiler:${glide_version}"
-    implementation "com.github.bumptech.glide:okhttp3-integration:${glide_version}"
-    implementation 'jp.wasabeef:glide-transformations:4.3.0'
-    implementation 'com.github.bumptech.glide:compose:1.0.0-alpha.1'
-
 }
+
+/*
+project.afterEvaluate {
+    def assembleDebugTask = project.tasks.find { it.name == 'assembleDebug' }
+    def lintTask = project.tasks.find { it.name == 'lintDebug' }
+    assembleDebugTask.dependsOn(lintTask)
+}
+*/

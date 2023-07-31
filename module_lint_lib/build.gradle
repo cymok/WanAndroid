@@ -14,8 +14,9 @@ kotlin {
     jvmToolchain(8)
 }
 
+// 定义lintJarOutput方法，在lintaar中被调用
 configurations {
-    lintChecks
+    lintJarOutput
 }
 
 dependencies {
@@ -24,9 +25,10 @@ dependencies {
     implementation "com.android.tools.lint:lint-api:26.6.3"
     implementation "com.android.tools.lint:lint-checks:26.6.3"
 
-    lintChecks files(jar)
+    lintJarOutput files(jar)
 }
 
+// Lint-Registry是lint的注册类
 jar {
     manifest {
         attributes('Lint-Registry': 'com.example.lint.MyIssueRegistry')

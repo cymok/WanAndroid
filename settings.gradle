@@ -21,5 +21,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Flamingo"
 include ':app'
+include ':module_common'
 include ':module_lint_lib'
 include ':module_lint_aar'

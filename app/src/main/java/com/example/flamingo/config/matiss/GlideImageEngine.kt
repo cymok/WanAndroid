@@ -10,7 +10,7 @@ import github.leavesczy.matisse.MediaResource
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class GlideImageEngine: ImageEngine {
+class GlideImageEngine : ImageEngine {
 
     @OptIn(ExperimentalGlideComposeApi::class)
     @Composable

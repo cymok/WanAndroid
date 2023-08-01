@@ -5,6 +5,7 @@ dependencies {
     implementation platform("androidx.compose:compose-bom:${composeBoMVersion}")
     androidTestImplementation platform("androidx.compose:compose-bom:${composeBoMVersion}")
     implementation 'androidx.compose.runtime:runtime'
+    implementation 'androidx.activity:activity-compose'
     // Material Design 3
     implementation 'androidx.compose.material3:material3'
     // the main APIs for the underlying toolkit systems
@@ -26,13 +27,7 @@ dependencies {
     implementation 'androidx.compose.material:material-icons-extended'
     // Optional - Add window size utils
     implementation 'androidx.compose.material3:material3-window-size-class'
-    // Optional - ui-util
     implementation 'androidx.compose.ui:ui-util'
-    // Optional - Integration with activities
-    implementation 'androidx.activity:activity-compose'
-    // Optional - Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose'
-    // Optional - Integration with LiveData
     implementation 'androidx.compose.runtime:runtime-livedata'
     // Optional - Integration with ViewBinding
     implementation 'androidx.compose.ui:ui-viewbinding'
@@ -42,9 +37,6 @@ dependencies {
     implementation 'androidx.compose.animation:animation-graphics'
     // Optional - Integration with RxJava
     implementation 'androidx.compose.runtime:runtime-rxjava2'
-    // 导航库
-    implementation 'androidx.navigation:navigation-compose'
-    implementation 'androidx.navigation:navigation-compose'
     // Compose 图片视频加载
     // https://github.com/coil-kt/coil
     implementation platform('io.coil-kt:coil-bom:2.4.0')

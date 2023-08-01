@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission
@@ -32,6 +32,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTheme"
+        tools:replace="android:name, android:allowBackup, android:icon, android:label, android:roundIcon, android:theme"
         tools:targetApi="33">
 
         <activity
@@ -63,18 +64,16 @@
         <!--wechat start-->
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true"
+            android:launchMode="singleTask"
             android:taskAffinity="${applicationId}"
-            android:launchMode="singleTask">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true"
+            android:launchMode="singleTask"
             android:taskAffinity="${applicationId}"
-            android:launchMode="singleTask">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--wechat end-->
 
         <provider

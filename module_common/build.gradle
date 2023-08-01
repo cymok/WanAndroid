@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.aar'
+    namespace 'com.example.common'
     compileSdk 33
 
     defaultConfig {
@@ -31,29 +31,11 @@ android {
 }
 
 dependencies {
-    // 调用lintjar的lintJarOutput方法，获得jar包
-    lintPublish project(path: ":module_lint_lib", configuration: "lintJarOutput")
-}
 
-/*
-// 调用lintJarImport得到jar包，拷贝到指定目录
-task copyLintJar(type: Copy) {
-    from(configurations.lintPublish) {
-        rename {
-            String fileName ->
-                println fileName
-                'lint.jar'
-        }
-    }
-    into 'build/intermediates/lint/'
-}
+    api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-// 在build过程执行copyLintJar方法
-project.afterEvaluate {
-    tasks.find {
-        it.name == 'prepareLintJarForPublish'
-    }.each {
-        it.dependsOn(copyLintJar)
-    }
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
 }
-*/

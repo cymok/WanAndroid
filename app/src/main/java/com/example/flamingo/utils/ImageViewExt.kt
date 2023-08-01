@@ -1,11 +1,14 @@
 package com.example.flamingo.utils
 
 import android.widget.ImageView
-import com.bumptech.glide.Glide
+import com.example.aar.ModuleLintAar
 import com.example.flamingo.R
 import com.example.flamingo.config.GlideApp
 
 fun ImageView.load(res: Any?) {
+
+    ModuleLintAar.test()
+
     GlideApp.with(this)
         .load(res)
         .centerCrop()

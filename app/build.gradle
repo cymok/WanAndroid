@@ -35,7 +35,13 @@ android {
 
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "${model.name}_${variant.versionName}_${variant.versionCode}_${variant.buildType.name}_${gitCommitId}.apk"
+                outputFileName = ("${model.name}" +
+                        "_${variant.versionName}" +
+                        "_${variant.versionCode}" +
+                        "_${variant.buildType.name}" +
+//                        "_${variant.productFlavors[0].name}" +
+                        "_${gitCommitId}" +
+                        ".apk")/*.replace("_release", "")*/
             }
         }
     }
@@ -81,27 +87,40 @@ android {
 dependencies {
     // 依赖项配置
     // https://developer.android.google.cn/studio/build/dependencies?hl=zh-cn&agpversion=4.0#dependency_configurations
-
+    // Module
+    implementation project(":module_common")
+    // Lib
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-
-    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.+')
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1'
-//    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0' // 会把 lifecycle 里面的一堆库引用进来 包含 lifecycle-process lifecycle-service 其它未知
-    implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-service:2.6.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation files('libs/module_lint_aar-debug.aar')
+    // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
+    // Android
+    // KTX https://developer.android.com/kotlin/ktx
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.+')
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core-ktx:1.10.1'
+    def lifecycle_version = "2.6.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0" // 停止维护
+    implementation "androidx.lifecycle:lifecycle-process:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-service:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${lifecycle_version}"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    def navigation_version = "2.6.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:${navigation_version}"
+    implementation "androidx.navigation:navigation-ui-ktx:${navigation_version}"
+    implementation "androidx.navigation:navigation-compose:${navigation_version}"
+    implementation "androidx.palette:palette-ktx:1.0.0"
+    implementation "androidx.room:room-ktx:2.5.2"
+    implementation "androidx.sqlite:sqlite-ktx:2.3.1"
+    implementation "androidx.work:work-runtime-ktx:2.8.1"
     // Android 快乐库
     // https://github.com/LouisCAD/Splitties
     def splitties_version = "3.0.0"
@@ -111,17 +130,19 @@ dependencies {
     implementation "com.louiscad.splitties:splitties-fun-pack-android-appcompat-with-views-dsl:${splitties_version}"
     implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components:${splitties_version}"
     implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components-with-views-dsl:${splitties_version}"
-
     // https://github.com/Blankj/AndroidUtilCode
     implementation 'com.blankj:utilcodex:1.31.1'
-
     // 网络
     implementation 'com.squareup.okhttp3:okhttp:4.11.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:${retrofit_version}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofit_version}"
+    implementation "com.squareup.retrofit2:converter-scalars:${retrofit_version}"
     implementation 'com.google.code.gson:gson:2.10.1'
-
+    // 数据库
+    // https://github.com/guolindev/LitePal
+    implementation 'org.litepal.android:kotlin:3.0.0'
+    implementation 'org.litepal.guolindev:core:3.2.3'
     // 图片
     // https://github.com/bumptech/glide
     def glide_version = "4.15.1"
@@ -130,22 +151,17 @@ dependencies {
     implementation "com.github.bumptech.glide:okhttp3-integration:${glide_version}"
     implementation 'com.github.bumptech.glide:compose:1.0.0-alpha.1'
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
-
     // 权限
     // https://github.com/guolindev/PermissionX
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
-
     // 消息
     // https://github.com/JeremyLiao/LiveEventBus
     implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
-
     // RecyclerView ItemDecoration
     // https://github.com/grzegorzojdana/SpacingItemDecoration
     implementation 'com.github.grzegorzojdana:SpacingItemDecoration:1.1.0'
-
     // https://github.com/Yalantis/uCrop
     implementation 'com.github.yalantis:ucrop:2.2.8'
-
     // 支付宝
     implementation 'com.alipay.sdk:alipaysdk-android:15.8.15'
     // 微信

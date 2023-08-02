@@ -17,7 +17,7 @@ class ThirdFragment : BaseFragment() {
     }
 
     private val viewModel by lazy {
-        getViewModel(ThirdViewModel::class.java)
+        getViewModel<ThirdViewModel>()
     }
 
     private val binding by lazy {

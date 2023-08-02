@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import coil.load
 import coil.transform.CircleCropTransformation
-import coil.transform.RoundedCornersTransformation
-import com.blankj.utilcode.util.ConvertUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.BaseFragment
 import com.example.flamingo.databinding.FragmentSecondBinding
@@ -20,7 +18,7 @@ class SecondFragment : BaseFragment() {
     }
 
     private val viewModel by lazy {
-        getViewModel(SecondViewModel::class.java)
+        getViewModel<SecondViewModel>()
     }
 
     private val binding by lazy {

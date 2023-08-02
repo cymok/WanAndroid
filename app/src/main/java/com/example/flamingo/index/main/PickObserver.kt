@@ -1,26 +1,24 @@
 package com.example.flamingo.index.main
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.RequiresPermission
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.flamingo.config.matiss.CoilImageEngine
-import com.example.flamingo.data.PickData
+import com.example.flamingo.data.ImageInfo
 import com.example.flamingo.utils.getFile
 import com.example.flamingo.utils.getUri
 import com.example.flamingo.utils.getViewModel
-import com.example.flamingo.utils.reqPermissions
-import com.example.flamingo.utils.toast
 import com.yalantis.ucrop.UCrop
 import github.leavesczy.matisse.Matisse
 import github.leavesczy.matisse.MatisseContract
@@ -34,7 +32,7 @@ import kotlin.random.Random
 class PickObserver : DefaultLifecycleObserver {
 
     private var context: Context
-    private var viewModel: MainViewModel
+    private var viewModel: PickViewModel
 
     // 保存类型 FragmentActivity or Fragment
     private var owner: LifecycleOwner
@@ -47,44 +45,44 @@ class PickObserver : DefaultLifecycleObserver {
     private lateinit var cropLauncher: ActivityResultLauncher<Intent>
     private lateinit var takeLauncher: ActivityResultLauncher<Uri>
     private lateinit var fileLauncher: ActivityResultLauncher<String>
-    private lateinit var pickLauncher: ActivityResultLauncher<Intent>
-    private lateinit var mediaPickerLauncher: ActivityResultLauncher<Matisse>
+    private lateinit var albumLauncher: ActivityResultLauncher<Intent>
+    private lateinit var matisseLauncher: ActivityResultLauncher<Matisse>
 
-    constructor(activity: FragmentActivity) {
+    constructor(activity: ComponentActivity) {
         context = activity
         owner = activity
-        viewModel = activity.getViewModel(MainViewModel::class.java)
+        viewModel = activity.getViewModel()
     }
 
     constructor(fragment: Fragment) {
         context = fragment.requireContext()
         owner = fragment
-        viewModel = fragment.getViewModel(MainViewModel::class.java)
+        viewModel = fragment.getViewModel()
     }
 
     override fun onCreate(owner: LifecycleOwner) {
 
         // 裁剪
         cropLauncher =
-            (if (owner is FragmentActivity) (owner as FragmentActivity) else (owner as Fragment))
+            (if (owner is ComponentActivity) (owner as ComponentActivity) else (owner as Fragment))
                 .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { atyResult ->
-                    if (atyResult.resultCode == AppCompatActivity.RESULT_OK) {
+                    if (atyResult.resultCode == Activity.RESULT_OK) {
                         val uri = atyResult.data?.data ?: cropPictureUri
                         onEndResult(uri)
                     } else {
                         // 取消裁剪
+                        viewModel.errCode.postValue(PickViewModel.ERR_CANCEL)
                     }
                 }
 
         // 拍照
         takeLauncher =
-            (if (owner is FragmentActivity) (owner as FragmentActivity) else (owner as Fragment))
+            (if (owner is ComponentActivity) (owner as ComponentActivity) else (owner as Fragment))
                 .registerForActivityResult(ActivityResultContracts.TakePicture()) { result ->
                     if (result) {
                         val uri = takePictureUri
                         val file = uri.getFile()
                         if (file != null) {
-                            viewModel.takeUri.postValue(PickData(crop, uri, file.absolutePath))
                             if (crop) {
                                 crop(uri)
                             } else {
@@ -92,21 +90,21 @@ class PickObserver : DefaultLifecycleObserver {
                             }
                         } else {
                             // 文件无效
-                            toast("文件无效")
+                            viewModel.errCode.postValue(PickViewModel.ERR_INVALID)
                         }
                     } else {
                         // 取消拍照
+                        viewModel.errCode.postValue(PickViewModel.ERR_CANCEL)
                     }
                 }
 
         // 选择文件 指定content-type
         fileLauncher =
-            (if (owner is FragmentActivity) (owner as FragmentActivity) else (owner as Fragment))
+            (if (owner is ComponentActivity) (owner as ComponentActivity) else (owner as Fragment))
                 .registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                     if (uri != null) {
                         val file = uri.getFile()
                         if (file != null) {
-                            viewModel.fileUri.postValue(PickData(crop, uri, file.absolutePath))
                             if (crop) {
                                 crop(uri)
                             } else {
@@ -114,23 +112,23 @@ class PickObserver : DefaultLifecycleObserver {
                             }
                         } else {
                             // 文件无效
-                            toast("文件无效")
+                            viewModel.errCode.postValue(PickViewModel.ERR_INVALID)
                         }
                     } else {
                         // 取消选择
+                        viewModel.errCode.postValue(PickViewModel.ERR_CANCEL)
                     }
                 }
 
         // 从相册选择图片
-        pickLauncher =
-            (if (owner is FragmentActivity) (owner as FragmentActivity) else (owner as Fragment))
+        albumLauncher =
+            (if (owner is ComponentActivity) (owner as ComponentActivity) else (owner as Fragment))
                 .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { atyResult ->
-                    if (atyResult.resultCode == AppCompatActivity.RESULT_OK) {
+                    if (atyResult.resultCode == Activity.RESULT_OK) {
                         val uri = atyResult.data?.data
                         if (uri != null) {
                             val file = uri.getFile()
                             if (file != null) {
-                                viewModel.pickUri.postValue(PickData(crop, uri, file.absolutePath))
                                 if (crop) {
                                     crop(uri)
                                 } else {
@@ -138,37 +136,39 @@ class PickObserver : DefaultLifecycleObserver {
                                 }
                             } else {
                                 // 文件无效
-                                toast("文件无效")
+                                viewModel.errCode.postValue(PickViewModel.ERR_INVALID)
                             }
                         } else {
                             // 文件无效
-                            toast("文件无效")
+                            viewModel.errCode.postValue(PickViewModel.ERR_INVALID)
                         }
                     } else {
                         // 取消选择
+                        viewModel.errCode.postValue(PickViewModel.ERR_CANCEL)
                     }
                 }
 
         // Matisse-Compose
-        mediaPickerLauncher =
-            (if (owner is FragmentActivity) (owner as FragmentActivity) else (owner as Fragment))
+        matisseLauncher =
+            (if (owner is ComponentActivity) (owner as ComponentActivity) else (owner as Fragment))
                 .registerForActivityResult(MatisseContract()) { result: List<MediaResource> ->
                     if (result.isNotEmpty()) {
-                        viewModel.pickImages.postValue(result)
                         val uri = result[0].uri
                         if (crop) {
                             crop(uri)
                         } else {
                             onEndResult(uri)
                         }
+                    } else {
+                        viewModel.errCode.postValue(PickViewModel.ERR_CANCEL)
                     }
                 }
 
     }
 
     private fun onEndResult(uri: Uri) {
-        val data = PickData(crop, uri, uri.getFile()?.absolutePath ?: "")
-        viewModel.uiImage.postValue(data)
+        val data = ImageInfo(crop, uri, uri.getFile()?.absolutePath ?: "")
+        viewModel.imageInfo.postValue(data)
     }
 
     private fun crop(inUri: Uri, outUri: Uri? = null) {
@@ -209,7 +209,8 @@ class PickObserver : DefaultLifecycleObserver {
      * 从 FileContent 选择
      */
     @Deprecated("MediaStore 不能实时更新内容 会有无效文件 体验不好")
-    fun getContent(crop: Boolean = true) {
+    @RequiresPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun pickFile(crop: Boolean = true) {
         this.crop = crop
         fileLauncher.launch("image/*")
     }
@@ -219,7 +220,7 @@ class PickObserver : DefaultLifecycleObserver {
      */
     fun pickAlbum(crop: Boolean = true) {
         this.crop = crop
-        pickLauncher.launch(Intent(Intent.ACTION_PICK).apply {
+        albumLauncher.launch(Intent(Intent.ACTION_PICK).apply {
             setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
         })
     }
@@ -227,44 +228,16 @@ class PickObserver : DefaultLifecycleObserver {
     /**
      * 从 Matisse 选择
      */
-    fun pickImagesFormMatisse(crop: Boolean = true) {
+    @RequiresPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun pickMatisse(crop: Boolean = true) {
         this.crop = crop
-        val mimeTypes = MimeType.ofImage(hasGif = false)
-        val permissionList = if (Build.VERSION.SDK_INT >= 33) {
-            when (mimeTypes) {
-                MimeType.ofImage() -> {
-                    listOf(Manifest.permission.READ_MEDIA_IMAGES)
-                }
-
-                MimeType.ofVideo() -> {
-                    listOf(Manifest.permission.READ_MEDIA_VIDEO)
-                }
-
-                else -> {
-                    listOf(
-                        Manifest.permission.READ_MEDIA_IMAGES,
-                        Manifest.permission.READ_MEDIA_VIDEO
-                    )
-                }
-            }
-        } else {
-            listOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        val action = {
-            val matisse = Matisse(
-                maxSelectable = 1,
-                mimeTypes = mimeTypes,
-                imageEngine = CoilImageEngine(),
-                captureStrategy = SmartCaptureStrategy("${context.packageName}.fileProvider")
-            )
-            mediaPickerLauncher.launch(matisse)
-        }
-        if (owner is FragmentActivity) {
-            (owner as FragmentActivity).reqPermissions(permissionList, action)
-        } else {
-            (owner as Fragment).reqPermissions(permissionList, action)
-        }
+        val matisse = Matisse(
+            maxSelectable = 1,
+            mimeTypes = MimeType.ofImage(hasGif = false),
+            imageEngine = CoilImageEngine(),
+            captureStrategy = SmartCaptureStrategy("${context.packageName}.pick.fileProvider")
+        )
+        matisseLauncher.launch(matisse)
     }
 
 }

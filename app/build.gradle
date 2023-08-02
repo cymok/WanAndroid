@@ -28,6 +28,9 @@ android {
     }
 
     buildTypes {
+        debug {
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -45,6 +48,13 @@ android {
             }
         }
     }
+    flavorDimensions "mode"
+    productFlavors {
+        app {
+            dimension "mode"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -72,6 +82,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
     lint {
         baseline = file("lint-baseline.xml")
     }
@@ -141,7 +152,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     // 数据库
     // https://github.com/guolindev/LitePal
-    implementation 'org.litepal.android:kotlin:3.0.0'
     implementation 'org.litepal.guolindev:core:3.2.3'
     // 图片
     // https://github.com/bumptech/glide

@@ -78,7 +78,7 @@ class FirstActivity : BaseActivity() {
 
 
         // 拍照
-        val takeContract =
+        val takeLauncher =
             registerForActivityResult(ActivityResultContracts.TakePicture()) {
                 if (it) {
                     val uri = takePictureUri
@@ -88,12 +88,12 @@ class FirstActivity : BaseActivity() {
                 }
             }
         binding.bt1.setOnClickListener {
-            takeContract.launch(takePictureUri)
+            takeLauncher.launch(takePictureUri)
         }
 
 
         // 从相册选择图片
-        val contract =
+        val albumLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { atyResult ->
                 if (atyResult.resultCode == RESULT_OK) {
                     val uri = atyResult.data?.data
@@ -109,7 +109,7 @@ class FirstActivity : BaseActivity() {
                 }
             }
         binding.bt2.setOnClickListener {
-            contract.launch(Intent(Intent.ACTION_PICK).apply {
+            albumLauncher.launch(Intent(Intent.ACTION_PICK).apply {
                 setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             })
         }
@@ -117,7 +117,7 @@ class FirstActivity : BaseActivity() {
 
         // Intent.ACTION_GET_CONTENT 拿到的 uri 不能拿到对应文件的路径
         // 选择文件 指定content-type
-        val fileContract =
+        val fileLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                 if (uri != null) {
                     val path = uri.getFile()?.absolutePath
@@ -131,7 +131,7 @@ class FirstActivity : BaseActivity() {
             }
         // WHAT
         binding.bt3.setOnClickListener {
-            fileContract.launch("image/*")
+            fileLauncher.launch("image/*")
         }
         binding.bt4.setOnClickListener {
 
@@ -204,7 +204,7 @@ class FirstActivity : BaseActivity() {
             pickImg()
         }
 
-        val mediaPickerLauncher =
+        val matisseLauncher =
             registerForActivityResult(MatisseContract()) { result: List<MediaResource> ->
                 if (result.isNotEmpty()) {
                     val mediaResource = result[0]
@@ -222,7 +222,7 @@ class FirstActivity : BaseActivity() {
                 imageEngine = CoilImageEngine(),
                 captureStrategy = SmartCaptureStrategy("$packageName.fileProvider")
             )
-            mediaPickerLauncher.launch(matisse)
+            matisseLauncher.launch(matisse)
         }
 
     }
@@ -240,23 +240,18 @@ class FirstActivity : BaseActivity() {
         }
     }
 
-    private val cropPictureUri by lazy {
-        val file = File(externalCacheDir, "crop_picture.jpeg")
-        Uri.fromFile(file)
-    }
-
     private fun cropImg(sourceUri: Uri) {
-        UCropUtil.crop(this, sourceUri, cropPictureUri) { resultUri ->
+        UCropUtil.crop(this, sourceUri) { resultUri ->
             if (resultUri != null) {
-
-//            val bitmap = resultUri?.let {
-//                // 直接用 setImageURI 同一命名的拍照图片可能会因媒体库没刷新导致不显示最新图片 所以转用 bitmap
-//                BitmapFactory.decodeStream(contentResolver.openInputStream(it))
-//            }
-                val descriptor = contentResolver.openFileDescriptor(resultUri, "r")
-                val bitmap = BitmapFactory.decodeFileDescriptor(descriptor?.fileDescriptor)
-                descriptor?.close()
-                binding.iv.loadAvatar(bitmap)
+                // 不同源文件的裁剪后文件名已经处理 crop_xxx
+//                val bitmap = resultUri?.let {
+//                    // 直接用 setImageURI 同一命名的拍照图片可能会因媒体库没刷新导致不显示最新图片 所以转用 bitmap
+//                    BitmapFactory.decodeStream(contentResolver.openInputStream(it))
+//                }
+//                val descriptor = contentResolver.openFileDescriptor(resultUri, "r")
+//                val bitmap = BitmapFactory.decodeFileDescriptor(descriptor?.fileDescriptor)
+//                descriptor?.close()
+                binding.iv.loadAvatar(resultUri)
                 val path = resultUri.getFile()?.absolutePath
                 binding.tvUri.text = resultUri.toString()
                 binding.tvPath.text = path

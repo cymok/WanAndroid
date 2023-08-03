@@ -35,8 +35,7 @@
         tools:replace="android:name, android:allowBackup, android:icon, android:label, android:roundIcon, android:theme"
         tools:targetApi="33">
 
-        <activity
-            android:name=".index.main.MainActivity"
+        <activity android:name=".index.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +43,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".index.home.HomeActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".index.main.MainActivity"
+            android:exported="false"/>
         <activity
             android:name=".index.first.FirstActivity"
             android:exported="false" />

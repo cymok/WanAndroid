@@ -1,4 +1,4 @@
-package com.example.flamingo.ui.theme
+package com.example.flamingo.ui.compose.theme
 
 import androidx.compose.ui.graphics.Color
 

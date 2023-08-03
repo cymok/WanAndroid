@@ -1,4 +1,4 @@
-package com.example.flamingo.ui.theme
+package com.example.flamingo.ui.compose.theme
 
 import android.app.Activity
 import android.os.Build

@@ -176,13 +176,9 @@ dependencies {
     implementation 'com.alipay.sdk:alipaysdk-android:15.8.15'
     // 微信
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.24'
-
-}
-
 /*
-project.afterEvaluate {
-    def assembleDebugTask = project.tasks.find { it.name == 'assembleDebug' }
-    def lintTask = project.tasks.find { it.name == 'lintDebug' }
-    assembleDebugTask.dependsOn(lintTask)
-}
+    // https://github.com/square/leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
 */
+
+}

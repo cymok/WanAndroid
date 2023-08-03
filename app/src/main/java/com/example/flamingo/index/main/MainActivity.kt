@@ -44,7 +44,7 @@ import com.example.flamingo.index.coroutine.CoroutineActivity
 import com.example.flamingo.index.first.FirstActivity
 import com.example.flamingo.index.second.SecondActivity
 import com.example.flamingo.index.third.ThirdActivity
-import com.example.flamingo.ui.theme.AppTheme
+import com.example.flamingo.ui.compose.theme.AppTheme
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.toast
 import kotlin.concurrent.thread

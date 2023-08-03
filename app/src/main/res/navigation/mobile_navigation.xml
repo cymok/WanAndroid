@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_square">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.flamingo.index.home.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.flamingo.index.home.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_square"
+        android:name="com.example.flamingo.index.home.square.SquareFragment"
+        android:label="@string/title_square"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_subscribe"
+        android:name="com.example.flamingo.index.home.subscribe.SubscribeFragment"
+        android:label="@string/title_subscribe"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_person"
+        android:name="com.example.flamingo.index.home.person.PersonFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_person" />
+
+</navigation>

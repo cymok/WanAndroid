@@ -1,18 +1,48 @@
 package com.example.flamingo.index.home
 
-import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.IdRes
 import com.example.flamingo.R
 import com.example.flamingo.base.BaseActivity
 import com.example.flamingo.databinding.ActivityHomeBinding
-import com.example.flamingo.utils.toastShort
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.flamingo.databinding.ViewTabLayoutBinding
+import com.example.flamingo.index.home.dashboard.DashboardFragment
+import com.example.flamingo.index.home.home.HomeFragment
+import com.example.flamingo.index.home.person.PersonFragment
+import com.example.flamingo.index.home.square.SquareFragment
+import com.example.flamingo.index.home.subscribe.SubscribeFragment
+import com.example.flamingo.utils.load
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeActivity : BaseActivity() {
+
+    private val fragments = listOf(
+        HomeFragment(),
+        DashboardFragment(),
+        SquareFragment(),
+        SubscribeFragment(),
+        PersonFragment()
+    )
+    private val titles = listOf("首页", "项目", "广场", "订阅", "靓仔")
+    private val tabIcons = listOf(
+        R.drawable.icon_home,
+        R.drawable.icon_dashboard,
+        R.drawable.icon_squar,
+        R.drawable.icon_subscribe,
+        R.drawable.icon_person
+    )
+    private val tabSelectedIcons = listOf(
+        R.drawable.icon_home_selected,
+        R.drawable.icon_dashboard_selected,
+        R.drawable.icon_squar_selected,
+        R.drawable.icon_subscribe_selected,
+        R.drawable.icon_person_selected
+    )
 
     private val binding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
@@ -22,51 +52,57 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        navView.setupWithNavController(navController)
-        navView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.navigation_home -> {
-                    toastShort("111")
-
-                }
-
-                R.id.navigation_dashboard -> {
-                    toastShort("222")
-
-                }
-
-                R.id.navigation_square -> {
-                    toastShort("333")
-
-                }
-
-                R.id.navigation_subscribe -> {
-                    toastShort("444")
-
-                }
-
-                R.id.navigation_person -> {
-                    toastShort("555")
-
-                }
-            }
-            true
-        }
+        initView()
     }
 
-    @SuppressLint("RestrictedApi")
-    private fun extracted(navView: BottomNavigationView) {
-        try {
-            val menuView = navView.getChildAt(0) as BottomNavigationMenuView
-            for (i in 0 until menuView.childCount) {
-                val itemView = menuView.getChildAt(i) as BottomNavigationItemView
-                itemView.setShifting(false)
-                itemView.setChecked(false)
+    private fun initView() {
+        val viewpager = binding.viewpager
+        val tabLayout = binding.tabLayout
+
+        val adapter = HomeAdapter(this, fragments)
+        viewpager.adapter = adapter
+        viewpager.currentItem = 2
+        viewpager.offscreenPageLimit = 2
+
+        tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val position = tab.position
+                tab.customView?.let {
+                    it.findViewById<ImageView>(R.id.tab_icon).load(tabSelectedIcons[position])
+                    it.findViewById<TextView>(R.id.tab_text)
+                        .setTextColor(Color.parseColor("#d4237a"))
+                }
             }
-        } catch (ignore: Exception) {
-        }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                val position = tab.position
+                tab.customView?.let {
+                    it.findViewById<ImageView>(R.id.tab_icon).load(tabIcons[position])
+                    it.findViewById<TextView>(R.id.tab_text)
+                        .setTextColor(Color.parseColor("#8a8a8a"))
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+
+            }
+        })
+
+        TabLayoutMediator(tabLayout, viewpager) { tab, position ->
+//            tab.text = titles[position]
+
+            val tabView = ViewTabLayoutBinding.inflate(layoutInflater)
+            tabView.bind(tabIcons[position], titles[position])
+            tab.customView = tabView.root
+
+        }.attach()
+
     }
 
+}
+
+// 扩展函数 + ViewBinding = 自定义 View
+fun ViewTabLayoutBinding.bind(@IdRes icon: Int, text: String) {
+    this.tabIcon.load(icon)
+    this.tabText.text = text
 }

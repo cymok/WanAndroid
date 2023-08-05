@@ -2,7 +2,7 @@ package com.example.flamingo.index.splash
 
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import com.example.flamingo.base.BaseActivity
+import com.example.flamingo.base.activity.BaseActivity
 import com.example.flamingo.databinding.ActivitySplashBinding
 import com.example.flamingo.index.home.HomeActivity
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +18,10 @@ import splitties.activities.start
 import splitties.views.onClick
 
 class SplashActivity : BaseActivity() {
+    companion object {
+//        const val COUNTDOWN_TIME = 3
+        const val COUNTDOWN_TIME = 0
+    }
 
     private val binding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
@@ -39,7 +43,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun initCountDown() {
-        mCountDown = countDownByFlow(5, lifecycleScope, {
+        mCountDown = countDownByFlow(COUNTDOWN_TIME, lifecycleScope, {
             if (it == 0) mCountDown?.cancel()
             binding.tv.text = it.toString()
         }, {

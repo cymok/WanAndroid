@@ -1,42 +1,26 @@
 package com.example.flamingo.index.home.dashboard
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.flamingo.base.fragment.VBaseFragment
 import com.example.flamingo.databinding.FragmentDashboardBinding
+import com.example.flamingo.utils.getViewModel
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : VBaseFragment<FragmentDashboardBinding>() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private val viewModel by lazy { getViewModel<DashboardViewModel>() }
+    override val binding by viewBinding<FragmentDashboardBinding>(CreateMethod.INFLATE)
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
-
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
+        viewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

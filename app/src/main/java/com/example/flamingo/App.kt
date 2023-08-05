@@ -7,8 +7,17 @@ import com.example.flamingo.config.CoilConfig
 
 class App : Application() {
 
+    companion object {
+
+        @JvmStatic
+        lateinit var INSTANCE: App
+            private set
+
+    }
+
     override fun onCreate() {
         super.onCreate()
+        INSTANCE = this
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleEventObserver())
         initCoil()
     }

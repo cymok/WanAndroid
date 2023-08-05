@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.flamingo.R
-import com.example.flamingo.base.BaseFragment
+import com.example.flamingo.base.fragment.BaseFragment
 import com.example.flamingo.databinding.FragmentSecondBinding
 import com.example.flamingo.utils.getViewModel
 

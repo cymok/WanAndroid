@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
-import com.example.flamingo.base.BaseFragment
+import com.example.flamingo.base.fragment.BaseFragment
 import com.example.flamingo.databinding.FragmentThirdBinding
 import com.example.flamingo.utils.getViewModel
 import kotlinx.coroutines.launch

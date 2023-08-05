@@ -1,43 +1,26 @@
 package com.example.flamingo.index.home.subscribe
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.flamingo.databinding.FragmentSecondBinding
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.flamingo.base.fragment.VBaseFragment
 import com.example.flamingo.databinding.FragmentSubscribeBinding
+import com.example.flamingo.utils.getViewModel
 
-class SubscribeFragment : Fragment() {
+class SubscribeFragment : VBaseFragment<FragmentSubscribeBinding>() {
 
-    private var _binding: FragmentSubscribeBinding? = null
+    private val viewModel by lazy { getViewModel<SubscribeViewModel>() }
+    override val binding by viewBinding<FragmentSubscribeBinding>(CreateMethod.INFLATE)
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val subscribeViewModel =
-            ViewModelProvider(this).get(SubscribeViewModel::class.java)
-
-        _binding = FragmentSubscribeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val textView: TextView = binding.textSubscribe
-        subscribeViewModel.text.observe(viewLifecycleOwner) {
+        viewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

@@ -5,7 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.addCallback
-import com.example.flamingo.base.BaseActivity
+import com.example.flamingo.base.activity.BaseActivity
 import com.example.flamingo.databinding.ActivitySecondBinding
 
 class SecondActivity : BaseActivity() {

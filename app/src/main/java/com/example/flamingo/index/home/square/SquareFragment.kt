@@ -1,42 +1,30 @@
 package com.example.flamingo.index.home.square
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.flamingo.databinding.FragmentDashboardBinding
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.flamingo.base.fragment.VBaseFragment
+import com.example.flamingo.databinding.FragmentSquareBinding
+import com.example.flamingo.utils.getViewModel
 
-class SquareFragment : Fragment() {
+class SquareFragment : VBaseFragment<FragmentSquareBinding>() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private val viewModel by lazy { getViewModel<SquareViewModel>() }
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    // `by viewBinding()` 委托在 `onDestroyView` 里执行 `binding = null`
+    override val binding by viewBinding<FragmentSquareBinding>(CreateMethod.INFLATE)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val squareViewModel =
-            ViewModelProvider(this).get(SquareViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-        squareViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textSquare
+        viewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
+        viewModel.getSquareList(0)
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

@@ -132,7 +132,7 @@ dependencies {
     implementation "androidx.room:room-ktx:2.5.2"
     implementation "androidx.sqlite:sqlite-ktx:2.3.1"
     implementation "androidx.work:work-runtime-ktx:2.8.1"
-    // Android 快乐库
+    // 快乐库 - 扩展
     // https://github.com/LouisCAD/Splitties
     def splitties_version = "3.0.0"
     implementation "com.louiscad.splitties:splitties-fun-pack-android-base:${splitties_version}"
@@ -141,6 +141,7 @@ dependencies {
     implementation "com.louiscad.splitties:splitties-fun-pack-android-appcompat-with-views-dsl:${splitties_version}"
     implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components:${splitties_version}"
     implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components-with-views-dsl:${splitties_version}"
+    // 快乐库 - 工具
     // https://github.com/Blankj/AndroidUtilCode
     implementation 'com.blankj:utilcodex:1.31.1'
     // 网络
@@ -167,6 +168,9 @@ dependencies {
     // 消息
     // https://github.com/JeremyLiao/LiveEventBus
     implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
+    // 快乐库 - UI
+    // https://github.com/RuffianZhong/RWidgetHelper
+    implementation 'com.github.RuffianZhong:RWidgetHelper:androidx.v0.0.14'
     // RecyclerView ItemDecoration
     // https://github.com/grzegorzojdana/SpacingItemDecoration
     implementation 'com.github.grzegorzojdana:SpacingItemDecoration:1.1.0'
@@ -180,5 +184,9 @@ dependencies {
     // https://github.com/square/leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
 */
+    // 通过委托 自动处理 `Fragment.onDestroyView()` 时的 `viewBinding = null` 防止内存泄漏
+    // https://github.com/androidbroadcast/ViewBindingPropertyDelegate
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-full:1.5.9'
+//    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9'
 
 }

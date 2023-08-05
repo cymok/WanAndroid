@@ -38,7 +38,7 @@ import com.blankj.utilcode.util.PathUtils
 import com.blankj.utilcode.util.Utils
 import com.bumptech.glide.Glide
 import com.example.flamingo.R
-import com.example.flamingo.base.BaseActivity
+import com.example.flamingo.base.activity.BaseActivity
 import com.example.flamingo.index.compose.ComposeActivity
 import com.example.flamingo.index.coroutine.CoroutineActivity
 import com.example.flamingo.index.first.FirstActivity

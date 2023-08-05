@@ -1,42 +1,26 @@
 package com.example.flamingo.index.home.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.flamingo.base.fragment.VBaseFragment
 import com.example.flamingo.databinding.FragmentHomeBinding
+import com.example.flamingo.utils.getViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : VBaseFragment<FragmentHomeBinding>() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private val viewModel by lazy { getViewModel<HomeViewModel>() }
+    override val binding by viewBinding<FragmentHomeBinding>(CreateMethod.INFLATE)
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        viewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

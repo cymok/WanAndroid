@@ -1,7 +1,7 @@
 package com.example.flamingo.index.third
 
 import android.os.Bundle
-import com.example.flamingo.base.BaseActivity
+import com.example.flamingo.base.activity.BaseActivity
 import com.example.flamingo.databinding.ActivityThirdBinding
 
 class ThirdActivity : BaseActivity() {

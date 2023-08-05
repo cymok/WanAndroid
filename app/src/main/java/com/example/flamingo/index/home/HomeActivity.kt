@@ -1,12 +1,18 @@
 package com.example.flamingo.index.home
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.IdRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
 import com.example.flamingo.R
-import com.example.flamingo.base.BaseActivity
+import com.example.flamingo.base.activity.BaseActivity
 import com.example.flamingo.databinding.ActivityHomeBinding
 import com.example.flamingo.databinding.ViewTabLayoutBinding
 import com.example.flamingo.index.home.dashboard.DashboardFragment
@@ -14,12 +20,16 @@ import com.example.flamingo.index.home.home.HomeFragment
 import com.example.flamingo.index.home.person.PersonFragment
 import com.example.flamingo.index.home.square.SquareFragment
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
-import com.example.flamingo.utils.load
+import com.example.flamingo.utils.loadRes
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeActivity : BaseActivity() {
+
+    companion object {
+        const val DELAY_TIME: Long = 1000
+    }
 
     private val fragments = listOf(
         HomeFragment(),
@@ -62,13 +72,17 @@ class HomeActivity : BaseActivity() {
         val adapter = HomeAdapter(this, fragments)
         viewpager.adapter = adapter
         viewpager.currentItem = 2
-        viewpager.offscreenPageLimit = 2
+        viewpager.offscreenPageLimit = 1
+
+        var previous = 0L
+
+        val animatorCache = mutableMapOf<Int, Animator?>()
 
         tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val position = tab.position
                 tab.customView?.let {
-                    it.findViewById<ImageView>(R.id.tab_icon).load(tabSelectedIcons[position])
+                    it.findViewById<ImageView>(R.id.tab_icon).loadRes(tabSelectedIcons[position])
                     it.findViewById<TextView>(R.id.tab_text)
                         .setTextColor(Color.parseColor("#d4237a"))
                 }
@@ -77,23 +91,74 @@ class HomeActivity : BaseActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 val position = tab.position
                 tab.customView?.let {
-                    it.findViewById<ImageView>(R.id.tab_icon).load(tabIcons[position])
+                    it.findViewById<ImageView>(R.id.tab_icon).loadRes(tabIcons[position])
                     it.findViewById<TextView>(R.id.tab_text)
                         .setTextColor(Color.parseColor("#8a8a8a"))
                 }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
+                val current = System.currentTimeMillis()
+                val duration = current - previous
 
+                if (duration < DELAY_TIME) {
+
+                    val cacheKey = tab.customView.hashCode()
+
+                    val imageView = tab.customView!!.findViewById<ImageView>(R.id.tab_icon)
+                    val textView = tab.customView!!.findViewById<TextView>(R.id.tab_text)
+
+                    val position = titles.indexOf(textView.text)
+
+                    val animator = if (animatorCache[cacheKey] != null) {
+                        animatorCache[cacheKey]
+                    } else {
+                        ObjectAnimator.ofFloat(imageView, "rotation", 0f, -360f)
+                            ?.apply {
+                                setDuration(DELAY_TIME)
+                                addUpdateListener { animation: ValueAnimator ->
+                                    if (position != viewpager.currentItem) {
+                                        animation.cancel()
+                                        imageView.post {
+                                            imageView.rotation = 0f
+                                        }
+                                    }
+                                }
+                                addListener(object : AnimatorListenerAdapter() {
+                                    override fun onAnimationStart(animation: Animator) {
+                                        // 刷新动画前切换icon
+                                        imageView.loadRes(R.drawable.icon_loading)
+                                    }
+
+                                    override fun onAnimationEnd(animation: Animator) {
+                                        // 刷新动画后还原icon
+                                        if (position != viewpager.currentItem) {
+                                            imageView.loadRes(tabIcons[position])
+                                        } else {
+                                            imageView.loadRes(tabSelectedIcons[position])
+                                        }
+                                    }
+
+                                })
+                            }.apply {
+                                animatorCache[cacheKey] = this
+                            }
+                    }
+                    animator?.cancel()
+                    animator?.start()
+
+                    previous = 0
+                } else {
+                    previous = current
+                }
             }
         })
 
         TabLayoutMediator(tabLayout, viewpager) { tab, position ->
-//            tab.text = titles[position]
-
-            val tabView = ViewTabLayoutBinding.inflate(layoutInflater)
-            tabView.bind(tabIcons[position], titles[position])
-            tab.customView = tabView.root
+            tab.customView = ViewTabLayoutBinding.inflate(layoutInflater).apply {
+                tabText.text = titles[position]
+                tabIcon.loadRes(tabIcons[position])
+            }.root
 
         }.attach()
 
@@ -102,7 +167,8 @@ class HomeActivity : BaseActivity() {
 }
 
 // 扩展函数 + ViewBinding = 自定义 View
-fun ViewTabLayoutBinding.bind(@IdRes icon: Int, text: String) {
-    this.tabIcon.load(icon)
+fun ViewTabLayoutBinding.bind(@DrawableRes @RawRes icon: Int, text: String): View {
+    this.tabIcon.loadRes(icon)
     this.tabText.text = text
+    return this.root
 }

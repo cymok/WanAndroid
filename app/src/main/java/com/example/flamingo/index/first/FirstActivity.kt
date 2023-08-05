@@ -2,7 +2,6 @@ package com.example.flamingo.index.first
 
 import android.Manifest
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,7 +14,7 @@ import androidx.collection.arraySetOf
 import androidx.core.content.FileProvider
 import androidx.core.view.WindowCompat
 import coil.load
-import com.example.flamingo.base.BaseActivity
+import com.example.flamingo.base.activity.BaseActivity
 import com.example.flamingo.config.matiss.CoilImageEngine
 import com.example.flamingo.databinding.AtyMainBinding
 import com.example.flamingo.index.second.SecondActivity

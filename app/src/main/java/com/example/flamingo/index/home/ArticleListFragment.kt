@@ -1,4 +1,4 @@
-package com.example.flamingo.index.home.square
+package com.example.flamingo.index.home
 
 import android.graphics.Rect
 import android.os.Bundle
@@ -8,19 +8,27 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
-import com.example.flamingo.databinding.FragmentSquareBinding
-import com.example.flamingo.index.home.ArticlesPagingAdapter
+import com.example.flamingo.data.ArticlesTreeItem
+import com.example.flamingo.databinding.FragmentArticlesBinding
 import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.getViewModel
 import com.grzegorzojdana.spacingitemdecoration.Spacing
 import com.grzegorzojdana.spacingitemdecoration.SpacingItemDecoration
 
-class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>() {
+class ArticleListFragment(val item: ArticlesTreeItem, @ArticlesDataSource.Page val whichPage: Int) :
+    VVMBaseFragment<ArticleListViewModel, FragmentArticlesBinding>() {
 
-    override val viewModel: SquareViewModel get() = getViewModel()
+    override val viewModel: ArticleListViewModel get() = getViewModel()
+    override val binding: FragmentArticlesBinding by viewBinding(CreateMethod.INFLATE)
 
-    // `by viewBinding()` 委托在 `onDestroyView` 里执行 `binding = null`
-    override val binding by viewBinding<FragmentSquareBinding>(CreateMethod.INFLATE)
+    private val itemDecoration = SpacingItemDecoration(
+        Spacing(
+            vertical = 12.dp2px,
+            horizontal = 50.dp2px,
+            item = Rect(),
+            edges = Rect(16.dp2px, 20.dp2px, 16.dp2px, 20.dp2px),
+        )
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,19 +39,10 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
     private fun initView() {
         val adapter = ArticlesPagingAdapter()
         val recyclerView = binding.rv
+        recyclerView.addItemDecoration(itemDecoration)
         recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(
-            SpacingItemDecoration(
-                Spacing(
-                    vertical = 12.dp2px,
-                    horizontal = 50.dp2px,
-                    item = Rect(),
-                    edges = Rect(16.dp2px, 20.dp2px, 16.dp2px, 20.dp2px),
-                )
-            )
-        )
 
-        viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
+        viewModel.getArticlesWithPager(whichPage = whichPage,id = item.id).observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
             binding.refresh.isRefreshing = false
         }

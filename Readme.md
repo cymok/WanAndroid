@@ -1,6 +1,6 @@
 # 必看！梳理本项目架构
 
-## 基于 MVVM
+## 基于 MVVM 架构, 基于 Kotlin, JetPack: Lifecycle + LiveData + ViewModel + Paging, 网络: Retrofit2 + OkHttp3 + Coroutine, 本地缓存: 
 
 代码实现
 

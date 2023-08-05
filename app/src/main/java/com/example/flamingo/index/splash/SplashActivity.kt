@@ -19,8 +19,7 @@ import splitties.views.onClick
 
 class SplashActivity : BaseActivity() {
     companion object {
-//        const val COUNTDOWN_TIME = 3
-        const val COUNTDOWN_TIME = 0
+        const val COUNTDOWN_TIME = 3
     }
 
     private val binding by lazy {

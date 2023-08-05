@@ -11,21 +11,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.blankj.utilcode.util.AppUtils
 import com.example.flamingo.R
-import com.example.flamingo.base.activity.BaseActivity
+import com.example.flamingo.base.activity.VBaseActivity
 import com.example.flamingo.databinding.ActivityHomeBinding
 import com.example.flamingo.databinding.ViewTabLayoutBinding
-import com.example.flamingo.index.home.dashboard.DashboardFragment
 import com.example.flamingo.index.home.home.HomeFragment
 import com.example.flamingo.index.home.person.PersonFragment
+import com.example.flamingo.index.home.project.ProjectFragment
 import com.example.flamingo.index.home.square.SquareFragment
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
 import com.example.flamingo.utils.loadRes
+import com.example.flamingo.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
 
     companion object {
         const val DELAY_TIME: Long = 1000
@@ -33,7 +37,7 @@ class HomeActivity : BaseActivity() {
 
     private val fragments = listOf(
         HomeFragment(),
-        DashboardFragment(),
+        ProjectFragment(),
         SquareFragment(),
         SubscribeFragment(),
         PersonFragment()
@@ -41,22 +45,20 @@ class HomeActivity : BaseActivity() {
     private val titles = listOf("首页", "项目", "广场", "订阅", "靓仔")
     private val tabIcons = listOf(
         R.drawable.icon_home,
-        R.drawable.icon_dashboard,
+        R.drawable.icon_project,
         R.drawable.icon_squar,
         R.drawable.icon_subscribe,
         R.drawable.icon_person
     )
     private val tabSelectedIcons = listOf(
         R.drawable.icon_home_selected,
-        R.drawable.icon_dashboard_selected,
+        R.drawable.icon_project_selected,
         R.drawable.icon_squar_selected,
         R.drawable.icon_subscribe_selected,
         R.drawable.icon_person_selected
     )
 
-    private val binding by lazy {
-        ActivityHomeBinding.inflate(layoutInflater)
-    }
+    override val binding: ActivityHomeBinding by viewBinding(CreateMethod.INFLATE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +75,8 @@ class HomeActivity : BaseActivity() {
         viewpager.adapter = adapter
         viewpager.currentItem = 2
         viewpager.offscreenPageLimit = 1
+
+        viewpager.isUserInputEnabled = false
 
         val animatorCache = mutableMapOf<Int, Animator?>()
 
@@ -139,6 +143,7 @@ class HomeActivity : BaseActivity() {
                 }
                 if (animator.isRunning.not()) {
                     animator?.start()
+                    refreshPage(position)
                 }
             }
         })
@@ -148,9 +153,24 @@ class HomeActivity : BaseActivity() {
                 tabText.text = titles[position]
                 tabIcon.loadRes(tabIcons[position])
             }.root
-
         }.attach()
 
+    }
+
+    fun refreshPage(index: Int) {
+
+    }
+
+    var firstClickTime = 0L
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun onBackPressed() {
+        val secondClickTime = System.currentTimeMillis()
+        if (secondClickTime - firstClickTime > 1000) {
+            toast("再次'返回'退出程序")
+            firstClickTime = secondClickTime
+        } else {
+            AppUtils.exitApp();
+        }
     }
 
 }

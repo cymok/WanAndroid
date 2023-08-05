@@ -1,4 +1,4 @@
-package com.example.flamingo.index.home.subscribe
+package com.example.flamingo.index.home.project
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,14 +12,14 @@ import com.example.flamingo.data.ArticlesTree
 import com.example.flamingo.index.home.ArticlesDataSource
 import com.example.flamingo.network.repository.WanRepository
 
-class SubscribeViewModel : BaseViewModel() {
+class ProjectViewModel : BaseViewModel() {
 
     val articlesTree = MutableLiveData<ArticlesTree>()
 
-    fun getWxArticleTree() {
+    fun getProjectTree() {
         launch {
             startLoading()
-            val result = WanRepository.getWxArticleTree()
+            val result = WanRepository.getProjectTree()
             articlesTree.postValue(result)
             stopLoading()
         }
@@ -27,7 +27,7 @@ class SubscribeViewModel : BaseViewModel() {
 
     fun getArticlesWithPager(id: Int): LiveData<PagingData<DataX>> {
         val pager = Pager(PagingConfig(pageSize = 10)) {
-            ArticlesDataSource(firstPage = 1, whichPage = ArticlesDataSource.SUBSCRIBE, id = id)
+            ArticlesDataSource(firstPage = 1, whichPage = ArticlesDataSource.PROJECT, id = id)
         }
         return pager.liveData
     }

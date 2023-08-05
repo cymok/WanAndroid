@@ -23,7 +23,7 @@ typealias Block<T> = suspend (CoroutineScope) -> T
 typealias Error = suspend (Exception) -> Unit
 typealias Cancel = suspend (Exception) -> Unit
 
-open class BaseViewModel : ViewModel(),
+abstract class BaseViewModel : ViewModel(),
     // 直接将 this 赋予 MainScope
     CoroutineScope by MainScope() {
 

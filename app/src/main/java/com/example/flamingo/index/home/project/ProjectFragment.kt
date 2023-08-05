@@ -1,4 +1,4 @@
-package com.example.flamingo.index.home.subscribe
+package com.example.flamingo.index.home.project
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,17 +6,17 @@ import android.view.View
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.flamingo.base.fragment.VVMBaseFragment
-import com.example.flamingo.databinding.FragmentSubscribeBinding
+import com.example.flamingo.databinding.FragmentProjectBinding
 import com.example.flamingo.index.home.ArticleListFragment
 import com.example.flamingo.index.home.ArticleListAdapter
 import com.example.flamingo.index.home.ArticlesDataSource
 import com.example.flamingo.utils.getViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
-class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeBinding>() {
+class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding>() {
 
-    override val viewModel: SubscribeViewModel get() = getViewModel()
-    override val binding by viewBinding<FragmentSubscribeBinding>(CreateMethod.INFLATE)
+    override val viewModel: ProjectViewModel get() = getViewModel()
+    override val binding by viewBinding<FragmentProjectBinding>(CreateMethod.INFLATE)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,7 +31,7 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
             val nameList = it.map { it.name }
 
             // ViewPager
-            val list = it.map { ArticleListFragment(it, ArticlesDataSource.SUBSCRIBE) }
+            val list = it.map { ArticleListFragment(it, ArticlesDataSource.PROJECT) }
             val vpAdapter = ArticleListAdapter(this, list)
             binding.viewpager.adapter = vpAdapter
             binding.viewpager.currentItem = 0
@@ -46,7 +46,7 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
     }
 
     private fun initData() {
-        viewModel.getWxArticleTree()
+        viewModel.getProjectTree()
     }
 
 }

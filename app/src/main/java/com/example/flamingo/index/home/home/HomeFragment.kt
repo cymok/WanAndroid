@@ -1,25 +1,74 @@
 package com.example.flamingo.index.home.home
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
+import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.flamingo.base.fragment.VBaseFragment
+import com.blankj.utilcode.util.LogUtils
+import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.databinding.FragmentHomeBinding
+import com.example.flamingo.index.home.ArticlesPagingAdapter
+import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.getViewModel
+import com.grzegorzojdana.spacingitemdecoration.Spacing
+import com.grzegorzojdana.spacingitemdecoration.SpacingItemDecoration
 
-class HomeFragment : VBaseFragment<FragmentHomeBinding>() {
+class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
-    private val viewModel by lazy { getViewModel<HomeViewModel>() }
+    override val viewModel: HomeViewModel get() = getViewModel()
     override val binding by viewBinding<FragmentHomeBinding>(CreateMethod.INFLATE)
+
+    private val itemDecoration = SpacingItemDecoration(
+        Spacing(
+            vertical = 12.dp2px,
+            horizontal = 50.dp2px,
+            item = Rect(),
+            edges = Rect(16.dp2px, 20.dp2px, 16.dp2px, 20.dp2px),
+        )
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val textView: TextView = binding.textHome
-        viewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        initView()
+    }
+
+    private fun initView() {
+        val adapter = ArticlesPagingAdapter()
+        val recyclerView = binding.rv
+        recyclerView.addItemDecoration(itemDecoration)
+        recyclerView.adapter = adapter
+
+        viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+            binding.refresh.isRefreshing = false
+        }
+
+        adapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.Loading -> {
+
+                }
+
+                is LoadState.NotLoading -> {
+
+                }
+
+                is LoadState.Error -> {
+                    binding.refresh.isRefreshing = false
+                    LogUtils.e(it.toString())
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+        binding.refresh.setOnRefreshListener {
+            adapter.refresh()
         }
     }
 

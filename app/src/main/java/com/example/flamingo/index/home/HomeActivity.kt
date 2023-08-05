@@ -74,8 +74,6 @@ class HomeActivity : BaseActivity() {
         viewpager.currentItem = 2
         viewpager.offscreenPageLimit = 1
 
-        var previous = 0L
-
         val animatorCache = mutableMapOf<Int, Animator?>()
 
         tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
@@ -98,58 +96,49 @@ class HomeActivity : BaseActivity() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-                val current = System.currentTimeMillis()
-                val duration = current - previous
+                val cacheKey = tab.customView.hashCode()
 
-                if (duration < DELAY_TIME) {
+                val imageView = tab.customView!!.findViewById<ImageView>(R.id.tab_icon)
+                val textView = tab.customView!!.findViewById<TextView>(R.id.tab_text)
 
-                    val cacheKey = tab.customView.hashCode()
+                val position = titles.indexOf(textView.text)
 
-                    val imageView = tab.customView!!.findViewById<ImageView>(R.id.tab_icon)
-                    val textView = tab.customView!!.findViewById<TextView>(R.id.tab_text)
-
-                    val position = titles.indexOf(textView.text)
-
-                    val animator = if (animatorCache[cacheKey] != null) {
-                        animatorCache[cacheKey]
-                    } else {
-                        ObjectAnimator.ofFloat(imageView, "rotation", 0f, -360f)
-                            ?.apply {
-                                setDuration(DELAY_TIME)
-                                addUpdateListener { animation: ValueAnimator ->
-                                    if (position != viewpager.currentItem) {
-                                        animation.cancel()
-                                        imageView.post {
-                                            imageView.rotation = 0f
-                                        }
+                val animator = if (animatorCache[cacheKey] != null) {
+                    animatorCache[cacheKey]!!
+                } else {
+                    ObjectAnimator.ofFloat(imageView, "rotation", 0f, -360f)
+                        .apply {
+                            duration = DELAY_TIME
+                            addUpdateListener { animation: ValueAnimator ->
+                                if (position != viewpager.currentItem) {
+                                    animation.cancel()
+                                    imageView.post {
+                                        imageView.rotation = 0f
                                     }
                                 }
-                                addListener(object : AnimatorListenerAdapter() {
-                                    override fun onAnimationStart(animation: Animator) {
-                                        // 刷新动画前切换icon
-                                        imageView.loadRes(R.drawable.icon_loading)
-                                    }
-
-                                    override fun onAnimationEnd(animation: Animator) {
-                                        // 刷新动画后还原icon
-                                        if (position != viewpager.currentItem) {
-                                            imageView.loadRes(tabIcons[position])
-                                        } else {
-                                            imageView.loadRes(tabSelectedIcons[position])
-                                        }
-                                    }
-
-                                })
-                            }.apply {
-                                animatorCache[cacheKey] = this
                             }
-                    }
-                    animator?.cancel()
-                    animator?.start()
+                            addListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationStart(animation: Animator) {
+                                    // 刷新动画前切换icon
+                                    imageView.loadRes(R.drawable.icon_loading)
+                                }
 
-                    previous = 0
-                } else {
-                    previous = current
+                                override fun onAnimationEnd(animation: Animator) {
+                                    // 刷新动画后还原icon
+                                    if (position != viewpager.currentItem) {
+                                        imageView.loadRes(tabIcons[position])
+                                    } else {
+                                        imageView.loadRes(tabSelectedIcons[position])
+                                    }
+                                }
+
+                            })
+                        }.apply {
+                            animatorCache[cacheKey] = this
+                        }
+                }
+                if (animator.isRunning.not()) {
+                    animator?.start()
                 }
             }
         })

@@ -10,7 +10,7 @@ fun ImageView.load(any: Any?) {
     GlideApp.with(this)
         .load(any)
         .centerCrop()
-        .placeholder(R.mipmap.ic_launcher)
+//        .placeholder(R.mipmap.ic_launcher)
         .into(this)
 }
 
@@ -21,7 +21,7 @@ fun ImageView.loadRes(@RawRes @DrawableRes res: Int) {
     GlideApp.with(this)
         .load(res)
         .centerCrop()
-        .placeholder(R.mipmap.ic_launcher)
+//        .placeholder(R.mipmap.ic_launcher)
         .into(this)
 }
 
@@ -30,7 +30,7 @@ fun ImageView.loadAvatar(res: Any?) {
         .load(res)
         .centerCrop()
         .circleCrop()
-        .placeholder(R.mipmap.ic_launcher)
+//        .placeholder(R.mipmap.ic_launcher)
         .into(this)
 
 }

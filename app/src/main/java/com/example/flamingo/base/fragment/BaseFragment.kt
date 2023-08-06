@@ -15,7 +15,7 @@ abstract class BaseFragment(@LayoutRes layoutID: Int = 0) : Fragment(layoutID) {
         observeBus()
     }
 
-    private fun observeBus() {
+    protected open fun observeBus() {
 
     }
 

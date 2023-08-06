@@ -1,5 +1,9 @@
 package com.example.flamingo.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Articles(
     val curPage: Int,
     val datas: List<DataX>,
@@ -8,8 +12,9 @@ data class Articles(
     val pageCount: Int,
     val size: Int,
     val total: Int
-)
+):Parcelable
 
+@Parcelize
 data class DataX(
     val adminAdd: Boolean,
     val apkLink: String,
@@ -46,9 +51,10 @@ data class DataX(
     val userId: Int,
     val visible: Int,
     val zan: Int
-)
+):Parcelable
 
+@Parcelize
 data class Tag(
     val name: String,
     val url: String
-)
+):Parcelable

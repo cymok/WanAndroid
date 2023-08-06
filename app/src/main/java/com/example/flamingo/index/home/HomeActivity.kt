@@ -16,6 +16,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.AppUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
+import com.example.flamingo.constant.EventBus
 import com.example.flamingo.databinding.ActivityHomeBinding
 import com.example.flamingo.databinding.ViewTabLayoutBinding
 import com.example.flamingo.index.home.home.HomeFragment
@@ -24,10 +25,12 @@ import com.example.flamingo.index.home.project.ProjectFragment
 import com.example.flamingo.index.home.square.SquareFragment
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
 import com.example.flamingo.utils.loadRes
+import com.example.flamingo.utils.postEvent
 import com.example.flamingo.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
+import splitties.bundle.put
 
 class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
 
@@ -36,11 +39,11 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     }
 
     private val fragments = listOf(
-        HomeFragment(),
-        ProjectFragment(),
-        SquareFragment(),
-        SubscribeFragment(),
-        PersonFragment()
+        HomeFragment().apply { arguments = Bundle().apply { put("index", 0) } },
+        ProjectFragment().apply { arguments = Bundle().apply { put("index", 1) } },
+        SquareFragment().apply { arguments = Bundle().apply { put("index", 2) } },
+        SubscribeFragment().apply { arguments = Bundle().apply { put("index", 3) } },
+        PersonFragment().apply { arguments = Bundle().apply { put("index", 4) } },
     )
     private val titles = listOf("首页", "项目", "广场", "订阅", "靓仔")
     private val tabIcons = listOf(
@@ -158,10 +161,11 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     }
 
     fun refreshPage(index: Int) {
-
+        postEvent(EventBus.HOME_TAB, index)
     }
 
     var firstClickTime = 0L
+
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onBackPressed() {
         val secondClickTime = System.currentTimeMillis()

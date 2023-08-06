@@ -3,14 +3,17 @@ package com.example.flamingo.index.home.project
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.flamingo.base.fragment.VVMBaseFragment
+import com.example.flamingo.constant.EventBus
 import com.example.flamingo.databinding.FragmentProjectBinding
 import com.example.flamingo.index.home.ArticleListFragment
 import com.example.flamingo.index.home.ArticleListAdapter
 import com.example.flamingo.index.home.ArticlesDataSource
 import com.example.flamingo.utils.getViewModel
+import com.example.flamingo.utils.observeEvent
 import com.google.android.material.tabs.TabLayoutMediator
 
 class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding>() {
@@ -31,7 +34,16 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
             val nameList = it.map { it.name }
 
             // ViewPager
-            val list = it.map { ArticleListFragment(it, ArticlesDataSource.PROJECT) }
+            val list = it.map {
+                ArticleListFragment().apply {
+                    arguments = Bundle().apply {
+                        val index = this@ProjectFragment.arguments?.getInt("index") ?: -1
+                        putInt("homeIndex", index)
+                        putInt("page", ArticlesDataSource.PROJECT)
+                        putParcelable("data", it)
+                    }
+                }
+            }
             val vpAdapter = ArticleListAdapter(this, list)
             binding.viewpager.adapter = vpAdapter
             binding.viewpager.currentItem = 0

@@ -30,7 +30,7 @@ abstract class BaseActivity(@LayoutRes layoutId: Int = 0) : AppCompatActivity(la
         super.finish()
     }
 
-    private fun observeBus() {
+    protected fun observeBus() {
 
     }
 

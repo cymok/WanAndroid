@@ -7,8 +7,8 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.databinding.FragmentSubscribeBinding
-import com.example.flamingo.index.home.ArticleListFragment
 import com.example.flamingo.index.home.ArticleListAdapter
+import com.example.flamingo.index.home.ArticleListFragment
 import com.example.flamingo.index.home.ArticlesDataSource
 import com.example.flamingo.utils.getViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -31,7 +31,16 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
             val nameList = it.map { it.name }
 
             // ViewPager
-            val list = it.map { ArticleListFragment(it, ArticlesDataSource.SUBSCRIBE) }
+            val list = it.map {
+                ArticleListFragment().apply {
+                    arguments = Bundle().apply {
+                        val index = this@SubscribeFragment.arguments?.getInt("index") ?: -1
+                        putInt("homeIndex", index)
+                        putInt("page", ArticlesDataSource.SUBSCRIBE)
+                        putParcelable("data", it)
+                    }
+                }
+            }
             val vpAdapter = ArticleListAdapter(this, list)
             binding.viewpager.adapter = vpAdapter
             binding.viewpager.currentItem = 0

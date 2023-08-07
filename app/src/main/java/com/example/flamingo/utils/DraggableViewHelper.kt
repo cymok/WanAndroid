@@ -1,4 +1,4 @@
-package com.example.flamingo.ui.view
+package com.example.flamingo.utils
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -10,7 +10,6 @@ import android.view.animation.BounceInterpolator
 import androidx.annotation.FloatRange
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ScreenUtils
-import com.example.flamingo.utils.touchSlop
 import splitties.systemservices.windowManager
 import kotlin.math.abs
 

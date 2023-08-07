@@ -23,8 +23,8 @@ import com.example.flamingo.index.home.person.PersonFragment
 import com.example.flamingo.index.home.project.ProjectFragment
 import com.example.flamingo.index.home.square.SquareFragment
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
-import com.example.flamingo.ui.view.DraggableViewHelper
-import com.example.flamingo.ui.view.FloatViewHelper
+import com.example.flamingo.utils.DraggableViewHelper
+import com.example.flamingo.utils.FloatViewHelper
 import com.example.flamingo.utils.loadCircle
 import com.example.flamingo.utils.loadRes
 import com.example.flamingo.utils.postEvent

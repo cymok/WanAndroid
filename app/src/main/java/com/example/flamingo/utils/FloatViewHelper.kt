@@ -1,4 +1,4 @@
-package com.example.flamingo.ui.view
+package com.example.flamingo.utils
 
 import android.graphics.PixelFormat
 import android.graphics.Point
@@ -8,8 +8,6 @@ import android.view.Window
 import android.view.WindowManager
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
-import com.example.flamingo.utils.dp2px
-import com.example.flamingo.utils.toJson
 
 object FloatViewHelper {
 

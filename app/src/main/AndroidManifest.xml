@@ -31,11 +31,12 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Base.AppTheme"
+        android:theme="@style/AppTheme"
         tools:replace="android:name, android:allowBackup, android:icon, android:label, android:roundIcon, android:theme"
         tools:targetApi="33">
 
-        <activity android:name=".index.splash.SplashActivity"
+        <activity
+            android:name=".index.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +46,7 @@
         </activity>
         <activity
             android:name=".index.home.HomeActivity"
-            android:exported="false"/>
+            android:exported="false" />
 <!--
         <activity
             android:name=".index.home.HomeActivity"
@@ -59,12 +60,12 @@
 -->
         <activity
             android:name=".base.activity.BaseWebActivity"
-            android:theme="@style/AppTheme.ActionBar"
-            android:exported="false"/>
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
 
         <activity
             android:name=".index.main.MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".index.first.FirstActivity"
             android:exported="false" />
@@ -79,7 +80,7 @@
             android:exported="false" />
         <activity
             android:name=".index.compose.ComposeActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
@@ -110,6 +111,15 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <!--适配华为（huawei）刘海屏-->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+        <!--适配小米（xiaomi）刘海屏-->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
 
     </application>
 

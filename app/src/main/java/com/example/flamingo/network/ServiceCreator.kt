@@ -1,6 +1,6 @@
 package com.example.flamingo.network
 
-import com.example.flamingo.network.api.WanAndroidService
+import com.example.flamingo.network.api.WanService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,6 +28,6 @@ object ServiceCreator {
 
     fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 
-    val wanApiService: WanAndroidService = retrofit.create(WanAndroidService::class.java)
+    val wanApiService: WanService = retrofit.create(WanService::class.java)
 
 }

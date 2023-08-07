@@ -64,7 +64,7 @@ fun View.visible(visible: Boolean) {
     if (visible && visibility != VISIBLE) {
         visibility = VISIBLE
     } else if (!visible && visibility == VISIBLE) {
-        visibility = INVISIBLE
+        visibility = GONE
     }
 }
 

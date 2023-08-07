@@ -1,7 +1,6 @@
 package com.example.flamingo.network.repository
 
 import com.example.flamingo.network.ServiceCreator
-import com.example.flamingo.utils.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -22,6 +21,10 @@ object WanRepository {
 
     suspend fun logout() = withContext(Dispatchers.IO) {
         apiService.logout().apiData()
+    }
+
+    suspend fun getBanner() = withContext(Dispatchers.IO) {
+        apiService.getBanner().apiData()
     }
 
     suspend fun getHomeList(page: Int) = withContext(Dispatchers.IO) {

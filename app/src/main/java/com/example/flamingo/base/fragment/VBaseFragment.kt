@@ -8,6 +8,7 @@ import androidx.viewbinding.ViewBinding
 
 abstract class VBaseFragment<VB : ViewBinding> : BaseFragment() {
 
+    // `by viewBinding()` 委托可在 `onDestroyView` 里执行 `binding = null`
     protected abstract val binding: VB
 
     override fun onCreateView(

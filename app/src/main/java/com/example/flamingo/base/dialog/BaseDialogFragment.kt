@@ -24,7 +24,7 @@ class BaseDialogFragment(@LayoutRes layoutId: Int = 0) : DialogFragment(layoutId
         observeBus()
     }
 
-    protected fun observeBus() {
+    protected open fun observeBus() {
 
     }
 

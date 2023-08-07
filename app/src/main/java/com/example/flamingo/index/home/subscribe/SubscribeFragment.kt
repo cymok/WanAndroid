@@ -5,24 +5,33 @@ import android.os.Bundle
 import android.view.View
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.blankj.utilcode.util.BarUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
+import com.example.flamingo.constant.EventBus
 import com.example.flamingo.databinding.FragmentSubscribeBinding
 import com.example.flamingo.index.home.ArticleListAdapter
 import com.example.flamingo.index.home.ArticleListFragment
 import com.example.flamingo.index.home.ArticlesDataSource
 import com.example.flamingo.utils.getViewModel
+import com.example.flamingo.utils.observeEvent
 import com.google.android.material.tabs.TabLayoutMediator
+import splitties.views.topPadding
 
 class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeBinding>() {
 
     override val viewModel: SubscribeViewModel get() = getViewModel()
-    override val binding by viewBinding<FragmentSubscribeBinding>(CreateMethod.INFLATE)
+    override val binding: FragmentSubscribeBinding by viewBinding(CreateMethod.INFLATE)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initImmersion()
         observe()
         initData()
+    }
+
+    private fun initImmersion() {
+        val statusBarHeight = BarUtils.getStatusBarHeight()
+        binding.tabLayout.topPadding = statusBarHeight
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -34,7 +43,7 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
             val list = it.map {
                 ArticleListFragment().apply {
                     arguments = Bundle().apply {
-                        val index = this@SubscribeFragment.arguments?.getInt("index") ?: -1
+                        val index = this@SubscribeFragment.arguments?.getInt("homeIndex") ?: -1
                         putInt("homeIndex", index)
                         putInt("page", ArticlesDataSource.SUBSCRIBE)
                         putParcelable("data", it)
@@ -56,6 +65,12 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
 
     private fun initData() {
         viewModel.getWxArticleTree()
+    }
+
+    override fun observeBus() {
+        observeEvent<Int>(EventBus.HOME_TAB_CHANGE) {
+
+        }
     }
 
 }

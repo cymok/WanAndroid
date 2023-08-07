@@ -11,8 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
-import by.kirich1409.viewbindingdelegate.CreateMethod
-import by.kirich1409.viewbindingdelegate.viewBinding
+import androidx.appcompat.widget.AppCompatImageView
 import com.blankj.utilcode.util.AppUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
@@ -24,6 +23,9 @@ import com.example.flamingo.index.home.person.PersonFragment
 import com.example.flamingo.index.home.project.ProjectFragment
 import com.example.flamingo.index.home.square.SquareFragment
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
+import com.example.flamingo.ui.view.DraggableViewHelper
+import com.example.flamingo.ui.view.FloatViewHelper
+import com.example.flamingo.utils.loadCircle
 import com.example.flamingo.utils.loadRes
 import com.example.flamingo.utils.postEvent
 import com.example.flamingo.utils.toast
@@ -31,6 +33,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import splitties.bundle.put
+import splitties.views.onClick
 
 class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
 
@@ -39,13 +42,13 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     }
 
     private val fragments = listOf(
-        HomeFragment().apply { arguments = Bundle().apply { put("index", 0) } },
-        ProjectFragment().apply { arguments = Bundle().apply { put("index", 1) } },
-        SquareFragment().apply { arguments = Bundle().apply { put("index", 2) } },
-        SubscribeFragment().apply { arguments = Bundle().apply { put("index", 3) } },
-        PersonFragment().apply { arguments = Bundle().apply { put("index", 4) } },
+        HomeFragment().apply { arguments = Bundle().apply { put("homeIndex", 0) } },
+        ProjectFragment().apply { arguments = Bundle().apply { put("homeIndex", 1) } },
+        SquareFragment().apply { arguments = Bundle().apply { put("homeIndex", 2) } },
+        SubscribeFragment().apply { arguments = Bundle().apply { put("homeIndex", 3) } },
+        PersonFragment().apply { arguments = Bundle().apply { put("homeIndex", 4) } },
     )
-    private val titles = listOf("首页", "项目", "广场", "订阅", "靓仔")
+    private val titles = listOf("推荐", "项目", "广场", "订阅", "靓仔")
     private val tabIcons = listOf(
         R.drawable.icon_home,
         R.drawable.icon_project,
@@ -53,6 +56,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
         R.drawable.icon_subscribe,
         R.drawable.icon_person
     )
+
     private val tabSelectedIcons = listOf(
         R.drawable.icon_home_selected,
         R.drawable.icon_project_selected,
@@ -61,16 +65,83 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
         R.drawable.icon_person_selected
     )
 
-    override val binding: ActivityHomeBinding by viewBinding(CreateMethod.INFLATE)
+    override val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
+
+    private val floatView by lazy { AppCompatImageView(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         initView()
     }
 
+    override fun initStatusBarDarkFont() = true
+
+    private fun initDrawerLayout() {
+        binding.viewInclude.run {
+            tvHome.onClick {
+
+            }
+            tvStudy.onClick {
+
+            }
+            tvSquare.onClick {
+
+            }
+            tvNavigation.onClick {
+
+            }
+            tvTutorials.onClick {
+
+            }
+            tvQa.onClick {
+
+            }
+            tvProjectsHot.onClick {
+
+            }
+            tvSubscribe.onClick {
+
+            }
+            tvProjects.onClick {
+
+            }
+            tvTools.onClick {
+
+            }
+        }
+    }
+
+//    private val floatViewHelper by lazy { FloatViewHelper111() }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            if (floatView.isAttachedToWindow.not()) {
+                floatView.loadCircle(R.drawable.icon_person_selected)
+                FloatViewHelper.showInWindow(window, floatView, sizeDp = 75)
+                DraggableViewHelper.intrude(floatView)
+                floatView.onClick {
+                    binding.root.run {
+                        if (isOpen) {
+                            close()
+                        } else {
+                            open()
+                        }
+                    }
+                }
+
+//                if (floatViewHelper.isAvailable().not())
+//                    floatViewHelper.init(this, R.drawable.icon_person_selected) {
+//                        binding.root.open()
+//                    }
+            }
+        }
+    }
+
     private fun initView() {
+        initDrawerLayout()
+
         val viewpager = binding.viewpager
         val tabLayout = binding.tabLayout
 
@@ -91,6 +162,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                     it.findViewById<TextView>(R.id.tab_text)
                         .setTextColor(Color.parseColor("#d4237a"))
                 }
+                changePage(position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -160,8 +232,18 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
 
     }
 
-    fun refreshPage(index: Int) {
-        postEvent(EventBus.HOME_TAB, index)
+    /**
+     * tab 选中, 重复点击不会执行
+     */
+    fun changePage(pageIndex: Int) {
+        postEvent(EventBus.HOME_TAB_CHANGE, pageIndex)
+    }
+
+    /**
+     * tab 再次点击刷新
+     */
+    fun refreshPage(pageIndex: Int) {
+        postEvent(EventBus.HOME_TAB_REFRESH, pageIndex)
     }
 
     var firstClickTime = 0L
@@ -173,7 +255,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
             toast("再次'返回'退出程序")
             firstClickTime = secondClickTime
         } else {
-            AppUtils.exitApp();
+            AppUtils.exitApp()
         }
     }
 

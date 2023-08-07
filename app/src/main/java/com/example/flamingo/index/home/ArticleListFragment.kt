@@ -25,7 +25,7 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
     override val viewModel: ArticleListViewModel get() = getViewModel()
     override val binding: FragmentArticlesBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter = ArticlesPagingAdapter()
+    private val adapter by lazy { ArticlesPagingAdapter(whichPage) }
 
     private val itemDecoration = SpacingItemDecoration(
         Spacing(
@@ -92,10 +92,14 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
     }
 
     override fun observeBus() {
-        observeEvent<Int>(EventBus.HOME_TAB) {
+        observeEvent<Int>(EventBus.HOME_TAB_CHANGE) {
+
+        }
+        observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
             if (it == homeIndex && lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.rv.smoothScrollToPosition(0)
                 binding.rv.post {
+                    binding.refresh.isRefreshing = true
                     adapter.refresh()
                 }
             }

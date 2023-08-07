@@ -9,8 +9,12 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.flamingo.base.activity.BaseWebActivity
 import com.example.flamingo.data.DataX
 import com.example.flamingo.databinding.RvItemArticleBinding
+import com.example.flamingo.utils.load
+import com.example.flamingo.utils.visible
 
-class ArticlesPagingAdapter :
+class ArticlesPagingAdapter(
+    @ArticlesDataSource.Page private val whichPage: Int
+) :
     PagingDataAdapter<DataX, ArticlesPagingViewHolder>(object : DiffUtil.ItemCallback<DataX>() {
         override fun areItemsTheSame(oldItem: DataX, newItem: DataX): Boolean {
             return oldItem.id == newItem.id
@@ -21,15 +25,54 @@ class ArticlesPagingAdapter :
         }
     }) {
 
+    override fun getItemViewType(position: Int): Int {
+        return whichPage
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ArticlesPagingViewHolder, position: Int) {
         val item = getItem(position)
 
-        holder.binding.tvTitle.text = "${position}. ${item?.title}"
-
-        holder.binding.root.setOnClickListener {
+        holder.binding.run {
             item?.let {
-                BaseWebActivity.start(item.link, item.title)
+
+                when (whichPage) {
+                    ArticlesDataSource.HOME,
+                    ArticlesDataSource.SQUARE,
+                    -> {
+
+                    }
+
+                    ArticlesDataSource.PROJECT,
+                    ArticlesDataSource.SUBSCRIBE,
+                    -> {
+
+                    }
+
+                    else -> {
+
+                    }
+                }
+
+                tvTime.text = item.niceDate
+                tvAuthor.text = item.author
+
+                tvTitle.text = item.title
+
+                tvSubtitle.text = item.desc
+                tvSubtitle.visible(item.desc.isNotBlank())
+
+                tvClassification.text = "${item.superChapterName}·${item.chapterName}"
+                tvPosition.text = "[ ${position + 1} ]"
+
+                ivImg.load(item.envelopePic)
+                ivImg.visible(item.envelopePic.isNotBlank())
+
+                root.setOnClickListener {
+                    item.let {
+                        BaseWebActivity.start(item.link, item.title)
+                    }
+                }
             }
         }
     }

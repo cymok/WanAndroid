@@ -16,12 +16,12 @@ import androidx.core.view.WindowCompat
 import coil.load
 import com.example.flamingo.base.activity.BaseActivity
 import com.example.flamingo.config.matiss.CoilImageEngine
-import com.example.flamingo.databinding.AtyMainBinding
+import com.example.flamingo.databinding.ActivityMainBinding
 import com.example.flamingo.index.second.SecondActivity
 import com.example.flamingo.index.second.SecondActivityResultContract
 import com.example.flamingo.utils.UCropUtil
 import com.example.flamingo.utils.getFile
-import com.example.flamingo.utils.loadAvatar
+import com.example.flamingo.utils.loadCircle
 import com.example.flamingo.utils.reqPermissions
 import com.example.flamingo.utils.toast
 import github.leavesczy.matisse.Matisse
@@ -38,7 +38,7 @@ import java.util.TreeSet
 class FirstActivity : BaseActivity() {
 
     private val binding by lazy {
-        AtyMainBinding.inflate(layoutInflater)
+        ActivityMainBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -250,7 +250,7 @@ class FirstActivity : BaseActivity() {
 //                val descriptor = contentResolver.openFileDescriptor(resultUri, "r")
 //                val bitmap = BitmapFactory.decodeFileDescriptor(descriptor?.fileDescriptor)
 //                descriptor?.close()
-                binding.iv.loadAvatar(resultUri)
+                binding.iv.loadCircle(resultUri)
                 val path = resultUri.getFile()?.absolutePath
                 binding.tvUri.text = resultUri.toString()
                 binding.tvPath.text = path

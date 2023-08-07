@@ -2,6 +2,7 @@ package com.example.flamingo.network.api
 
 import com.example.flamingo.data.Articles
 import com.example.flamingo.data.ArticlesTree
+import com.example.flamingo.data.Banner
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Field
@@ -13,7 +14,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-interface WanAndroidService {
+interface WanService {
 
     @POST("/xxx/xxx")
     suspend fun uploadTest(@Part part: List<MultipartBody.Part>): ApiResult<String>
@@ -45,6 +46,9 @@ interface WanAndroidService {
 
     @GET("/user/logout/json")
     suspend fun logout(): ApiResult<String>
+
+    @GET("/banner/json")
+    suspend fun getBanner(): ApiResult<Banner>
 
     @GET("/article/list/{page}/json")
     suspend fun getHomeList(

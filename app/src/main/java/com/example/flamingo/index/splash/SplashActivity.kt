@@ -41,6 +41,8 @@ class SplashActivity : BaseActivity() {
         }
     }
 
+    override fun initStatusBarDarkFont() = true
+
     private fun initCountDown() {
         mCountDown = countDownByFlow(COUNTDOWN_TIME, lifecycleScope, {
             if (it == 0) mCountDown?.cancel()

@@ -146,6 +146,10 @@ dependencies {
     // 快乐库 - 工具
     // https://github.com/Blankj/AndroidUtilCode
     implementation 'com.blankj:utilcodex:1.31.1'
+    //沉浸状态栏
+    // https://github.com/gyf-dev/ImmersionBar
+    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+    implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
     // 网络
     implementation 'com.squareup.okhttp3:okhttp:4.11.0'
     def retrofit_version = "2.9.0"
@@ -190,5 +194,23 @@ dependencies {
     // https://github.com/androidbroadcast/ViewBindingPropertyDelegate
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-full:1.5.9'
 //    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9'
+
+    // https://github.com/youth5201314/banner
+    implementation 'io.github.youth5201314:banner:2.2.2'
+
+    // 弹窗
+    // https://github.com/li-xiaojun/XPopup
+    implementation ('com.github.li-xiaojun:XPopup:2.9.19'){
+        exclude group: "com.davemorrissey.labs", module: "subsampling-scale-image-view-androidx"
+    }
+
+    // 刷新
+    // https://github.com/scwang90/SmartRefreshLayout
+    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
+    implementation  'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
+    implementation  'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
+    implementation  'io.github.scwang90:refresh-header-falsify:2.0.6'     //虚拟刷新头
+    implementation  'io.github.scwang90:refresh-header-material:2.0.6'    //谷歌刷新头
+    implementation  'io.github.scwang90:refresh-header-two-level:2.0.6'   //二级刷新头
 
 }

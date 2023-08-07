@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import com.example.flamingo.R
 
-class LoadingDialog(context: Context) : Dialog(context, R.style.dialog_app) {
+class LoadingDialog(context: Context) : Dialog(context, R.style.AppThemeDialog) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

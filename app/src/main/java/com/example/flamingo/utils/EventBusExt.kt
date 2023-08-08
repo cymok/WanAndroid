@@ -10,12 +10,12 @@ inline fun <reified EVENT> eventObservable(tag: String): Observable<EVENT> {
     return LiveEventBus.get(tag, EVENT::class.java)
 }
 
-inline fun <reified EVENT> postEvent(tag: String, event: EVENT) {
-    LiveEventBus.get<EVENT>(tag).post(event)
-}
-
-inline fun <reified EVENT> postEventDelay(tag: String, event: EVENT, delay: Long) {
-    LiveEventBus.get<EVENT>(tag).postDelay(event, delay)
+inline fun <reified EVENT> postEvent(tag: String, event: EVENT, delay: Long? = null) {
+    if (delay == null) {
+        LiveEventBus.get<EVENT>(tag).post(event)
+    } else {
+        LiveEventBus.get<EVENT>(tag).postDelay(event, delay)
+    }
 }
 
 inline fun <reified EVENT> AppCompatActivity.observeEvent(

@@ -4,11 +4,17 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import com.example.flamingo.config.GlideApp
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-fun ImageView.load(any: Any?, @DrawableRes placeholderRes: Int = 0) {
+fun ImageView.load(
+    any: Any?,
+    cornerRadius: Int = 0,
+    @DrawableRes placeholderRes: Int = 0
+) {
     GlideApp.with(this)
         .load(any)
         .centerCrop()
+        .transform(RoundedCornersTransformation(cornerRadius, 0))
         .placeholder(placeholderRes)
         .into(this)
 }
@@ -16,10 +22,15 @@ fun ImageView.load(any: Any?, @DrawableRes placeholderRes: Int = 0) {
 /**
  * 资源是 Int 类型, 用 `load(any:Any)` 经常会加载错别的图
  */
-fun ImageView.loadRes(@RawRes @DrawableRes res: Int, @DrawableRes placeholderRes: Int = 0) {
+fun ImageView.loadRes(
+    @RawRes @DrawableRes res: Int,
+    cornerRadius: Int = 0,
+    @DrawableRes placeholderRes: Int = 0
+) {
     GlideApp.with(this)
         .load(res)
         .centerCrop()
+        .transform(RoundedCornersTransformation(cornerRadius, 0))
         .placeholder(placeholderRes)
         .into(this)
 }

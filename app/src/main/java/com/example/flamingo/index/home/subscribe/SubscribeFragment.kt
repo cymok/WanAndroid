@@ -26,7 +26,6 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
         super.onViewCreated(view, savedInstanceState)
         initImmersion()
         observe()
-        initData()
     }
 
     private fun initImmersion() {
@@ -63,12 +62,8 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
         }
     }
 
-    private fun initData() {
-        viewModel.getWxArticleTree()
-    }
-
     override fun observeBus() {
-        observeEvent<Int>(EventBus.HOME_TAB_CHANGE) {
+        observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }
     }

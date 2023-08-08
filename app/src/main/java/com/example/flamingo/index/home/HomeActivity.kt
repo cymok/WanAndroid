@@ -28,6 +28,7 @@ import com.example.flamingo.utils.DraggableViewHelper
 import com.example.flamingo.utils.FloatViewHelper
 import com.example.flamingo.utils.loadCircle
 import com.example.flamingo.utils.loadRes
+import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.postEvent
 import com.example.flamingo.utils.toast
 import com.google.android.material.tabs.TabLayout
@@ -69,6 +70,9 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     override val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
 
     private val floatView by lazy { AppCompatImageView(this) }
+
+    private var secondLastIndex = -1
+    private var lastIndex = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,7 +177,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                     it.findViewById<TextView>(R.id.tab_text)
                         .setTextColor(Color.parseColor("#d4237a"))
                 }
-                changePage(position)
+                onPageChanged(position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -229,7 +233,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                 }
                 if (animator.isRunning.not()) {
                     animator?.start()
-                    refreshPage(position)
+                    pageRefresh(position)
                 }
             }
         })
@@ -244,16 +248,25 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     }
 
     /**
-     * tab 选中, 重复点击不会执行
+     * 调用此方法 可以更改选中的 tab
      */
-    fun changePage(pageIndex: Int) {
-        postEvent(EventBus.HOME_TAB_CHANGE, pageIndex)
+    fun changeIndex(index: Int) {
+        binding.viewpager.currentItem = index
     }
 
     /**
-     * tab 再次点击刷新
+     * tab 选中, 重复点击不会执行
      */
-    fun refreshPage(pageIndex: Int) {
+    fun onPageChanged(pageIndex: Int) {
+        secondLastIndex = lastIndex
+        lastIndex = pageIndex
+        postEvent(EventBus.HOME_TAB_CHANGED, pageIndex, 500)
+    }
+
+    /**
+     * tab 再次点击 通知其它页面刷新
+     */
+    fun pageRefresh(pageIndex: Int) {
         postEvent(EventBus.HOME_TAB_REFRESH, pageIndex)
     }
 
@@ -267,6 +280,12 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
             firstClickTime = secondClickTime
         } else {
             AppUtils.exitApp()
+        }
+    }
+
+    override fun observeBus() {
+        observeEvent<Int>(EventBus.CHANGE_HOME_TAB) {
+            changeIndex(secondLastIndex)
         }
     }
 

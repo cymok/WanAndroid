@@ -92,7 +92,7 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
     }
 
     override fun observeBus() {
-        observeEvent<Int>(EventBus.HOME_TAB_CHANGE) {
+        observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }
         observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {

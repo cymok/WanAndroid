@@ -14,7 +14,9 @@ import com.example.flamingo.network.repository.WanRepository
 
 class HomeViewModel : BaseViewModel() {
 
-    // `liveData {}` 用于页面一开始就需要获取数据的情况
+    // `liveData {}` 用于页面一开始就需要获取数据的情况,
+    // 这是 Coroutine, 特殊页面异常要 catch, 例如需要登录后调用的接口
+    // 不 catch 的话 崩了也不知道啥情况 没有 log
     val banner = liveData {
         val result = WanRepository.getBanner()
         emit(result)

@@ -10,7 +10,7 @@ fun toast(any: Any?) {
 fun toastShort(any: Any?) {
     ToastUtils.showShort(any.toString())
     Log.e("toast", any.toString())
-//    logStack(any.toString())
+    logStack(any.toString())
 }
 
 fun toastLong(any: Any?) {

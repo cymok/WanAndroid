@@ -1,13 +1,19 @@
 package com.example.flamingo.index.home.person
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.flamingo.base.BaseViewModel
+import com.example.flamingo.data.SupperUserInfo
+import com.example.flamingo.network.repository.WanRepository
 
-class PersonViewModel : ViewModel() {
+class PersonViewModel : BaseViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is person Fragment"
+    val userInfo = MutableLiveData<SupperUserInfo>()
+
+    fun getUserInfo() {
+        launch {
+            val result = WanRepository.getUserInfo()
+            userInfo.postValue(result)
+        }
     }
-    val text: LiveData<String> = _text
+
 }

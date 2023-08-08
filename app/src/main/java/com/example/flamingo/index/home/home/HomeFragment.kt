@@ -18,13 +18,9 @@ import com.example.flamingo.index.home.ArticlesPagingAdapter
 import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
-import com.example.flamingo.utils.toast
 import com.grzegorzojdana.spacingitemdecoration.Spacing
 import com.grzegorzojdana.spacingitemdecoration.SpacingItemDecoration
-import com.scwang.smart.refresh.header.ClassicsHeader
-import com.scwang.smart.refresh.header.TwoLevelHeader
 import com.youth.banner.indicator.CircleIndicator
-import java.text.SimpleDateFormat
 
 class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
@@ -71,7 +67,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
-//            binding.refresh.isRefreshing = false
+            binding.refresh.isRefreshing = false
         }
 
         adapter.addLoadStateListener {
@@ -85,7 +81,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 }
 
                 is LoadState.Error -> {
-                    binding.refresh.finishRefresh()
+                    binding.refresh.isRefreshing = false
                     LogUtils.e(it.toString())
                 }
 
@@ -95,25 +91,13 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
             }
         }
 
-        binding.refresh.setRefreshHeader(TwoLevelHeader(requireContext()).apply {
-            setOnTwoLevelListener { refreshLayout ->
-                toast("夜市还没开始")
-                // true 将会展开二楼状态 false 关闭刷新
-                return@setOnTwoLevelListener false
-            }
-            setRefreshHeader(
-                ClassicsHeader(context)
-                    .setTimeFormat(SimpleDateFormat("上次更新 yyyy/MM/dd HH:mm:ss"))
-            )
-        })
         binding.refresh.setOnRefreshListener {
-            binding.refresh.finishRefresh()
             adapter.refresh()
         }
     }
 
     override fun observeBus() {
-        observeEvent<Int>(EventBus.HOME_TAB_CHANGE) {
+        observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }
         observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
@@ -121,7 +105,8 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
             if (it == index && lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.rv.smoothScrollToPosition(0)
                 binding.rv.post {
-                    binding.refresh.autoRefresh()
+                    binding.refresh.isRefreshing = true
+                    adapter.refresh()
                 }
             }
         }

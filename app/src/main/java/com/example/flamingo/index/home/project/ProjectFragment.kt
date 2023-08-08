@@ -26,7 +26,6 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
         super.onViewCreated(view, savedInstanceState)
         initImmersion()
         observe()
-        initData()
     }
 
     private fun initImmersion() {
@@ -63,12 +62,8 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
         }
     }
 
-    private fun initData() {
-        viewModel.getProjectTree()
-    }
-
     override fun observeBus() {
-        observeEvent<Int>(EventBus.HOME_TAB_CHANGE) {
+        observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }
     }

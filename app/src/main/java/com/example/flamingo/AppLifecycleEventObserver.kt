@@ -1,14 +1,14 @@
 package com.example.flamingo
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.blankj.utilcode.util.LogUtils
 
 class AppLifecycleEventObserver : LifecycleEventObserver {
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        LogUtils.eTag("onStateChanged", event.name)
+        Log.e("onStateChanged", "App ${event.name}")
         when (event) {
             Lifecycle.Event.ON_CREATE -> {
 

@@ -1,5 +1,11 @@
 package com.example.flamingo.data
 
+data class SupperUserInfo(
+    val coinInfo: CoinInfo,
+    val collectArticleInfo: CollectArticleInfo,
+    val userInfo: UserInfo
+)
+
 //@Parcelize
 data class UserInfo(
     val admin: Boolean,
@@ -16,3 +22,16 @@ data class UserInfo(
     val type: Int,
     val username: String
 )// : Parcelable
+
+data class CoinInfo(
+    val coinCount: Int,
+    val level: Int,
+    val nickname: String,
+    val rank: String,
+    val userId: Int,
+    val username: String
+)
+
+data class CollectArticleInfo(
+    val count: Int
+)

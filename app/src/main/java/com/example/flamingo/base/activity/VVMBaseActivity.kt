@@ -1,5 +1,6 @@
 package com.example.flamingo.base.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,13 +34,23 @@ abstract class VVMBaseActivity<VM : BaseViewModel, VB : ViewBinding> : VBaseActi
 
         val launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    toast("登录成功! 您继续表演!")
+                if (result.resultCode == Activity.RESULT_OK) {
+                    onLoginSucceed()
+                } else {
+                    onCancelLogin()
                 }
             }
         viewModel.loginStatus.observe(activity) {
             launcher.launch(Intent(activity, LoginActivity::class.java))
         }
+    }
+
+    protected open fun onLoginSucceed() {
+        toast("登录成功! 您继续表演!")
+    }
+
+    protected open fun onCancelLogin() {
+
     }
 
 }

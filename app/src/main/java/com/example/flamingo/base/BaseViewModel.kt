@@ -103,7 +103,7 @@ abstract class BaseViewModel : ViewModel(),
      * @param e 异常
      * @param showErrorToast 是否显示错误吐司
      */
-    private fun onError(e: Exception, showErrorToast: Boolean) {
+    protected fun onError(e: Exception, showErrorToast: Boolean = true) {
         loadingStatus.postValue(AppConst.error)
         when (e) {
             is ApiException -> {

@@ -15,21 +15,21 @@
         app:showAsAction="collapseActionView" />
 
     <item
-        android:id="@+id/menu_item_share"
-        android:icon="@android:drawable/ic_menu_share"
-        android:title="分享"
-        app:showAsAction="collapseActionView" />
-
-    <item
         android:id="@+id/menu_item_copy"
         android:icon="@drawable/icon_copy"
         android:title="复制链接"
         app:showAsAction="collapseActionView" />
 
     <item
+        android:id="@+id/menu_item_share"
+        android:icon="@drawable/icon_send"
+        android:title="分享发送"
+        app:showAsAction="collapseActionView" />
+
+    <item
         android:id="@+id/menu_item_browser"
-        android:icon="@android:drawable/ic_menu_set_as"
-        android:title="用浏览器打开"
+        android:icon="@drawable/icon_chrome"
+        android:title="从浏览器打开"
         app:showAsAction="collapseActionView" />
 
 </menu>

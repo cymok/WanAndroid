@@ -26,6 +26,10 @@ object WanRepository {
         userService.logout().apiData()!!
     }
 
+    suspend fun getUserInfo() = withContext(Dispatchers.IO) {
+        userService.getUserInfo().apiData()!!
+    }
+
     suspend fun getBanner() = withContext(Dispatchers.IO) {
         apiService.getBanner().apiData()!!
     }

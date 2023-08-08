@@ -1,5 +1,6 @@
 package com.example.flamingo.network.api
 
+import com.example.flamingo.data.SupperUserInfo
 import com.example.flamingo.data.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.http.Field
@@ -35,7 +36,7 @@ interface UserService {
 
     // 个人信息接口
     @GET("/user/lg/userinfo/json")
-    suspend fun getUserInfo(): ApiResult<ResponseBody>
+    suspend fun getUserInfo(): ApiResult<SupperUserInfo>
 
     // 未读消息数量
     @GET("/message/lg/count_unread/json")

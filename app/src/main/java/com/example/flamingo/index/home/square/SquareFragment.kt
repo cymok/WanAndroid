@@ -11,8 +11,8 @@ import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
+import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.databinding.FragmentSquareBinding
-import com.example.flamingo.index.home.ArticlesDataSource
 import com.example.flamingo.index.home.ArticlesPagingAdapter
 import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.getViewModel
@@ -26,7 +26,7 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
     override val viewModel: SquareViewModel get() = getViewModel()
     override val binding: FragmentSquareBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter = ArticlesPagingAdapter(ArticlesDataSource.SQUARE)
+    private val adapter = ArticlesPagingAdapter(ArticlePage.SQUARE)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

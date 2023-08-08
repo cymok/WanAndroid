@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.AppUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
 import com.example.flamingo.constant.EventBus
+import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.databinding.ActivityHomeBinding
 import com.example.flamingo.databinding.ViewTabLayoutBinding
 import com.example.flamingo.index.home.home.HomeFragment
@@ -80,34 +81,44 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     private fun initDrawerLayout() {
         binding.viewInclude.run {
             tvHome.onClick {
-
+                ArticleListActivity.start(ArticlePage.HOME)
+                binding.root.close()
             }
             tvStudy.onClick {
-
+                ArticleListActivity.start(ArticlePage.STUDY)
+                binding.root.close()
             }
             tvSquare.onClick {
-
+                ArticleListActivity.start(ArticlePage.SQUARE)
+                binding.root.close()
             }
             tvNavigation.onClick {
-
+                ArticleListActivity.start(ArticlePage.NAV)
+                binding.root.close()
             }
             tvTutorials.onClick {
-
+                ArticleListActivity.start(ArticlePage.TUTORIALS)
+                binding.root.close()
             }
             tvQa.onClick {
-
+                ArticleListActivity.start(ArticlePage.QA)
+                binding.root.close()
             }
             tvProjectsHot.onClick {
-
+                ArticleListActivity.start(ArticlePage.PROJECT_HOT)
+                binding.root.close()
             }
             tvSubscribe.onClick {
-
+                ArticleListActivity.start(ArticlePage.SUBSCRIBE)
+                binding.root.close()
             }
             tvProjects.onClick {
-
+                ArticleListActivity.start(ArticlePage.PROJECT)
+                binding.root.close()
             }
             tvTools.onClick {
-
+                ArticleListActivity.start(ArticlePage.TOOLS)
+                binding.root.close()
             }
         }
     }

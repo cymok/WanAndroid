@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flamingo.constant.AppConst
 import com.example.flamingo.network.api.ApiException
+import com.example.flamingo.utils.UserUtils
 import com.example.flamingo.utils.toast
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +29,8 @@ abstract class BaseViewModel : ViewModel(),
     CoroutineScope by MainScope() {
 
     val loadingStatus = MutableLiveData<Int>()
+
+    val loginStatus = MutableLiveData<Boolean>()
 
     open fun startLoading() {
         loadingStatus.postValue(AppConst.loading)
@@ -62,10 +65,12 @@ abstract class BaseViewModel : ViewModel(),
             } catch (e: Exception) {
                 when (e) {
                     is CancellationException -> {
+                        stopLoading()
                         cancel?.invoke(e)
                     }
 
                     else -> {
+                        stopLoading()
                         onError(e, showErrorToast)
                         error?.invoke(e)
                     }
@@ -103,9 +108,14 @@ abstract class BaseViewModel : ViewModel(),
         when (e) {
             is ApiException -> {
                 when (e.errorCode) {
-//                    -1001 -> {
-//                        // 未登录
-//                    }
+                    -1001 -> {
+                        // 未登录
+                        if (showErrorToast) {
+                            toast(e.message)
+                        }
+                        loginStatus.postValue(false)
+                        UserUtils.clear()
+                    }
                     // 其他错误
                     else -> {
                         if (showErrorToast) {

@@ -8,10 +8,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.BarUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
+import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.databinding.FragmentProjectBinding
 import com.example.flamingo.index.home.ArticleListAdapter
 import com.example.flamingo.index.home.ArticleListFragment
-import com.example.flamingo.index.home.ArticlesDataSource
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
 import com.google.android.material.tabs.TabLayoutMediator
@@ -45,7 +45,7 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
                     arguments = Bundle().apply {
                         val index = this@ProjectFragment.arguments?.getInt("homeIndex") ?: -1
                         putInt("homeIndex", index)
-                        putInt("page", ArticlesDataSource.PROJECT)
+                        putInt("whichPage", ArticlePage.PROJECT)
                         putParcelable("data", it)
                     }
                 }

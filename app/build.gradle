@@ -134,6 +134,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.8.1"
     implementation "androidx.paging:paging-runtime-ktx:3.2.0"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
     // 快乐库 - 扩展
     // https://github.com/LouisCAD/Splitties
     def splitties_version = "3.0.0"
@@ -151,12 +152,15 @@ dependencies {
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
     implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
     // 网络
+    // https://github.com/square/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    // https://github.com/square/retrofit
     def retrofit_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:${retrofit_version}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofit_version}"
     implementation "com.squareup.retrofit2:converter-scalars:${retrofit_version}"
-    implementation 'com.google.code.gson:gson:2.10.1'
+    // https://github.com/franmontiel/PersistentCookieJar
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     // 数据库
     // https://github.com/guolindev/LitePal
     implementation 'org.litepal.guolindev:core:3.2.3'
@@ -212,5 +216,9 @@ dependencies {
     implementation  'io.github.scwang90:refresh-header-falsify:2.0.6'     //虚拟刷新头
     implementation  'io.github.scwang90:refresh-header-material:2.0.6'    //谷歌刷新头
     implementation  'io.github.scwang90:refresh-header-two-level:2.0.6'   //二级刷新头
+
+    // 流动布局 标签
+    // https://github.com/hongyangAndroid/FlowLayout
+    implementation "com.hyman:flowlayout-lib:1.1.2"
 
 }

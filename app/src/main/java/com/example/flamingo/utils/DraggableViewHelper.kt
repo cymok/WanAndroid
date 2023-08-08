@@ -21,7 +21,7 @@ object DraggableViewHelper {
     private var finalMoveX = 0
 
     @SuppressLint("ClickableViewAccessibility")
-    fun intrude(view: View, stickRate: Float? = 1.5f) {
+    fun intrude(view: View, stickRate: Float? = 1.0f) {
         view.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {

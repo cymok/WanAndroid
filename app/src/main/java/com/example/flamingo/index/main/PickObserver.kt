@@ -34,9 +34,6 @@ class PickObserver : DefaultLifecycleObserver {
     private var context: Context
     private var viewModel: PickViewModel
 
-    // 保存类型 FragmentActivity or Fragment
-    private var owner: LifecycleOwner
-
     private var crop = true
 
     private lateinit var takePictureUri: Uri
@@ -50,13 +47,11 @@ class PickObserver : DefaultLifecycleObserver {
 
     constructor(activity: ComponentActivity) {
         context = activity
-        owner = activity
         viewModel = activity.getViewModel()
     }
 
     constructor(fragment: Fragment) {
         context = fragment.requireContext()
-        owner = fragment
         viewModel = fragment.getViewModel()
     }
 

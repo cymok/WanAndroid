@@ -12,6 +12,7 @@ abstract class BaseFragment(@LayoutRes layoutID: Int = 0) : Fragment(layoutID) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observeBus()
     }
 
@@ -28,5 +29,7 @@ abstract class BaseFragment(@LayoutRes layoutID: Int = 0) : Fragment(layoutID) {
             loadingDialog.dismiss()
         }
     }
+
+    val fragment get() = this
 
 }

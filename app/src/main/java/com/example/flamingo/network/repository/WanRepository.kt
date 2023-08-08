@@ -10,45 +10,62 @@ import kotlinx.coroutines.withContext
 object WanRepository {
 
     private val apiService by lazy { ServiceCreator.wanApiService }
+    private val userService by lazy { ServiceCreator.userApiService }
+    private val squareService by lazy { ServiceCreator.squareApiService }
+    private val likeService by lazy { ServiceCreator.likeApiService }
 
     suspend fun register(username: String, password: String) = withContext(Dispatchers.IO) {
-        apiService.register(username, password, password).apiData()
+        userService.register(username, password, password).apiData()!!
     }
 
     suspend fun login(username: String, password: String) = withContext(Dispatchers.IO) {
-        apiService.login(username, password).apiData()
+        userService.login(username, password).apiData()!!
     }
 
     suspend fun logout() = withContext(Dispatchers.IO) {
-        apiService.logout().apiData()
+        userService.logout().apiData()!!
     }
 
     suspend fun getBanner() = withContext(Dispatchers.IO) {
-        apiService.getBanner().apiData()
+        apiService.getBanner().apiData()!!
+    }
+
+    suspend fun getHomeTopList() = withContext(Dispatchers.IO) {
+        apiService.getHomeTopList().apiData()!!
     }
 
     suspend fun getHomeList(page: Int) = withContext(Dispatchers.IO) {
-        apiService.getHomeList(page = page).apiData()
+        apiService.getHomeList(page = page).apiData()!!
     }
 
     suspend fun getProjectTree() = withContext(Dispatchers.IO) {
-        apiService.getProjectTree().apiData()
+        apiService.getProjectTree().apiData()!!
     }
 
     suspend fun getProjectList(id: Int, page: Int) = withContext(Dispatchers.IO) {
-        apiService.getProjectList(id = id, page = page).apiData() // 莫名错误
+        apiService.getProjectList(id = id, page = page).apiData()!!
     }
 
     suspend fun getSquareList(page: Int) = withContext(Dispatchers.IO) {
-        apiService.getSquareList(page = page).apiData()
+        squareService.getSquareList(page = page).apiData()!!
     }
 
     suspend fun getWxArticleTree() = withContext(Dispatchers.IO) {
-        apiService.getWxArticleTree().apiData()
+        apiService.getWxArticleTree().apiData()!!
     }
 
     suspend fun getWxArticleList(id: Int, page: Int) = withContext(Dispatchers.IO) {
-        apiService.getWxArticleList(id = id, page = page).apiData()
+        apiService.getWxArticleList(id = id, page = page).apiData()!!
     }
+
+    suspend fun likeArticle(id: Int) = withContext(Dispatchers.IO) {
+        // 此接口会返回 ”“ Retrofit 解析为 null
+        likeService.likeArticle(id).apiData()
+    }
+
+    suspend fun unlikeArticle(id: Int) = withContext(Dispatchers.IO) {
+        likeService.unlikeArticle(id).apiData()
+    }
+
 
 }

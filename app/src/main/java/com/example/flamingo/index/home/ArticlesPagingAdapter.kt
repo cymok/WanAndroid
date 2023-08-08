@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.flamingo.base.activity.BaseWebActivity
+import com.example.flamingo.index.web.WebActivity
+import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.DataX
 import com.example.flamingo.databinding.RvItemArticleBinding
 import com.example.flamingo.utils.load
 import com.example.flamingo.utils.visible
 
 class ArticlesPagingAdapter(
-    @ArticlesDataSource.Page private val whichPage: Int
+    @ArticlePage private val whichPage: Int
 ) :
     PagingDataAdapter<DataX, ArticlesPagingViewHolder>(object : DiffUtil.ItemCallback<DataX>() {
         override fun areItemsTheSame(oldItem: DataX, newItem: DataX): Boolean {
@@ -37,14 +38,14 @@ class ArticlesPagingAdapter(
             item?.let {
 
                 when (whichPage) {
-                    ArticlesDataSource.HOME,
-                    ArticlesDataSource.SQUARE,
+                    ArticlePage.HOME,
+                    ArticlePage.SQUARE,
                     -> {
 
                     }
 
-                    ArticlesDataSource.PROJECT,
-                    ArticlesDataSource.SUBSCRIBE,
+                    ArticlePage.PROJECT,
+                    ArticlePage.SUBSCRIBE,
                     -> {
 
                     }
@@ -70,7 +71,7 @@ class ArticlesPagingAdapter(
 
                 root.setOnClickListener {
                     item.let {
-                        BaseWebActivity.start(item.link, item.title)
+                        WebActivity.start(item)
                     }
                 }
             }

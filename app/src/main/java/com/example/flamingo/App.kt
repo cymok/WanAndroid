@@ -5,6 +5,7 @@ import android.app.Application
 import androidx.lifecycle.ProcessLifecycleOwner
 import coil.Coil
 import com.example.flamingo.config.CoilConfig
+import com.example.flamingo.utils.getViewModel
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -19,6 +20,8 @@ class App : Application() {
             private set
 
     }
+
+    val appViewModel: AppViewModel by lazy { getViewModel() }
 
     override fun onCreate() {
         super.onCreate()

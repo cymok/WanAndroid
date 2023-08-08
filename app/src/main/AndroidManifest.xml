@@ -45,6 +45,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".index.login.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".index.home.HomeActivity"
             android:exported="false" />
 <!--
@@ -59,9 +62,12 @@
         </activity>
 -->
         <activity
-            android:name=".base.activity.BaseWebActivity"
+            android:name=".index.web.WebActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.home.ArticleListActivity"
+            android:exported="false" />
 
         <activity
             android:name=".index.main.MainActivity"

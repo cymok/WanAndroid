@@ -15,7 +15,7 @@ import com.example.flamingo.utils.observeEvent
 
 class PersonFragment : VBaseFragment<FragmentPersonBinding>() {
 
-    private val viewModel: PersonViewModel by lazy { getViewModel() }
+    private val viewModel: PersonViewModel get() = getViewModel()
     override val binding: FragmentPersonBinding by viewBinding(CreateMethod.INFLATE)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

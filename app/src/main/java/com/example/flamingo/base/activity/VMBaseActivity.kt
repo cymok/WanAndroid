@@ -1,9 +1,13 @@
 package com.example.flamingo.base.activity
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.LayoutRes
 import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.constant.AppConst
+import com.example.flamingo.index.login.LoginActivity
+import com.example.flamingo.utils.toast
 
 abstract class VMBaseActivity<VM : BaseViewModel>(@LayoutRes layoutId: Int = 0) :
     BaseActivity(layoutId) {
@@ -15,7 +19,7 @@ abstract class VMBaseActivity<VM : BaseViewModel>(@LayoutRes layoutId: Int = 0) 
         viewModelObserve()
     }
 
-    private fun viewModelObserve() {
+    protected open fun viewModelObserve() {
         viewModel.loadingStatus.observe(this) {
             when (it) {
                 AppConst.loading -> {
@@ -26,6 +30,16 @@ abstract class VMBaseActivity<VM : BaseViewModel>(@LayoutRes layoutId: Int = 0) 
                     dismissLoading()
                 }
             }
+        }
+
+        val launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    toast("登录成功! 您继续表演!")
+                }
+            }
+        viewModel.loginStatus.observe(activity) {
+            launcher.launch(Intent(activity, LoginActivity::class.java))
         }
     }
 

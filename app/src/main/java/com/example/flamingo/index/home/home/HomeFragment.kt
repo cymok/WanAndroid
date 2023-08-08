@@ -12,8 +12,8 @@ import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
+import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.databinding.FragmentHomeBinding
-import com.example.flamingo.index.home.ArticlesDataSource
 import com.example.flamingo.index.home.ArticlesPagingAdapter
 import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.getViewModel
@@ -31,14 +31,13 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override val viewModel: HomeViewModel get() = getViewModel()
     override val binding: FragmentHomeBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter = ArticlesPagingAdapter(ArticlesDataSource.HOME)
+    private val adapter = ArticlesPagingAdapter(ArticlePage.HOME)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initImmersion()
         initView()
         observe()
-        initData()
     }
 
     private fun initImmersion() {
@@ -53,10 +52,6 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 .setAdapter(homeBannerAdapter)
                 .setIndicator(CircleIndicator(this.requireContext()))
         }
-    }
-
-    private fun initData() {
-        viewModel.getBanner()
     }
 
     @SuppressLint("SimpleDateFormat")

@@ -1,8 +1,11 @@
 package com.example.flamingo.index.splash
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.example.flamingo.base.activity.BaseActivity
+import com.example.flamingo.base.activity.VBaseActivity
+import com.example.flamingo.base.activity.VMBaseActivity
 import com.example.flamingo.databinding.ActivitySplashBinding
 import com.example.flamingo.index.home.HomeActivity
 import kotlinx.coroutines.CoroutineScope
@@ -17,12 +20,12 @@ import kotlinx.coroutines.flow.onEach
 import splitties.activities.start
 import splitties.views.onClick
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
     companion object {
         const val COUNTDOWN_TIME = 3
     }
 
-    private val binding by lazy {
+    override val binding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
     }
 
@@ -43,10 +46,12 @@ class SplashActivity : BaseActivity() {
 
     override fun initStatusBarDarkFont() = true
 
+    @SuppressLint("SetTextI18n")
     private fun initCountDown() {
         mCountDown = countDownByFlow(COUNTDOWN_TIME, lifecycleScope, {
             if (it == 0) mCountDown?.cancel()
             binding.tv.text = it.toString()
+            binding.tvSkip.text = "跳过(${it})"
         }, {
             start<HomeActivity> {}
             finish()

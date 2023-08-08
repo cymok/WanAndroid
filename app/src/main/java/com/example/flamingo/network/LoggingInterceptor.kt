@@ -14,18 +14,17 @@ class LoggingInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val t1 = System.nanoTime()
-        Log.e(
-            TAG, "request(${request.method}): ${request.url}\n" +
-                    "${request.headers.toString().trim()}\n" +
-                    getRequestInfo(request)
-        )
+        val msgRequest = "request(${request.method}): ${request.url}\n" +
+//                "${request.headers.toString().trim()}\n" +
+                getRequestInfo(request)
+        Log.e(TAG, msgRequest)
 
         val response = chain.proceed(request)
         val t2 = System.nanoTime()
-        Log.e(
-            TAG, "response for ${response.request.url} in ${(t2 - t1) / 1e6} ms\n" +
-                    getResponseInfo(response)
-        )
+        val msgResponse = "response for ${response.request.url} in ${(t2 - t1) / 1e6} ms\n" +
+//                "${response.headers.toString().trim()}\n" +
+                getResponseInfo(response)
+        Log.e(TAG, msgResponse)
 
         return response
     }

@@ -36,19 +36,19 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
         )
     )
 
-    private var homeIndex: Int by Delegates.notNull()
+    private var homeIndex: Int = -1
     private var whichPage: Int by Delegates.notNull()
-    private lateinit var item: ArticlesTreeItem
+    private var item: ArticlesTreeItem? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeIndex = arguments?.getInt("homeIndex")!!
-        whichPage = arguments?.getInt("page")!!
+        homeIndex = arguments?.getInt("homeIndex") ?: homeIndex
+        whichPage = arguments?.getInt("whichPage")!!
         item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable("data", ArticlesTreeItem::class.java)!!
+            arguments?.getParcelable("data", ArticlesTreeItem::class.java)
         } else {
-            arguments?.getParcelable("data")!!
+            arguments?.getParcelable("data")
         }
 
         initView()
@@ -59,7 +59,7 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
         recyclerView.addItemDecoration(itemDecoration)
         recyclerView.adapter = adapter
 
-        viewModel.getArticlesWithPager(whichPage = whichPage, id = item.id)
+        viewModel.getArticlesWithPager(whichPage = whichPage, id = item?.id ?: 0)
             .observe(viewLifecycleOwner) {
                 adapter.submitData(lifecycle, it)
                 binding.refresh.isRefreshing = false

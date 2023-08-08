@@ -4,8 +4,9 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.ArticlesTree
-import com.example.flamingo.databinding.RvArticlesBinding
+import com.example.flamingo.databinding.RvArticleBinding
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
 import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.getViewModel
@@ -14,7 +15,7 @@ import com.grzegorzojdana.spacingitemdecoration.SpacingItemDecoration
 
 class ArticlesRvAdapter(
     private val fragment: SubscribeFragment,
-    @ArticlesDataSource.Page private val whichPage: Int
+    @ArticlePage private val whichPage: Int
 ) :
     RecyclerView.Adapter<ArticlesViewHolder>() {
 
@@ -23,7 +24,7 @@ class ArticlesRvAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesViewHolder {
         return ArticlesViewHolder(
-            RvArticlesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            RvArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         ).apply {
             val recyclerView = this.binding.rv
             recyclerView.addItemDecoration(
@@ -53,4 +54,4 @@ class ArticlesRvAdapter(
     }
 }
 
-class ArticlesViewHolder(val binding: RvArticlesBinding) : RecyclerView.ViewHolder(binding.root)
+class ArticlesViewHolder(val binding: RvArticleBinding) : RecyclerView.ViewHolder(binding.root)

@@ -1,11 +1,16 @@
 package com.example.flamingo.base.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.constant.AppConst
+import com.example.flamingo.index.login.LoginActivity
+import com.example.flamingo.utils.toast
 
 abstract class VVMBaseFragment<VM : BaseViewModel, VB : ViewBinding> : VBaseFragment<VB>() {
 
@@ -16,7 +21,7 @@ abstract class VVMBaseFragment<VM : BaseViewModel, VB : ViewBinding> : VBaseFrag
         viewModelObserve()
     }
 
-    private fun viewModelObserve() {
+    protected open fun viewModelObserve() {
         viewModel.loadingStatus.observe(this as LifecycleOwner) {
             when (it) {
                 AppConst.loading -> {
@@ -27,6 +32,16 @@ abstract class VVMBaseFragment<VM : BaseViewModel, VB : ViewBinding> : VBaseFrag
                     dismissLoading()
                 }
             }
+        }
+
+        val launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                    toast("登录成功! 您继续表演!")
+                }
+            }
+        viewModel.loginStatus.observe(viewLifecycleOwner) {
+            launcher.launch(Intent(activity, LoginActivity::class.java))
         }
     }
 

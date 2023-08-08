@@ -36,7 +36,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="首页" />
+                android:text="推荐" />
 
             <View
                 android:layout_width="match_parent"

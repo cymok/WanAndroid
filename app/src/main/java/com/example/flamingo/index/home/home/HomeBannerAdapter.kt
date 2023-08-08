@@ -3,10 +3,10 @@ package com.example.flamingo.index.home.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.flamingo.base.activity.BaseWebActivity
 import com.example.flamingo.data.Banner
 import com.example.flamingo.data.BannerItem
 import com.example.flamingo.databinding.ViewBannerBinding
+import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.load
 import com.youth.banner.adapter.BannerAdapter
 import splitties.views.onClick
@@ -28,7 +28,7 @@ class HomeBannerAdapter(list: Banner) : BannerAdapter<BannerItem, HomeBannerView
             )
             iv.load(data.imagePath)
             root.onClick{
-                BaseWebActivity.start(data.url)
+                WebActivity.start(data)
             }
         }
     }

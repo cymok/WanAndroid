@@ -15,6 +15,7 @@ import retrofit2.http.Path
 interface UserService {
 
     // 注册
+    @FormUrlEncoded
     @POST("/user/register")
     suspend fun register(
         @Field("username") username: String,

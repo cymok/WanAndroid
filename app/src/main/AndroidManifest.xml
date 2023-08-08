@@ -48,6 +48,10 @@
             android:name=".index.login.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".index.setting.SettingActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
             android:name=".index.home.HomeActivity"
             android:exported="false" />
 <!--

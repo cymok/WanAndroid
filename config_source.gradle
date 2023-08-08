@@ -1,0 +1,14 @@
+android {
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    // 拆分存放各模块的资源
+                    'src/main/res-setting',
+
+                    // 以下两个目录不能动
+                    'src/main/res/layouts',
+                    'src/main/res'
+            ]
+        }
+    }
+}

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/wx_background"
     tools:context=".index.home.square.SquareFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

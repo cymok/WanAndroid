@@ -134,7 +134,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
         }
     }
 
-    override fun initStatusBarColor() = R.color.primary
+    override fun initStatusBarColor() = R.color.status_bar
 
     lateinit var menu: Menu
 

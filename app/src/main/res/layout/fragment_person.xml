@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:background="@color/wx_background"
+    android:fillViewport="true"
+    tools:context=".index.home.person.PersonFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey_300"
-        android:orientation="vertical"
-        tools:context=".index.home.person.PersonFragment">
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background"
-            android:paddingBottom="50dp">
+            android:background="@color/wx_foreground"
+            android:paddingBottom="40dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv"
@@ -26,10 +25,10 @@
                 android:layout_height="70dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="80dp"
+                android:src="@mipmap/ic_launcher"
                 app:layout_constraintCircleRadius="30dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@mipmap/ic_launcher" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_nickname"
@@ -60,20 +59,42 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:text="id: -1"
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@id/tv_username"
                 app:layout_constraintTop_toTopOf="@id/tv_username" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="邮箱: android@google.com"
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/tv_username"
+                app:layout_constraintTop_toBottomOf="@id/tv_username" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/icon_arrow_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_nickname" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="8dp" />
 
         <LinearLayout
             android:id="@+id/ll_coin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background"
+            android:background="@drawable/selector_item_press"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="16dp">
@@ -123,13 +144,13 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="8dp" />
 
         <LinearLayout
             android:id="@+id/ll_article"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background"
+            android:background="@drawable/selector_item_press"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
@@ -178,7 +199,7 @@
             android:id="@+id/ll_shared"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background"
+            android:background="@drawable/selector_item_press"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
@@ -218,7 +239,7 @@
             android:id="@+id/ll_site"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background"
+            android:background="@drawable/selector_item_press"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
@@ -252,13 +273,13 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="8dp" />
 
         <LinearLayout
             android:id="@+id/ll_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background"
+            android:background="@drawable/selector_item_press"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center_vertical"
@@ -292,7 +313,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="8dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

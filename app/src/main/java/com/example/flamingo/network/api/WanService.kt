@@ -3,31 +3,47 @@ package com.example.flamingo.network.api
 import com.example.flamingo.data.Articles
 import com.example.flamingo.data.ArticlesTree
 import com.example.flamingo.data.Banner
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.GET
-import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface WanService {
 
-    @POST("/xxx/xxx")
-    suspend fun uploadTest(@Part part: List<MultipartBody.Part>): ApiResult<String>
+    /*
+        // 会在 请求体 以 json 提交
+        @POST("/login")
+        suspend fun postTest1(@Body user: User): ApiResult<Any>
 
-    /**
-     * [Part] 后面支持三种类型，[RequestBody]、[MultipartBody.Part] 、任意类型
-     * 除 [MultipartBody.Part] 以外，其它类型都必须带上表单字段
-     * ([MultipartBody.Part] 中已经包含了表单字段的信息)
-     */
-    @POST("/upload/path")
-    @Multipart
-    suspend fun uploadTest(
-        @Part("name") name: RequestBody,
-        @Part filePart: MultipartBody.Part,
-    ): ApiResult<String>
+        // 请求头指定内容为 json 类型, 可直接传 String 类型的 json
+        @Headers("Content-Type: application/json")
+        @POST("/login")
+        suspend fun postTest2(@Body json: String): ApiResult<Any>
+
+        // 以表单方式提交
+        @FormUrlEncoded
+        @POST("user/edit")
+        @POST("/login")
+        suspend fun postTest3(
+            @Field("username") username: String,
+            @Field("password") password : String,
+        ): ApiResult<Any>
+    */
+
+    /*
+        @POST("/xxx/xxx")
+        suspend fun uploadTest(@Part part: List<MultipartBody.Part>): ApiResult<String>
+
+        // [Part] 后面支持三种类型，[RequestBody]、[MultipartBody.Part] 、任意类型
+        // 除 [MultipartBody.Part] 以外，其它类型都必须带上表单字段
+        // ([MultipartBody.Part] 中已经包含了表单字段的信息)
+        @POST("/upload/path")
+        @Multipart
+        suspend fun uploadTest(
+            @Part("name") name: RequestBody,
+            @Part filePart: MultipartBody.Part,
+        ): ApiResult<String>
+    */
 
     // banner
     @GET("/banner/json")

@@ -23,6 +23,16 @@ class LoginViewModel : BaseViewModel() {
         }
     }
 
+    fun register(username: String, password: String) {
+        launch {
+            startLoading()
+            val result = WanRepository.register(username, password)
+            UserUtils.saveUserInfo(result)
+            this.result.postValue(true)
+            stopLoading()
+        }
+    }
+
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
             loginFormState.value = LoginFormState(usernameError = "用户名格式有误")

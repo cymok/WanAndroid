@@ -5,13 +5,17 @@
     <color name="primaryDark">@color/purple_200</color>
     <color name="accent">#6B39E6</color>
 
+    <color name="status_bar">@color/purple_200</color>
+
     <color name="divider">#66666666</color>
 
-    <color name="background">@color/md_dark_background</color>
-    <color name="background_purity">@color/white</color>
-    <color name="background_card">@color/md_grey_100</color>
-    <color name="background_menu">@color/md_grey_200</color>
-    <color name="background_prefs">#7fffffff</color>
+    <color name="background">@color/md_grey_900</color>
+    <color name="background_purity">@color/black</color>
+    <color name="background_card">@color/md_grey_850</color>
+    <color name="background_menu">@color/md_grey_800</color>
+    <color name="background_prefs">#10303030</color>
+
+    <color name="background_setting">@color/md_grey_800</color>
 
     <color name="transparent">#00000000</color>
     <color name="transparent10">#10000000</color>
@@ -20,5 +24,10 @@
 
     <color name="primaryText">#333333</color>
     <color name="secondaryText">#8a000000</color>
+
+    <color name="wx_foreground">#1E1E1E</color>
+    <color name="wx_foreground_pressed">#272727</color>
+    <color name="wx_background">#151515</color>
+    <color name="wx_tab">#212121</color>
 
 </resources>

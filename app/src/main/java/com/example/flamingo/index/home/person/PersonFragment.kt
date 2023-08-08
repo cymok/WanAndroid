@@ -1,23 +1,28 @@
 package com.example.flamingo.index.home.person
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.blankj.utilcode.util.BarUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.UserInfo
 import com.example.flamingo.databinding.FragmentPersonBinding
+import com.example.flamingo.index.setting.SettingActivity
 import com.example.flamingo.utils.UserUtils
 import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.load
 import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.postEvent
+import com.example.flamingo.utils.toast
+import splitties.views.onClick
 
 class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>() {
 
@@ -26,7 +31,6 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initImmersion()
         initView()
         observe()
     }
@@ -45,7 +49,7 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
                     tvRanking.text = "排行: ${it.rank}"
                 }
                 it.collectArticleInfo.let {
-                    tvLikeNum.text = "收藏量: ${it.count}"
+                    tvLikeNum.text = "${it.count} 篇"
                 }
             }
         }
@@ -62,6 +66,7 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
             tvNickname.text = it.nickname
             tvUsername.text = "用户名: ${it.username}"
             tvId.text = "ID: ${it.id}"
+            tvEmail.text = "邮箱: ${it.email}"
         }
     }
 
@@ -70,11 +75,34 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
         if (userInfo != null) {
             setUserinfo(userInfo)
         }
-    }
 
-    private fun initImmersion() {
-        val statusBarHeight = BarUtils.getStatusBarHeight()
-//        binding.rv.topPadding = statusBarHeight
+        val settingLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    // 设置页面退出登录后 原路回退
+                    onCancelLogin()
+                }
+            }
+        binding.run {
+            llCoin.onClick {
+
+            }
+            llArticle.onClick {
+
+            }
+            llShared.onClick {
+
+            }
+            llSite.onClick {
+
+            }
+            llSettings.onClick {
+                settingLauncher.launch(Intent(activity, SettingActivity::class.java))
+            }
+            llCoin.onClick {
+
+            }
+        }
     }
 
     override fun observeBus() {
@@ -92,6 +120,17 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
                 initData()
             }
         }
+    }
+
+    override fun onLoginSucceed() {
+        val userInfo = UserUtils.getUserInfo()
+        if (userInfo != null) {
+            setUserinfo(userInfo)
+        } else {
+            toast("出错啦")
+        }
+        // 获取完整的信息
+        initData()
     }
 
     override fun onCancelLogin() {

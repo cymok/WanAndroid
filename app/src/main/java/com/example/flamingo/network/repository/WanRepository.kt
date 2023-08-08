@@ -23,7 +23,8 @@ object WanRepository {
     }
 
     suspend fun logout() = withContext(Dispatchers.IO) {
-        userService.logout().apiData()!!
+        // null
+        userService.logout().apiData()
     }
 
     suspend fun getUserInfo() = withContext(Dispatchers.IO) {

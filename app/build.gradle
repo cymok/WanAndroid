@@ -5,10 +5,13 @@ plugins {
     id 'kotlin-kapt'
 }
 
+apply from: "../config_source.gradle"
 apply from: "../config_compose.gradle"
 
 def cmdGitCommitId = 'git rev-parse --short HEAD'
 def gitCommitId = cmdGitCommitId.execute().text.trim()
+
+def time = new Date()
 
 android {
     namespace 'com.example.flamingo'
@@ -25,6 +28,15 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField "String", "COMMIT_ID", "\"${gitCommitId}\""
+        buildConfigField "String", "BUILD_TIME", "\"${time.time}\""
+        buildConfigField "String", "OS_ARCH", "\"${System.properties['os.arch']}\""
+        buildConfigField "String", "OS_NAME", "\"${System.properties['os.name']}\""
+        buildConfigField "String", "USER_NAME", "\"${System.properties['user.name']}\""
+        buildConfigField "String", "JAVA_VERSION", "\"${System.properties['java.version']}\""
+//        buildConfigField "String", "KOTLIN_VERSION", "\"${null}\""
+//        buildConfigField "String", "FLUTTER_VERSION", "\"${flutter_version}\""
     }
 
     buildTypes {
@@ -62,9 +74,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    // AGP8后Kotlin的JVM版本
 //    kotlin {
 //        jvmToolchain(8)
+//        jvmToolchain(17) // default
 //    }
     buildFeatures {
         compose true

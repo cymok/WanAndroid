@@ -6,6 +6,7 @@ import com.example.flamingo.base.activity.VVMBaseActivity
 import com.example.flamingo.databinding.ActivityLoginBinding
 import com.example.flamingo.utils.afterTextChanged
 import com.example.flamingo.utils.getViewModel
+import splitties.views.onClick
 
 class LoginActivity : VVMBaseActivity<LoginViewModel, ActivityLoginBinding>() {
 
@@ -13,47 +14,83 @@ class LoginActivity : VVMBaseActivity<LoginViewModel, ActivityLoginBinding>() {
 
     override val viewModel: LoginViewModel by lazy { getViewModel() }
 
+    private var loginOrRegister = true
+
     override fun initStatusBarDarkFont() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
+
         observe()
 
         binding.run {
-
-            tvUsername.afterTextChanged {
+            etUsername.afterTextChanged {
                 viewModel.loginDataChanged(
-                    tvUsername.text.toString(),
-                    tvPassword.text.toString()
+                    etUsername.text.toString(),
+                    etPassword.text.toString()
                 )
             }
-
-            tvPassword.apply {
+            etPassword.apply {
                 afterTextChanged {
                     viewModel.loginDataChanged(
-                        tvUsername.text.toString(),
-                        tvPassword.text.toString()
+                        etUsername.text.toString(),
+                        etPassword.text.toString()
                     )
                 }
-
                 // 软键盘确认
                 setOnEditorActionListener { _, actionId, _ ->
                     when (actionId) {
                         EditorInfo.IME_ACTION_DONE ->
-                            viewModel.login(
-                                tvUsername.text.toString(),
-                                tvPassword.text.toString()
-                            )
+                            if (loginOrRegister) {
+                                viewModel.login(
+                                    etUsername.text.toString(),
+                                    etPassword.text.toString()
+                                )
+                            } else {
+                                viewModel.register(
+                                    etUsername.text.toString(),
+                                    etPassword.text.toString()
+                                )
+                            }
                     }
                     false
                 }
-
-                btLogin.setOnClickListener {
-                    viewModel.login(tvUsername.text.toString(), tvPassword.text.toString())
+            }
+            btLogin.setOnClickListener {
+                if (loginOrRegister) {
+                    viewModel.login(
+                        etUsername.text.toString(),
+                        etPassword.text.toString()
+                    )
+                } else {
+                    viewModel.register(
+                        etUsername.text.toString(),
+                        etPassword.text.toString()
+                    )
                 }
             }
+        }
+    }
 
+    private fun initView() {
+        setUI()
+        binding.tvAnother.onClick {
+            loginOrRegister = !loginOrRegister
+            setUI()
+        }
+    }
+
+    private fun setUI() {
+        if (loginOrRegister) {
+            binding.tvAnother.text = "去注册"
+            binding.btLogin.text = "登录"
+            binding.etPassword.setImeActionLabel("登录", EditorInfo.IME_ACTION_DONE)
+        } else {
+            binding.tvAnother.text = "去登录"
+            binding.btLogin.text = "注册"
+            binding.etPassword.setImeActionLabel("注册", EditorInfo.IME_ACTION_DONE)
         }
     }
 
@@ -65,10 +102,10 @@ class LoginActivity : VVMBaseActivity<LoginViewModel, ActivityLoginBinding>() {
             binding.btLogin.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                binding.tvUsername.error = loginState.usernameError
+                binding.etUsername.error = loginState.usernameError
             }
             if (loginState.passwordError != null) {
-                binding.tvPassword.error = loginState.passwordError
+                binding.etPassword.error = loginState.passwordError
             }
         }
         viewModel.result.observe(this) {

@@ -45,6 +45,10 @@ abstract class BaseViewModel : ViewModel(),
         super.onCleared()
     }
 
+    protected fun onLogout() {
+        UserUtils.clear()
+    }
+
     /**
      * 创建并执行协程
      * @param block 协程中执行
@@ -114,7 +118,7 @@ abstract class BaseViewModel : ViewModel(),
                             toast(e.message)
                         }
                         loginStatus.postValue(false)
-                        UserUtils.clear()
+                        onLogout()
                     }
                     // 其他错误
                     else -> {

@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/wx_background"
     tools:context=".index.home.subscribe.SubscribeFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/wx_foreground"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
         app:tabMode="auto" />

@@ -5,8 +5,7 @@
     android:layout_width="200dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@color/background"
-    android:fitsSystemWindows="true">
+    android:background="@color/background">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

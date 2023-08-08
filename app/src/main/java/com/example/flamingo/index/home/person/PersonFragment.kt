@@ -10,7 +10,9 @@ import com.blankj.utilcode.util.BarUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
+import com.example.flamingo.data.UserInfo
 import com.example.flamingo.databinding.FragmentPersonBinding
+import com.example.flamingo.utils.UserUtils
 import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.load
@@ -35,34 +37,39 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
 
     @SuppressLint("SetTextI18n")
     private fun observe() {
-        viewModel.userInfo.observe(viewLifecycleOwner) {
+        viewModel.superUserInfo.observe(viewLifecycleOwner) {
+            setUserinfo(it.userInfo)
             binding.run {
-                it.userInfo.let {
-                    iv.load(
-                        any = it.icon.ifBlank { R.mipmap.ic_launcher },
-                        cornerRadius = 10.dp2px,
-                        placeholderRes = R.mipmap.ic_launcher,
-                    )
-                    tvNickname.text = it.nickname
-                    tvUsername.text = "用户名: ${it.username}"
-                    tvId.text = "ID: ${it.id}"
-                }
-
                 it.coinInfo.let {
                     tvPoints.text = "积分: ${it.coinCount}"
                     tvRanking.text = "排行: ${it.rank}"
                 }
-
                 it.collectArticleInfo.let {
                     tvLikeNum.text = "收藏量: ${it.count}"
                 }
-
             }
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun setUserinfo(it: UserInfo) {
+        binding.run {
+            iv.load(
+                any = it.icon.ifBlank { R.mipmap.ic_launcher },
+                cornerRadius = 10.dp2px,
+                placeholderRes = R.mipmap.ic_launcher,
+            )
+            tvNickname.text = it.nickname
+            tvUsername.text = "用户名: ${it.username}"
+            tvId.text = "ID: ${it.id}"
+        }
+    }
+
     private fun initView() {
-//        binding.iv.loadRes(R.mipmap.ic_launcher)
+        val userInfo = UserUtils.getUserInfo()
+        if (userInfo != null) {
+            setUserinfo(userInfo)
+        }
     }
 
     private fun initImmersion() {

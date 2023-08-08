@@ -4,15 +4,18 @@ import androidx.lifecycle.MutableLiveData
 import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.data.SupperUserInfo
 import com.example.flamingo.network.repository.WanRepository
+import com.example.flamingo.utils.UserUtils
 
 class PersonViewModel : BaseViewModel() {
 
-    val userInfo = MutableLiveData<SupperUserInfo>()
+    val superUserInfo = MutableLiveData<SupperUserInfo>()
 
     fun getUserInfo() {
         launch {
             val result = WanRepository.getUserInfo()
-            userInfo.postValue(result)
+            val newUserInfo = result.userInfo
+            UserUtils.saveUserInfo(newUserInfo)
+            superUserInfo.postValue(result)
         }
     }
 

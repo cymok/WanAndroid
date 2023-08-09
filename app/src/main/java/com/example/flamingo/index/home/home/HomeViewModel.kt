@@ -7,9 +7,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.example.flamingo.base.BaseViewModel
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.DataX
-import com.example.flamingo.index.home.ArticlesDataSource
+import com.example.flamingo.index.home.home.paging.HomeDataSource
 import com.example.flamingo.network.repository.WanRepository
 
 class HomeViewModel : BaseViewModel() {
@@ -24,9 +23,19 @@ class HomeViewModel : BaseViewModel() {
 
     fun getArticlesWithPager(): LiveData<PagingData<DataX>> {
         val pager = Pager(PagingConfig(pageSize = 10)) {
-            ArticlesDataSource(whichPage = ArticlePage.HOME)
+            HomeDataSource()
         }
         return pager.liveData
+    }
+
+    fun like(id: Int, like: Boolean) {
+        launch {
+            if (like) {
+                WanRepository.likeArticle(id)
+            } else {
+                WanRepository.unlikeArticle(id)
+            }
+        }
     }
 
 }

@@ -7,18 +7,24 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ClipboardUtils
 import com.example.flamingo.App
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VVMBaseActivity
+import com.example.flamingo.constant.EventBus
+import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.BannerItem
 import com.example.flamingo.data.DataX
 import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.ActivityBaseWebBinding
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.gone
+import com.example.flamingo.utils.postEvent
 import com.example.flamingo.utils.toast
 import com.example.flamingo.utils.toastLong
 import com.lxj.xpopup.XPopup
@@ -27,7 +33,14 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
 
     companion object {
 
-        fun start(id: Int, url: String, title: String? = null) {
+        fun start(
+            id: Int,
+            url: String,
+            title: String? = null,
+            like: Boolean? = null,
+            @ArticlePage requestPage: Int? = null,
+            listPosition: Int? = null,
+        ) {
             ActivityUtils.startActivity(
                 Intent(App.INSTANCE, WebActivity::class.java).apply {
                     putExtra(
@@ -36,13 +49,20 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
                             id = id,
                             url = url,
                             title = title,
+                            like = like,
+                            requestPage = requestPage,
+                            listPosition = listPosition,
                         )
                     )
                 }
             )
         }
 
-        fun start(dataX: DataX) {
+        fun start(
+            dataX: DataX,
+            @ArticlePage requestPage: Int? = null,
+            listPosition: Int? = null,
+        ) {
             ActivityUtils.startActivity(
                 Intent(App.INSTANCE, WebActivity::class.java).apply {
                     putExtra(
@@ -51,13 +71,20 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
                             id = dataX.id,
                             url = dataX.link,
                             title = dataX.title,
+                            like = dataX.collect,
+                            requestPage = requestPage,
+                            listPosition = listPosition,
                         )
                     )
                 }
             )
         }
 
-        fun start(bannerItem: BannerItem) {
+        fun start(
+            bannerItem: BannerItem,
+            @ArticlePage requestPage: Int? = null,
+            listPosition: Int? = null,
+        ) {
             ActivityUtils.startActivity(
                 Intent(App.INSTANCE, WebActivity::class.java).apply {
                     putExtra(
@@ -66,6 +93,9 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
                             id = bannerItem.id,
                             url = bannerItem.url,
                             title = bannerItem.title,
+                            like = null,
+                            requestPage = requestPage,
+                            listPosition = listPosition,
                         )
                     )
                 }
@@ -84,12 +114,12 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
         super.viewModelObserve()
         viewModel.like.observe(this) {
             if (it) {
-                toast("已收藏")
                 menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star_selected)
             } else {
-                toast("已取消收藏")
                 menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star)
             }
+            webData.like = it
+            postEvent(EventBus.UPDATE_LIKE, webData)
         }
     }
 
@@ -113,8 +143,23 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
         binding.webView.run {
             settings.run {
                 javaScriptEnabled = true
-                javaScriptCanOpenWindowsAutomatically = true
-                useWideViewPort = true
+//                javaScriptCanOpenWindowsAutomatically = true
+                useWideViewPort = true  // 将图片调整到适合webview的大小
+
+                layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+                loadWithOverviewMode = true // 缩放至屏幕的大小
+                setSupportZoom(true); // 支持缩放，默认为true。是setBuiltInZoomControls(true)的前提。
+                builtInZoomControls = true; // 设置内置的缩放控件。若为false=不可缩放
+                displayZoomControls = false; // 隐藏原生的缩放控件
+
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK // 缓存模式
+
+//                allowFileAccess = true // 可以访问文件
+                domStorageEnabled = true // 开启 DOM storage 例如 微信文章 需要
+//                databaseEnabled = true // 开启 database
+//                loadsImagesAutomatically = true // 自动加载图片
+                defaultTextEncodingName = "UTF-8" // 设置编码格式
+
             }
             webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
@@ -130,6 +175,15 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
                     supportActionBar?.title = webData.title ?: title ?: "文章"
                 }
             }
+            webViewClient = object :WebViewClient(){
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    request: WebResourceRequest?
+                ): Boolean {
+                    view?.loadUrl(request?.url.toString()) // 防止自动跳转到浏览器
+                    return true
+                }
+            }
             loadUrl(webData.url)
         }
     }
@@ -141,14 +195,20 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         this.menu = menu
         menuInflater.inflate(R.menu.menu_web_activity, menu)
+
+        if (webData.like == true) {
+            menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star_selected)
+        } else {
+            menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star)
+        }
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_like -> {
-                val like = viewModel.like.value ?: false
-                if (like) {
+                if (webData.like == true) {
                     XPopup.Builder(this)
                         .asConfirm("提示", "您已收藏, 您要取消收藏吗?") {
                             viewModel.unlikeArticle(webData.id)

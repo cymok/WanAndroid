@@ -1,8 +1,8 @@
 package com.example.flamingo.data
 
 data class SupperUserInfo(
-    val coinInfo: CoinInfo,
-    val collectArticleInfo: CollectArticleInfo,
+    val coinInfo: CoinInfo?,
+    val collectArticleInfo: CollectArticleInfo?,
     val userInfo: UserInfo
 )
 

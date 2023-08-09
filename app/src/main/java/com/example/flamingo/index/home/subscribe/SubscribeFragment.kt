@@ -10,8 +10,8 @@ import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.databinding.FragmentSubscribeBinding
-import com.example.flamingo.index.home.ArticleListAdapter
-import com.example.flamingo.index.home.ArticleListFragment
+import com.example.flamingo.index.home.VpFragmentAdapter
+import com.example.flamingo.index.home.subscribe.fragment.SubscribeTabFragment
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
 import com.google.android.material.tabs.TabLayoutMediator
@@ -40,16 +40,10 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
 
             // ViewPager
             val list = it.map {
-                ArticleListFragment().apply {
-                    arguments = Bundle().apply {
-                        val index = this@SubscribeFragment.arguments?.getInt("homeIndex") ?: -1
-                        putInt("homeIndex", index)
-                        putInt("whichPage", ArticlePage.SUBSCRIBE)
-                        putParcelable("data", it)
-                    }
-                }
+                val index = this.arguments?.getInt("homeIndex") ?: -1
+                SubscribeTabFragment.getInstance(index, it)
             }
-            val vpAdapter = ArticleListAdapter(this, list)
+            val vpAdapter = VpFragmentAdapter(this, list)
             binding.viewpager.adapter = vpAdapter
             binding.viewpager.currentItem = 0
             binding.viewpager.offscreenPageLimit = 2

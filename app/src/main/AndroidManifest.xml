@@ -21,6 +21,9 @@
     <!-- 适配 Android 10 沙盒
     android:requestLegacyExternalStorage="true"
     -->
+    <!-- WebView 支持明文流量 即 Http
+    android:usesCleartextTraffic="true"
+    -->
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -32,6 +35,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:replace="android:name, android:allowBackup, android:icon, android:label, android:roundIcon, android:theme"
         tools:targetApi="33">
 
@@ -70,26 +74,26 @@
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
-            android:name=".index.home.ArticleListActivity"
+            android:name=".index.aticle.ArticleListActivity"
             android:exported="false" />
 
         <activity
-            android:name=".index.main.MainActivity"
+            android:name=".others.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".index.first.FirstActivity"
+            android:name=".others.first.FirstActivity"
             android:exported="false" />
         <activity
-            android:name=".index.second.SecondActivity"
+            android:name=".others.second.SecondActivity"
             android:exported="false" />
         <activity
-            android:name=".index.third.ThirdActivity"
+            android:name=".others.third.ThirdActivity"
             android:exported="false" />
         <activity
-            android:name=".index.coroutine.CoroutineActivity"
+            android:name=".others.coroutine.CoroutineActivity"
             android:exported="false" />
         <activity
-            android:name=".index.compose.ComposeActivity"
+            android:name=".others.compose.ComposeActivity"
             android:exported="false" />
 
         <activity

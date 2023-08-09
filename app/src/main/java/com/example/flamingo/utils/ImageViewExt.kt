@@ -19,9 +19,6 @@ fun ImageView.load(
         .into(this)
 }
 
-/**
- * 资源是 Int 类型, 用 `load(any:Any)` 经常会加载错别的图
- */
 fun ImageView.loadRes(
     @RawRes @DrawableRes res: Int,
     cornerRadius: Int = 0,

@@ -3,6 +3,7 @@ package com.example.flamingo.index.home.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.Banner
 import com.example.flamingo.data.BannerItem
 import com.example.flamingo.databinding.ViewBannerBinding
@@ -19,7 +20,12 @@ class HomeBannerAdapter(list: Banner) : BannerAdapter<BannerItem, HomeBannerView
         )
     }
 
-    override fun onBindView(holder: HomeBannerViewHolder, data: BannerItem, position: Int, size: Int) {
+    override fun onBindView(
+        holder: HomeBannerViewHolder,
+        data: BannerItem,
+        position: Int,
+        size: Int
+    ) {
         holder.binding.run {
             // 注意，必须设置为match_parent，这个是viewpager2强制要求的
             root.layoutParams = ViewGroup.LayoutParams(
@@ -27,8 +33,8 @@ class HomeBannerAdapter(list: Banner) : BannerAdapter<BannerItem, HomeBannerView
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             iv.load(data.imagePath)
-            root.onClick{
-                WebActivity.start(data)
+            root.onClick {
+                WebActivity.start(data, ArticlePage.HOME, 0) // banner 在外层列表 index == 0
             }
         }
     }

@@ -5,7 +5,7 @@
     android:id="@+id/second"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".index.second.SecondFragment">
+    tools:context=".others.second.SecondFragment">
 
     <TextView
         android:id="@+id/message"

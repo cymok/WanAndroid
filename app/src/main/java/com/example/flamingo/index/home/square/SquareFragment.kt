@@ -1,6 +1,5 @@
 package com.example.flamingo.index.home.square
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Lifecycle
@@ -12,13 +11,11 @@ import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.ArticlePage
+import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.FragmentSquareBinding
-import com.example.flamingo.index.home.ArticlesPagingAdapter
-import com.example.flamingo.utils.dp2px
+import com.example.flamingo.index.home.square.paging.SquarePagingAdapter
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
-import com.grzegorzojdana.spacingitemdecoration.Spacing
-import com.grzegorzojdana.spacingitemdecoration.SpacingItemDecoration
 import splitties.views.topPadding
 
 class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>() {
@@ -26,7 +23,7 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
     override val viewModel: SquareViewModel get() = getViewModel()
     override val binding: FragmentSquareBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter = ArticlesPagingAdapter(ArticlePage.SQUARE)
+    private val adapter = SquarePagingAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,16 +39,6 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
     private fun initView() {
         val recyclerView = binding.rv
         recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(
-            SpacingItemDecoration(
-                Spacing(
-                    vertical = 12.dp2px,
-                    horizontal = 50.dp2px,
-                    item = Rect(),
-                    edges = Rect(16.dp2px, 20.dp2px, 16.dp2px, 20.dp2px),
-                )
-            )
-        )
 
         viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
@@ -78,6 +65,9 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
                 }
             }
         }
+        adapter.setLickListener { id, like ->
+            viewModel.like(id, like)
+        }
 
         binding.refresh.setOnRefreshListener {
             adapter.refresh()
@@ -85,6 +75,11 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
     }
 
     override fun observeBus() {
+        observeEvent<WebData>(EventBus.UPDATE_LIKE) {
+            if(it.requestPage == ArticlePage.SQUARE){
+                adapter.updateLikeItem(it)
+            }
+        }
         observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }

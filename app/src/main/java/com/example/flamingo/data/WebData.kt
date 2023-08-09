@@ -7,5 +7,8 @@ import kotlinx.parcelize.Parcelize
 data class WebData(
     val id: Int,
     val url: String,
-    val title: String?,
+    val title: String? = null,
+    var like: Boolean? = null,
+    val requestPage: Int? = null,
+    val listPosition: Int? = null,
 ) : Parcelable

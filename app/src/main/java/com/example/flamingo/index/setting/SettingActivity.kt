@@ -33,7 +33,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 AppDetailDialog(
                     context = activity,
                     env = "null",
-                    uid = UserUtils.getUserInfo()?.username ?: "null",
+                    uid = UserUtils.getSupperUserInfo()?.userInfo?.username ?: "null",
                 ).show()
             }
         }

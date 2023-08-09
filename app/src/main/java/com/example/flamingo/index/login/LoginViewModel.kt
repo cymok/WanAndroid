@@ -4,6 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.data.LoginFormState
+import com.example.flamingo.data.SupperUserInfo
 import com.example.flamingo.network.repository.WanRepository
 import com.example.flamingo.utils.UserUtils
 
@@ -17,7 +18,11 @@ class LoginViewModel : BaseViewModel() {
         launch {
             startLoading()
             val result = WanRepository.login(username, password)
-            UserUtils.saveUserInfo(result)
+            UserUtils.saveSupperUserInfo(SupperUserInfo(
+                userInfo = result,
+                coinInfo = null,
+                collectArticleInfo = null,
+            ))
             this.result.postValue(true)
             stopLoading()
         }
@@ -27,7 +32,11 @@ class LoginViewModel : BaseViewModel() {
         launch {
             startLoading()
             val result = WanRepository.register(username, password)
-            UserUtils.saveUserInfo(result)
+            UserUtils.saveSupperUserInfo(SupperUserInfo(
+                userInfo = result,
+                coinInfo = null,
+                collectArticleInfo = null,
+            ))
             this.result.postValue(true)
             stopLoading()
         }

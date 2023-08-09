@@ -12,7 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.flamingo.R
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
-import com.example.flamingo.data.UserInfo
+import com.example.flamingo.data.SupperUserInfo
 import com.example.flamingo.databinding.FragmentPersonBinding
 import com.example.flamingo.index.setting.SettingActivity
 import com.example.flamingo.utils.UserUtils
@@ -21,7 +21,6 @@ import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.load
 import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.postEvent
-import com.example.flamingo.utils.toast
 import splitties.views.onClick
 
 class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>() {
@@ -42,38 +41,43 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
     @SuppressLint("SetTextI18n")
     private fun observe() {
         viewModel.superUserInfo.observe(viewLifecycleOwner) {
-            setUserinfo(it.userInfo)
-            binding.run {
-                it.coinInfo.let {
-                    tvPoints.text = "积分: ${it.coinCount}"
-                    tvRanking.text = "排行: ${it.rank}"
-                }
-                it.collectArticleInfo.let {
-                    tvLikeNum.text = "${it.count} 篇"
-                }
-            }
+            setInfo(it)
+            binding.refresh.isRefreshing = false
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setUserinfo(it: UserInfo) {
+    private fun setInfo(it: SupperUserInfo) {
         binding.run {
-            iv.load(
-                any = it.icon.ifBlank { R.mipmap.ic_launcher },
-                cornerRadius = 10.dp2px,
-                placeholderRes = R.mipmap.ic_launcher,
-            )
-            tvNickname.text = it.nickname
-            tvUsername.text = "用户名: ${it.username}"
-            tvId.text = "ID: ${it.id}"
-            tvEmail.text = "邮箱: ${it.email}"
+            it.collectArticleInfo?.let {
+                tvLikeNum.text = "${it.count} 篇"
+            }
+            it.coinInfo?.let {
+                tvPoints.text = "积分: ${it.coinCount}"
+                tvRanking.text = "排行: ${it.rank}"
+            }
+            it.userInfo.let {
+                iv.load(
+                    any = it.icon.ifBlank { R.mipmap.ic_launcher },
+                    cornerRadius = 10.dp2px,
+                    placeholderRes = R.mipmap.ic_launcher,
+                )
+                tvNickname.text = it.nickname
+                tvUsername.text = "用户名: ${it.username}"
+                tvId.text = "ID: ${it.id}"
+                tvEmail.text = "邮箱: ${it.email}"
+            }
         }
     }
 
     private fun initView() {
-        val userInfo = UserUtils.getUserInfo()
-        if (userInfo != null) {
-            setUserinfo(userInfo)
+        val supperUserInfo = UserUtils.getSupperUserInfo()
+        if (supperUserInfo != null) {
+            setInfo(supperUserInfo)
+        }
+
+        binding.refresh.setOnRefreshListener {
+            initData()
         }
 
         val settingLauncher =
@@ -117,19 +121,15 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
         observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
             val index = arguments?.getInt("homeIndex")
             if (it == index && lifecycle.currentState == Lifecycle.State.RESUMED) {
+                binding.refresh.isRefreshing = true
                 initData()
             }
         }
     }
 
     override fun onLoginSucceed() {
-        val userInfo = UserUtils.getUserInfo()
-        if (userInfo != null) {
-            setUserinfo(userInfo)
-        } else {
-            toast("出错啦")
-        }
-        // 获取完整的信息
+        setInfo(UserUtils.getSupperUserInfo()!!)
+        // 登录注册接口没有返回其它信息 获取完整的信息
         initData()
     }
 

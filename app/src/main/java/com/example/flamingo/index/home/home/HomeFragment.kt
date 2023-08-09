@@ -1,68 +1,45 @@
 package com.example.flamingo.index.home.home
 
 import android.annotation.SuppressLint
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.ArticlePage
+import com.example.flamingo.data.Banner
+import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.FragmentHomeBinding
-import com.example.flamingo.index.home.ArticlesPagingAdapter
-import com.example.flamingo.utils.dp2px
+import com.example.flamingo.index.home.home.paging.HomePagingAdapter
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
-import com.grzegorzojdana.spacingitemdecoration.Spacing
-import com.grzegorzojdana.spacingitemdecoration.SpacingItemDecoration
-import com.youth.banner.indicator.CircleIndicator
 
 class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override val viewModel: HomeViewModel get() = getViewModel()
     override val binding: FragmentHomeBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter = ArticlesPagingAdapter(ArticlePage.HOME)
+    private val adapter = HomePagingAdapter(this, Banner())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initImmersion()
         initView()
         observe()
     }
 
-    private fun initImmersion() {
-        val statusBarHeight = BarUtils.getStatusBarHeight()
-//        binding.rv.topPadding = statusBarHeight
-    }
-
     private fun observe() {
         viewModel.banner.observe(viewLifecycleOwner) {
-            val homeBannerAdapter = HomeBannerAdapter(it)
-            binding.banner.addBannerLifecycleObserver(viewLifecycleOwner)
-                .setAdapter(homeBannerAdapter)
-                .setIndicator(CircleIndicator(this.requireContext()))
+            adapter.setBanner(it)
         }
     }
 
     @SuppressLint("SimpleDateFormat")
     private fun initView() {
         val recyclerView = binding.rv
-        recyclerView.addItemDecoration(
-            SpacingItemDecoration(
-                Spacing(
-                    vertical = 12.dp2px,
-                    horizontal = 50.dp2px,
-                    item = Rect(),
-                    edges = Rect(16.dp2px, 20.dp2px, 16.dp2px, 20.dp2px),
-                )
-            )
-        )
         recyclerView.adapter = adapter
 
         viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
@@ -90,6 +67,9 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 }
             }
         }
+        adapter.setLickListener { id, like ->
+            viewModel.like(id, like)
+        }
 
         binding.refresh.setOnRefreshListener {
             adapter.refresh()
@@ -97,6 +77,11 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     override fun observeBus() {
+        observeEvent<WebData>(EventBus.UPDATE_LIKE) {
+            if(it.requestPage == ArticlePage.HOME){
+                adapter.updateLikeItem(it)
+            }
+        }
         observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }

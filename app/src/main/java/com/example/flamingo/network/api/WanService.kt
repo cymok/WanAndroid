@@ -3,6 +3,7 @@ package com.example.flamingo.network.api
 import com.example.flamingo.data.Articles
 import com.example.flamingo.data.ArticlesTree
 import com.example.flamingo.data.Banner
+import com.example.flamingo.data.DataX
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -51,7 +52,7 @@ interface WanService {
 
     // 置顶文章
     @GET("/article/top/json")
-    suspend fun getHomeTopList(): ApiResult<Articles>
+    suspend fun getHomeTopList(): ApiResult<List<DataX>>
 
     // 首页文章列表
     @GET("/article/list/{page}/json")

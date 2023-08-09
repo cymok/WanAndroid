@@ -14,6 +14,7 @@ import androidx.annotation.IntDef
         ArticlePage.SUBSCRIBE,
         ArticlePage.PROJECT,
         ArticlePage.TOOLS,
+        ArticlePage.ARTICLE_LIST,
     ]
 )
 @Retention(AnnotationRetention.RUNTIME)
@@ -31,6 +32,7 @@ annotation class ArticlePage {
         const val SUBSCRIBE = 7
         const val PROJECT = 8
         const val TOOLS = 9
+        const val ARTICLE_LIST = 10
 
     }
 

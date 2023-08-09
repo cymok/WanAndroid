@@ -1,8 +1,8 @@
 package com.example.flamingo.data
 
-import androidx.annotation.IntDef
+import androidx.annotation.StringDef
 
-@IntDef(
+@StringDef(
     *[
         ArticlePage.HOME,
         ArticlePage.STUDY,
@@ -22,17 +22,17 @@ annotation class ArticlePage {
 
     companion object {
 
-        const val HOME = 0
-        const val STUDY = 1
-        const val SQUARE = 2
-        const val NAV = 3
-        const val TUTORIALS = 4
-        const val QA = 5
-        const val PROJECT_HOT = 6
-        const val SUBSCRIBE = 7
-        const val PROJECT = 8
-        const val TOOLS = 9
-        const val ARTICLE_LIST = 10
+        const val HOME = "推荐"
+        const val STUDY = "学习路线"
+        const val SQUARE = "广场"
+        const val NAV = "导航"
+        const val TUTORIALS = "教程"
+        const val QA = "问答"
+        const val PROJECT_HOT = "最新项目"
+        const val SUBSCRIBE = "公众号"
+        const val PROJECT = "项目分类"
+        const val TOOLS = "工具"
+        const val ARTICLE_LIST = "文章列表"
 
     }
 

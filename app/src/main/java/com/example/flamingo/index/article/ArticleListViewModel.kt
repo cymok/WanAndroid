@@ -1,4 +1,4 @@
-package com.example.flamingo.index.aticle
+package com.example.flamingo.index.article
 
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
@@ -8,13 +8,13 @@ import androidx.paging.liveData
 import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.DataX
-import com.example.flamingo.index.aticle.paging.ArticlesDataSource
+import com.example.flamingo.index.article.paging.ArticlesDataSource
 import com.example.flamingo.network.repository.WanRepository
 
 class ArticleListViewModel : BaseViewModel() {
 
     fun getArticlesWithPager(
-        @ArticlePage whichPage: Int,
+        @ArticlePage whichPage: String,
         id: Int,
     ): LiveData<PagingData<DataX>> {
         val pager = Pager(PagingConfig(pageSize = 10)) {

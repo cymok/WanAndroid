@@ -19,7 +19,7 @@ import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.databinding.ActivityHomeBinding
 import com.example.flamingo.databinding.ViewTabLayoutBinding
-import com.example.flamingo.index.aticle.ArticleListActivity
+import com.example.flamingo.index.article.ArticleListActivity
 import com.example.flamingo.index.home.home.HomeFragment
 import com.example.flamingo.index.home.person.PersonFragment
 import com.example.flamingo.index.home.project.ProjectFragment

@@ -9,6 +9,6 @@ data class WebData(
     val url: String,
     val title: String? = null,
     var like: Boolean? = null,
-    val requestPage: Int? = null,
+    val requestPage: String? = null,
     val listPosition: Int? = null,
 ) : Parcelable

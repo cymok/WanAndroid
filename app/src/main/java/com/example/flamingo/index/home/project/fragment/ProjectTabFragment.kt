@@ -13,16 +13,16 @@ import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.ArticlesTreeItem
 import com.example.flamingo.data.WebData
-import com.example.flamingo.databinding.FragmentArticlesBinding
+import com.example.flamingo.databinding.FragmentProjectTabBinding
 import com.example.flamingo.index.home.project.fragment.paging.ProjectTabPagingAdapter
 import com.example.flamingo.index.home.subscribe.fragment.SubscribeTabFragment
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
 
-class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentArticlesBinding>() {
+class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectTabBinding>() {
 
     override val viewModel: ProjectTabViewModel get() = getViewModel()
-    override val binding: FragmentArticlesBinding by viewBinding(CreateMethod.INFLATE)
+    override val binding: FragmentProjectTabBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter by lazy { ProjectTabPagingAdapter() }
 

@@ -21,7 +21,7 @@ import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.BannerItem
 import com.example.flamingo.data.DataX
 import com.example.flamingo.data.WebData
-import com.example.flamingo.databinding.ActivityBaseWebBinding
+import com.example.flamingo.databinding.ActivityWebBinding
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.gone
 import com.example.flamingo.utils.postEvent
@@ -29,7 +29,7 @@ import com.example.flamingo.utils.toast
 import com.example.flamingo.utils.toastLong
 import com.lxj.xpopup.XPopup
 
-class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
+class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
 
     companion object {
 
@@ -38,7 +38,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
             url: String,
             title: String? = null,
             like: Boolean? = null,
-            @ArticlePage requestPage: Int? = null,
+            @ArticlePage requestPage: String? = null,
             listPosition: Int? = null,
         ) {
             ActivityUtils.startActivity(
@@ -60,7 +60,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
 
         fun start(
             dataX: DataX,
-            @ArticlePage requestPage: Int? = null,
+            @ArticlePage requestPage: String? = null,
             listPosition: Int? = null,
         ) {
             ActivityUtils.startActivity(
@@ -82,7 +82,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
 
         fun start(
             bannerItem: BannerItem,
-            @ArticlePage requestPage: Int? = null,
+            @ArticlePage requestPage: String? = null,
             listPosition: Int? = null,
         ) {
             ActivityUtils.startActivity(
@@ -106,7 +106,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
 
     lateinit var webData: WebData
 
-    override val binding by lazy { ActivityBaseWebBinding.inflate(layoutInflater) }
+    override val binding by lazy { ActivityWebBinding.inflate(layoutInflater) }
 
     override val viewModel: WebViewModel get() = getViewModel()
 
@@ -175,7 +175,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityBaseWebBinding>() {
                     supportActionBar?.title = webData.title ?: title ?: "文章"
                 }
             }
-            webViewClient = object :WebViewClient(){
+            webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
                     request: WebResourceRequest?

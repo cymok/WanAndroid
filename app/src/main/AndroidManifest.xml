@@ -74,8 +74,9 @@
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
-            android:name=".index.aticle.ArticleListActivity"
-            android:exported="false" />
+            android:name=".index.article.ArticleListActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
 
         <activity
             android:name=".others.main.MainActivity"

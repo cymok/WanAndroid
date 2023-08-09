@@ -1,4 +1,4 @@
-package com.example.flamingo.index.aticle.paging
+package com.example.flamingo.index.article.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -7,7 +7,7 @@ import com.example.flamingo.data.DataX
 import com.example.flamingo.network.repository.WanRepository
 
 class ArticlesDataSource(
-    @ArticlePage private val whichPage: Int,
+    @ArticlePage private val whichPage: String,
     private val id: Int = 0,
 ) :
     PagingSource<Int, DataX>() {

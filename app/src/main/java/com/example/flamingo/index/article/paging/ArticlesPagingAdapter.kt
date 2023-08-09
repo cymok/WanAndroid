@@ -1,4 +1,4 @@
-package com.example.flamingo.index.aticle.paging
+package com.example.flamingo.index.article.paging
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import com.lxj.xpopup.XPopup
 import splitties.views.onClick
 
 class ArticlesPagingAdapter(
-    @ArticlePage private val whichPage: Int
+    @ArticlePage private val whichPage: String
 ) :
     PagingDataAdapter<DataX, ArticlesPagingViewHolder>(object : DiffUtil.ItemCallback<DataX>() {
         override fun areItemsTheSame(oldItem: DataX, newItem: DataX): Boolean {
@@ -32,13 +32,13 @@ class ArticlesPagingAdapter(
     }) {
 
     override fun getItemViewType(position: Int): Int {
-        return whichPage
+        return whichPage.hashCode()
     }
 
-    var requestPage = -1
+    var requestPage = ""
     var listener:((Int, Boolean) -> Unit)? = null
 
-    fun setLickListener(requestPage: Int, listener: (Int, Boolean) -> Unit){
+    fun setLickListener(requestPage: String, listener: (Int, Boolean) -> Unit){
         this.requestPage = requestPage
         this.listener = listener
     }

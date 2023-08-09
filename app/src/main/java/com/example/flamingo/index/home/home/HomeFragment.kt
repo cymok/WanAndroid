@@ -17,6 +17,7 @@ import com.example.flamingo.databinding.FragmentHomeBinding
 import com.example.flamingo.index.home.home.paging.HomePagingAdapter
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
+import splitties.views.topPadding
 
 class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
@@ -27,8 +28,14 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initImmersion()
         initView()
         observe()
+    }
+
+    private fun initImmersion() {
+        // 首页顶部是banner 显示内容不需要加一个状态栏的 padding
+        binding.rv.topPadding = 0
     }
 
     private fun observe() {
@@ -78,7 +85,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun observeBus() {
         observeEvent<WebData>(EventBus.UPDATE_LIKE) {
-            if(it.requestPage == ArticlePage.HOME){
+            if (it.requestPage == ArticlePage.HOME) {
                 adapter.updateLikeItem(it)
             }
         }

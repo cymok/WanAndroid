@@ -1,4 +1,4 @@
-package com.example.flamingo.index.aticle
+package com.example.flamingo.index.article
 
 import android.os.Build
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.View
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
@@ -13,9 +14,10 @@ import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.ArticlesTreeItem
 import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.FragmentArticlesBinding
-import com.example.flamingo.index.aticle.paging.ArticlesPagingAdapter
+import com.example.flamingo.index.article.paging.ArticlesPagingAdapter
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
+import splitties.views.topPadding
 import kotlin.properties.Delegates
 
 class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticlesBinding>() {
@@ -25,14 +27,14 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
 
     private val adapter by lazy { ArticlesPagingAdapter(whichPage) }
 
-    private var whichPage: Int by Delegates.notNull()
+    private lateinit var whichPage: String
     private var item: ArticlesTreeItem? = null
 
     companion object {
-        fun getInstance(@ArticlePage whichPage: Int, data: ArticlesTreeItem? = null) =
+        fun getInstance(@ArticlePage whichPage: String, data: ArticlesTreeItem? = null) =
             ArticleListFragment().apply {
                 arguments = Bundle().apply {
-                    putInt("whichPage", whichPage)
+                    putString("whichPage", whichPage)
                     putParcelable("data", data)
                 }
             }
@@ -41,14 +43,19 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        whichPage = arguments?.getInt("whichPage")!!
+        whichPage = arguments?.getString("whichPage")!!
         item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable("data", ArticlesTreeItem::class.java)
         } else {
             arguments?.getParcelable("data")
         }
 
+        initImmersion()
         initView()
+    }
+
+    private fun initImmersion() {
+        binding.rv.topPadding = 0
     }
 
     private fun initView() {

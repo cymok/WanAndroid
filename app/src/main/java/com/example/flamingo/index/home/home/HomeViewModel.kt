@@ -1,6 +1,7 @@
 package com.example.flamingo.index.home.home
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -8,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.data.DataX
+import com.example.flamingo.data.LikeData
 import com.example.flamingo.index.home.home.paging.HomeDataSource
 import com.example.flamingo.network.repository.WanRepository
 
@@ -28,12 +30,16 @@ class HomeViewModel : BaseViewModel() {
         return pager.liveData
     }
 
-    fun like(id: Int, like: Boolean) {
+    val likeStatus = MutableLiveData<LikeData>()
+
+    fun like(likeData: LikeData) {
         launch {
-            if (like) {
-                WanRepository.likeArticle(id)
+            if (likeData.like) {
+                WanRepository.likeArticle(likeData.id)
+                likeStatus.postValue(likeData)
             } else {
-                WanRepository.unlikeArticle(id)
+                WanRepository.unlikeArticle(likeData.id)
+                likeStatus.postValue(likeData)
             }
         }
     }

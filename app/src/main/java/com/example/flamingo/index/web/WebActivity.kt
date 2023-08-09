@@ -16,15 +16,12 @@ import com.blankj.utilcode.util.ClipboardUtils
 import com.example.flamingo.App
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VVMBaseActivity
-import com.example.flamingo.constant.EventBus
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.BannerItem
 import com.example.flamingo.data.DataX
 import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.ActivityWebBinding
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.gone
-import com.example.flamingo.utils.postEvent
 import com.example.flamingo.utils.toast
 import com.example.flamingo.utils.toastLong
 import com.lxj.xpopup.XPopup
@@ -37,9 +34,8 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
             id: Int,
             url: String,
             title: String? = null,
-            like: Boolean? = null,
-            @ArticlePage requestPage: String? = null,
-            listPosition: Int? = null,
+            like: Boolean,
+            position: Int,
         ) {
             ActivityUtils.startActivity(
                 Intent(App.INSTANCE, WebActivity::class.java).apply {
@@ -50,8 +46,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
                             url = url,
                             title = title,
                             like = like,
-                            requestPage = requestPage,
-                            listPosition = listPosition,
+                            position = position,
                         )
                     )
                 }
@@ -60,8 +55,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
 
         fun start(
             dataX: DataX,
-            @ArticlePage requestPage: String? = null,
-            listPosition: Int? = null,
+            position: Int,
         ) {
             ActivityUtils.startActivity(
                 Intent(App.INSTANCE, WebActivity::class.java).apply {
@@ -72,8 +66,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
                             url = dataX.link,
                             title = dataX.title,
                             like = dataX.collect,
-                            requestPage = requestPage,
-                            listPosition = listPosition,
+                            position = position,
                         )
                     )
                 }
@@ -82,8 +75,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
 
         fun start(
             bannerItem: BannerItem,
-            @ArticlePage requestPage: String? = null,
-            listPosition: Int? = null,
+            position: Int,
         ) {
             ActivityUtils.startActivity(
                 Intent(App.INSTANCE, WebActivity::class.java).apply {
@@ -93,9 +85,8 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
                             id = bannerItem.id,
                             url = bannerItem.url,
                             title = bannerItem.title,
-                            like = null,
-                            requestPage = requestPage,
-                            listPosition = listPosition,
+                            like = false, // banner 没有相关字段
+                            position = position,
                         )
                     )
                 }
@@ -119,7 +110,6 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
                 menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star)
             }
             webData.like = it
-            postEvent(EventBus.UPDATE_LIKE, webData)
         }
     }
 
@@ -196,7 +186,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
         this.menu = menu
         menuInflater.inflate(R.menu.menu_web_activity, menu)
 
-        if (webData.like == true) {
+        if (webData.like) {
             menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star_selected)
         } else {
             menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star)
@@ -208,9 +198,9 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_like -> {
-                if (webData.like == true) {
+                if (webData.like) {
                     XPopup.Builder(this)
-                        .asConfirm("提示", "您已收藏, 您要取消收藏吗?") {
+                        .asConfirm("移除收藏", "《${webData.title}》") {
                             viewModel.unlikeArticle(webData.id)
                         }.show()
                 } else {
@@ -248,6 +238,13 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
             }
         }
         return true
+    }
+
+    override fun onBackPressed() {
+        setResult(RESULT_OK, Intent().apply {
+            putExtra("result", webData)
+        })
+        finish()
     }
 
 }

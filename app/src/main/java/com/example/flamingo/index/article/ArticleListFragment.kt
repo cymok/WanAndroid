@@ -6,35 +6,45 @@ import android.view.View
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.ArticlesTreeItem
+import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.FragmentArticlesBinding
 import com.example.flamingo.index.article.paging.ArticlesPagingAdapter
+import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.getViewModel
+import com.example.flamingo.utils.newIntent
 import com.example.flamingo.utils.observeEvent
+import com.example.flamingo.utils.registerResultOK
 import splitties.views.topPadding
-import kotlin.properties.Delegates
+import java.util.ArrayList
 
-class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticlesBinding>() {
+class ArticleListFragment private constructor(): VVMBaseFragment<ArticleListViewModel, FragmentArticlesBinding>() {
 
     override val viewModel: ArticleListViewModel get() = getViewModel()
     override val binding: FragmentArticlesBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter by lazy { ArticlesPagingAdapter(whichPage) }
+    private val adapter by lazy { ArticlesPagingAdapter(pagePath) }
 
-    private lateinit var whichPage: String
-    private var item: ArticlesTreeItem? = null
+    private val item: ArticlesTreeItem? by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("data", ArticlesTreeItem::class.java)
+        } else {
+            arguments?.getParcelable("data")
+        }
+    }
+
+    private val pagePath: List<String> by lazy { arguments?.getStringArrayList("pagePath")!! }
 
     companion object {
-        fun getInstance(@ArticlePage whichPage: String, data: ArticlesTreeItem? = null) =
+        fun getInstance(@ArticlePage pagePath: List<String>, data: ArticlesTreeItem? = null) =
             ArticleListFragment().apply {
                 arguments = Bundle().apply {
-                    putString("whichPage", whichPage)
+                    putStringArrayList("pagePath", pagePath as ArrayList<String>)
                     putParcelable("data", data)
                 }
             }
@@ -42,16 +52,20 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        whichPage = arguments?.getString("whichPage")!!
-        item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable("data", ArticlesTreeItem::class.java)
-        } else {
-            arguments?.getParcelable("data")
-        }
-
         initImmersion()
         initView()
+        observe()
+    }
+
+    private fun observe() {
+        viewModel.getArticlesWithPager(pagePath = pagePath, id = item?.id ?: 0)
+            .observe(viewLifecycleOwner) {
+                adapter.submitData(lifecycle, it)
+                binding.refresh.isRefreshing = false
+            }
+        viewModel.likeStatus.observe(viewLifecycleOwner) {
+            adapter.notifyLikeChanged(it)
+        }
     }
 
     private fun initImmersion() {
@@ -61,12 +75,6 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
     private fun initView() {
         val recyclerView = binding.rv
         recyclerView.adapter = adapter
-
-        viewModel.getArticlesWithPager(whichPage = whichPage, id = item?.id ?: 0)
-            .observe(viewLifecycleOwner) {
-                adapter.submitData(lifecycle, it)
-                binding.refresh.isRefreshing = false
-            }
 
         adapter.addLoadStateListener {
             when (it.refresh) {
@@ -88,8 +96,39 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
                 }
             }
         }
-        adapter.setLickListener(ArticlePage.ARTICLE_LIST) { id, like ->
-            viewModel.like(id, like)
+
+        adapter.onLikeClick {
+            viewModel.like(it)
+        }
+
+        val launcher = registerResultOK {
+            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it?.getParcelableExtra("result", WebData::class.java)
+            } else {
+                it?.getParcelableExtra("result")
+            }
+            result?.let { data ->
+                adapter.notifyLikeChanged(
+                    LikeData(
+                        id = data.id,
+                        like = data.like,
+                        position = data.position,
+                    )
+                )
+            }
+        }
+        adapter.onItemClick { position, dataX ->
+            launcher.launch(newIntent<WebActivity> {
+                putExtra(
+                    "data", WebData(
+                        id = dataX.id,
+                        url = dataX.link,
+                        title = dataX.title,
+                        like = dataX.collect,
+                        position = position,
+                    )
+                )
+            })
         }
 
         binding.refresh.setOnRefreshListener {
@@ -98,11 +137,7 @@ class ArticleListFragment : VVMBaseFragment<ArticleListViewModel, FragmentArticl
     }
 
     override fun observeBus() {
-        observeEvent<WebData>(EventBus.UPDATE_LIKE) {
-            if(it.requestPage == ArticlePage.ARTICLE_LIST){
-                adapter.updateLikeItem(it)
-            }
-        }
+
     }
 
 }

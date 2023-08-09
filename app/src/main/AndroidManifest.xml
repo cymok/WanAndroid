@@ -77,6 +77,10 @@
             android:name=".index.article.ArticleListActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.home.project.ProjectActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
 
         <activity
             android:name=".others.main.MainActivity"

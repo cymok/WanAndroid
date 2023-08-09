@@ -7,10 +7,9 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.flamingo.R
-import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.DataX
-import com.example.flamingo.data.WebData
+import com.example.flamingo.data.LikeData
 import com.example.flamingo.databinding.RvItemArticleBinding
 import com.example.flamingo.utils.load
 import com.example.flamingo.utils.loadRes
@@ -19,7 +18,7 @@ import com.lxj.xpopup.XPopup
 import splitties.views.onClick
 
 class ArticlesPagingAdapter(
-    @ArticlePage private val whichPage: String
+    @ArticlePage private val pagePath: List<String>
 ) :
     PagingDataAdapter<DataX, ArticlesPagingViewHolder>(object : DiffUtil.ItemCallback<DataX>() {
         override fun areItemsTheSame(oldItem: DataX, newItem: DataX): Boolean {
@@ -32,15 +31,28 @@ class ArticlesPagingAdapter(
     }) {
 
     override fun getItemViewType(position: Int): Int {
-        return whichPage.hashCode()
+        return pagePath.hashCode()
     }
 
-    var requestPage = ""
-    var listener:((Int, Boolean) -> Unit)? = null
+    var requestPage: List<String> = arrayListOf()
 
-    fun setLickListener(requestPage: String, listener: (Int, Boolean) -> Unit){
-        this.requestPage = requestPage
-        this.listener = listener
+
+    var likeClickListener: ((LikeData) -> Unit)? = null
+
+    fun onLikeClick(listener: (LikeData) -> Unit) {
+        likeClickListener = listener
+    }
+
+    fun notifyLikeChanged(likeData: LikeData) {
+        val item = getItem(likeData.position)!!
+        item.collect = likeData.like
+        notifyItemChanged(likeData.position)
+    }
+
+    var itemClickListener: ((Int, DataX) -> Unit)? = null
+
+    fun onItemClick(listener: (Int, DataX) -> Unit) {
+        itemClickListener = listener
     }
 
     @SuppressLint("SetTextI18n")
@@ -50,7 +62,7 @@ class ArticlesPagingAdapter(
         holder.binding.run {
             item?.let {
 
-                when (whichPage) {
+                when (pagePath.lastOrNull()) {
                     ArticlePage.HOME,
                     ArticlePage.SQUARE,
                     -> {
@@ -83,7 +95,7 @@ class ArticlesPagingAdapter(
                 ivImg.visible(item.envelopePic.isNotBlank())
 
                 root.setOnClickListener {
-                    WebActivity.start(item, requestPage, position)
+                    itemClickListener?.invoke(position, item)
                 }
 
                 ivTop.visible(item.type == 1)
@@ -96,28 +108,25 @@ class ArticlesPagingAdapter(
                     ivStar.loadRes(R.drawable.icon_star)
                 }
                 ivStar.onClick {
-                    val like = item.collect.not()
-                    if(item.collect){
+                    if (item.collect) {
                         XPopup.Builder(holder.binding.root.context)
-                            .asConfirm("提示", "您已收藏, 您要取消收藏吗?") {
-                                listener?.invoke(item.id, like)
-                                item.collect = item.collect.not()
-                                // 本地处理
-                                if (like) {
-                                    ivStar.loadRes(R.drawable.icon_star_selected)
-                                } else {
-                                    ivStar.loadRes(R.drawable.icon_star)
-                                }
+                            .asConfirm("移除收藏", "《${item.title}》") {
+                                likeClickListener?.invoke(
+                                    LikeData(
+                                        id = item.id,
+                                        like = false,
+                                        position = position,
+                                    )
+                                )
                             }.show()
-                    }else{
-                        listener?.invoke(item.id, like)
-                        item.collect = item.collect.not()
-                        // 本地处理
-                        if (like) {
-                            ivStar.loadRes(R.drawable.icon_star_selected)
-                        } else {
-                            ivStar.loadRes(R.drawable.icon_star)
-                        }
+                    } else {
+                        likeClickListener?.invoke(
+                            LikeData(
+                                id = item.id,
+                                like = true,
+                                position = position,
+                            )
+                        )
                     }
                 }
 
@@ -133,12 +142,6 @@ class ArticlesPagingAdapter(
                 false
             )
         )
-    }
-
-    fun updateLikeItem(it: WebData) {
-        val item = getItem(it.listPosition!!)!!
-        item.collect = it.like!!
-        notifyItemChanged(it.listPosition)
     }
 
 }

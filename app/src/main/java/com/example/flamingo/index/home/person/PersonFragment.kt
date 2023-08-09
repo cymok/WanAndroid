@@ -23,10 +23,15 @@ import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.postEvent
 import splitties.views.onClick
 
-class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>() {
+class PersonFragment private constructor() :
+    VVMBaseFragment<PersonViewModel, FragmentPersonBinding>() {
 
     override val viewModel: PersonViewModel get() = getViewModel()
     override val binding: FragmentPersonBinding by viewBinding(CreateMethod.INFLATE)
+
+    companion object {
+        fun getInstance() = PersonFragment()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,15 +117,13 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
     override fun observeBus() {
         // tab 切换时
         observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
-            val index = arguments?.getInt("homeIndex")
-            if (it == index && lifecycle.currentState == Lifecycle.State.RESUMED) {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                 initData()
             }
         }
         // 再次点击 tab 刷新时
         observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
-            val index = arguments?.getInt("homeIndex")
-            if (it == index && lifecycle.currentState == Lifecycle.State.RESUMED) {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.refresh.isRefreshing = true
                 initData()
             }

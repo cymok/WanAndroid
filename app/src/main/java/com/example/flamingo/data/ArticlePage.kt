@@ -4,6 +4,9 @@ import androidx.annotation.StringDef
 
 @StringDef(
     *[
+        ArticlePage.PERSON,
+        ArticlePage.MAIN,
+        ArticlePage.DRAWER,
         ArticlePage.HOME,
         ArticlePage.STUDY,
         ArticlePage.SQUARE,
@@ -22,6 +25,9 @@ annotation class ArticlePage {
 
     companion object {
 
+        const val PERSON = "靓仔"
+        const val MAIN = "MAIN"
+        const val DRAWER = "DRAWER"
         const val HOME = "推荐"
         const val STUDY = "学习路线"
         const val SQUARE = "广场"

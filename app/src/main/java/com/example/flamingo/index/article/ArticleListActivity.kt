@@ -8,16 +8,17 @@ import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.databinding.ActivityArticlesBinding
+import com.example.flamingo.ui.getParent
 import com.example.flamingo.utils.toast
 
 class ArticleListActivity : VBaseActivity<ActivityArticlesBinding>() {
 
     companion object {
 
-        fun start(@ArticlePage whichPage: String) {
+        fun start(@ArticlePage pagePath: List<String>) {
             ActivityUtils.startActivity(
                 Intent(App.INSTANCE, ArticleListActivity::class.java).apply {
-                    putExtra("whichPage", whichPage)
+                    putStringArrayListExtra("pagePath", pagePath as ArrayList<String>)
                 }
             )
         }
@@ -25,38 +26,42 @@ class ArticleListActivity : VBaseActivity<ActivityArticlesBinding>() {
 
     override val binding by lazy { ActivityArticlesBinding.inflate(layoutInflater) }
 
+    private val pagePath: List<String> by lazy {
+        val pagePath = intent.getStringArrayListExtra("pagePath") ?: listOf<String>()
+        mutableListOf<String>().apply {
+            addAll(pagePath)
+            add(ArticlePage.ARTICLE_LIST)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
 
-            val whichPage = intent.getStringExtra("whichPage")
+            supportActionBar?.title = pagePath.getParent()
 
-            supportActionBar?.title = whichPage
-
-            when (whichPage) {
+            when (pagePath.getParent()) {
                 ArticlePage.HOME,
                 ArticlePage.SQUARE,
                 -> {
                     supportFragmentManager.beginTransaction()
                         .replace(
                             binding.root.id,
-                            ArticleListFragment.getInstance(whichPage, null)
+                            ArticleListFragment.getInstance(pagePath, null)
                         )
                         .commitNow()
                 }
 
-/*
-                ArticlePage.PROJECT,
-                ArticlePage.SUBSCRIBE,
-                -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(
-                            binding.root.id,
-                            ArticleTreeFragment.getInstance(whichPage, null)
-                        )
-                        .commitNow()
-                }
-*/
+//                ArticlePage.PROJECT,
+//                ArticlePage.SUBSCRIBE,
+//                -> {
+//                    supportFragmentManager.beginTransaction()
+//                        .replace(
+//                            binding.root.id,
+//                            ArticleTreeFragment.getInstance(pagePath, null)
+//                        )
+//                        .commitNow()
+//                }
 
                 else -> {
                     toast("开发中")

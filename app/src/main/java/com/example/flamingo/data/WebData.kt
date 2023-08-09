@@ -8,7 +8,7 @@ data class WebData(
     val id: Int,
     val url: String,
     val title: String? = null,
-    var like: Boolean? = null,
-    val requestPage: String? = null,
-    val listPosition: Int? = null,
+    var like: Boolean,
+    val position: Int,
+    var position2: Int? = null, // 适配二维列表
 ) : Parcelable

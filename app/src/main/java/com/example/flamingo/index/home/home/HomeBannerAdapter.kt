@@ -3,16 +3,28 @@ package com.example.flamingo.index.home.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.Banner
 import com.example.flamingo.data.BannerItem
+import com.example.flamingo.data.LikeData
 import com.example.flamingo.databinding.ViewBannerBinding
-import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.load
 import com.youth.banner.adapter.BannerAdapter
 import splitties.views.onClick
 
-class HomeBannerAdapter(list: Banner) : BannerAdapter<BannerItem, HomeBannerViewHolder>(list) {
+class HomeBannerAdapter(list: Banner) :
+    BannerAdapter<BannerItem, HomeBannerViewHolder>(list) {
+
+    private var bannerClickListener: ((Int, Int, BannerItem) -> Unit)? = null
+
+    fun onClick(listener: ((Int, Int, BannerItem) -> Unit)) {
+        bannerClickListener = listener
+    }
+
+    fun notifyLikeChanged(likeData: LikeData) {
+        val item = getData(likeData.position2!!)
+        item.collect = likeData.like
+        notifyItemChanged(likeData.position2)
+    }
 
     override fun onCreateHolder(parent: ViewGroup, viewType: Int): HomeBannerViewHolder {
         return HomeBannerViewHolder(
@@ -34,7 +46,11 @@ class HomeBannerAdapter(list: Banner) : BannerAdapter<BannerItem, HomeBannerView
             )
             iv.load(data.imagePath)
             root.onClick {
-                WebActivity.start(data, ArticlePage.HOME, 0) // banner 在外层列表 index == 0
+                bannerClickListener?.invoke(
+                    0, // banner 在外层列表 index == 0
+                    position,
+                    data,
+                )
             }
         }
     }

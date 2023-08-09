@@ -1,6 +1,7 @@
 package com.example.flamingo.index.home.home
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Lifecycle
@@ -12,19 +13,35 @@ import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.Banner
+import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.FragmentHomeBinding
 import com.example.flamingo.index.home.home.paging.HomePagingAdapter
+import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.getViewModel
+import com.example.flamingo.utils.newIntent
 import com.example.flamingo.utils.observeEvent
+import com.example.flamingo.utils.registerResultOK
 import splitties.views.topPadding
 
-class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
+class HomeFragment private constructor() : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override val viewModel: HomeViewModel get() = getViewModel()
     override val binding: FragmentHomeBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter = HomePagingAdapter(this, Banner())
+
+    private val pagePath: List<String> by lazy {
+        mutableListOf<String>().apply {
+            val parentPath = arguments?.getStringArrayList("pagePath") ?: arrayListOf()
+            addAll(parentPath)
+            add(ArticlePage.HOME)
+        }
+    }
+
+    companion object {
+        fun getInstance() = HomeFragment()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,17 +59,19 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
         viewModel.banner.observe(viewLifecycleOwner) {
             adapter.setBanner(it)
         }
+        viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+            binding.refresh.isRefreshing = false
+        }
+        viewModel.likeStatus.observe(viewLifecycleOwner) {
+            adapter.notifyLikeChanged(it)
+        }
     }
 
     @SuppressLint("SimpleDateFormat")
     private fun initView() {
         val recyclerView = binding.rv
         recyclerView.adapter = adapter
-
-        viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
-            adapter.submitData(lifecycle, it)
-            binding.refresh.isRefreshing = false
-        }
 
         adapter.addLoadStateListener {
             when (it.refresh) {
@@ -74,8 +93,54 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 }
             }
         }
-        adapter.setLickListener { id, like ->
-            viewModel.like(id, like)
+
+        adapter.onLikeClick {
+            viewModel.like(it)
+        }
+
+        val launcher = registerResultOK {
+            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it?.getParcelableExtra("result", WebData::class.java)
+            } else {
+                it?.getParcelableExtra("result")
+            }
+            result?.let { data ->
+                adapter.notifyLikeChanged(
+                    LikeData(
+                        id = data.id,
+                        like = data.like,
+                        position = data.position,
+                        position2 = data.position2,
+                    )
+                )
+            }
+        }
+        adapter.onBannerClick { position, position2, bannerItem ->
+            launcher.launch(newIntent<WebActivity> {
+                putExtra(
+                    "data", WebData(
+                        id = bannerItem.id,
+                        url = bannerItem.url,
+                        title = bannerItem.title,
+                        like = bannerItem.collect,
+                        position = position,
+                        position2 = position2,
+                    )
+                )
+            })
+        }
+        adapter.onItemClick { position, dataX ->
+            launcher.launch(newIntent<WebActivity> {
+                putExtra(
+                    "data", WebData(
+                        id = dataX.id,
+                        url = dataX.link,
+                        title = dataX.title,
+                        like = dataX.collect,
+                        position = position,
+                    )
+                )
+            })
         }
 
         binding.refresh.setOnRefreshListener {
@@ -84,17 +149,11 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     override fun observeBus() {
-        observeEvent<WebData>(EventBus.UPDATE_LIKE) {
-            if (it.requestPage == ArticlePage.HOME) {
-                adapter.updateLikeItem(it)
-            }
-        }
         observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }
         observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
-            val index = arguments?.getInt("homeIndex")
-            if (it == index && lifecycle.currentState == Lifecycle.State.RESUMED) {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.rv.smoothScrollToPosition(0)
                 binding.rv.post {
                     binding.refresh.isRefreshing = true

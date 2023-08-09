@@ -7,11 +7,9 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.flamingo.R
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.DataX
-import com.example.flamingo.data.WebData
+import com.example.flamingo.data.LikeData
 import com.example.flamingo.databinding.RvItemArticleBinding
-import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.load
 import com.example.flamingo.utils.loadRes
 import com.example.flamingo.utils.visible
@@ -29,10 +27,22 @@ class ProjectTabPagingAdapter :
         }
     }) {
 
-    var listener: ((Int, Boolean) -> Unit)? = null
+    var likeClickListener: ((LikeData) -> Unit)? = null
 
-    fun setLickListener(listener: (Int, Boolean) -> Unit) {
-        this.listener = listener
+    fun onLikeClick(listener: (LikeData) -> Unit) {
+        likeClickListener = listener
+    }
+
+    fun notifyLikeChanged(likeData: LikeData) {
+        val item = getItem(likeData.position)!!
+        item.collect = likeData.like
+        notifyItemChanged(likeData.position)
+    }
+
+    var itemClickListener: ((Int, DataX) -> Unit)? = null
+
+    fun onItemClick(listener: (Int, DataX) -> Unit) {
+        itemClickListener = listener
     }
 
     @SuppressLint("SetTextI18n")
@@ -57,7 +67,7 @@ class ProjectTabPagingAdapter :
                 ivImg.visible(item.envelopePic.isNotBlank())
 
                 root.setOnClickListener {
-                    WebActivity.start(item, ArticlePage.PROJECT, position)
+                    itemClickListener?.invoke(position, item)
                 }
 
                 ivTop.visible(item.type == 1)
@@ -70,28 +80,25 @@ class ProjectTabPagingAdapter :
                     ivStar.loadRes(R.drawable.icon_star)
                 }
                 ivStar.onClick {
-                    val like = item.collect.not()
                     if (item.collect) {
                         XPopup.Builder(holder.binding.root.context)
-                            .asConfirm("提示", "您已收藏, 您要取消收藏吗?") {
-                                listener?.invoke(item.id, like)
-                                item.collect = item.collect.not()
-                                // 本地处理
-                                if (like) {
-                                    ivStar.loadRes(R.drawable.icon_star_selected)
-                                } else {
-                                    ivStar.loadRes(R.drawable.icon_star)
-                                }
+                            .asConfirm("移除收藏", "《${item.title}》") {
+                                likeClickListener?.invoke(
+                                    LikeData(
+                                        id = item.id,
+                                        like = false,
+                                        position = position,
+                                    )
+                                )
                             }.show()
                     } else {
-                        listener?.invoke(item.id, like)
-                        item.collect = item.collect.not()
-                        // 本地处理
-                        if (like) {
-                            ivStar.loadRes(R.drawable.icon_star_selected)
-                        } else {
-                            ivStar.loadRes(R.drawable.icon_star)
-                        }
+                        likeClickListener?.invoke(
+                            LikeData(
+                                id = item.id,
+                                like = true,
+                                position = position,
+                            )
+                        )
                     }
                 }
 
@@ -107,12 +114,6 @@ class ProjectTabPagingAdapter :
                 false
             )
         )
-    }
-
-    fun updateLikeItem(it: WebData) {
-        val item = getItem(it.listPosition!!)!!
-        item.collect = it.like!!
-        notifyItemChanged(it.listPosition)
     }
 
 }

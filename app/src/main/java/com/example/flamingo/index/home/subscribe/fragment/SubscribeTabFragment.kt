@@ -10,13 +10,16 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.ArticlesTreeItem
+import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.FragmentSubscribeTabBinding
 import com.example.flamingo.index.home.subscribe.fragment.paging.SubscribePagingAdapter
+import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.getViewModel
+import com.example.flamingo.utils.newIntent
 import com.example.flamingo.utils.observeEvent
+import com.example.flamingo.utils.registerResultOK
 
 class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubscribeTabBinding>() {
 
@@ -25,13 +28,11 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
 
     private val adapter by lazy { SubscribePagingAdapter() }
 
-    private var homeIndex: Int = -1
     private var item: ArticlesTreeItem? = null
 
     companion object {
-        fun getInstance(index: Int, data: ArticlesTreeItem) = SubscribeTabFragment().apply {
+        fun getInstance(data: ArticlesTreeItem) = SubscribeTabFragment().apply {
             arguments = Bundle().apply {
-                putInt("homeIndex", index)
                 putParcelable("data", data)
             }
         }
@@ -40,7 +41,6 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeIndex = arguments?.getInt("homeIndex") ?: homeIndex
         item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable("data", ArticlesTreeItem::class.java)
         } else {
@@ -48,17 +48,23 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
         }
 
         initView()
+        observe()
     }
 
-    private fun initView() {
-        val recyclerView = binding.rv
-        recyclerView.adapter = adapter
-
+    private fun observe() {
         viewModel.getArticlesWithPager(id = item?.id ?: 0)
             .observe(viewLifecycleOwner) {
                 adapter.submitData(lifecycle, it)
                 binding.refresh.isRefreshing = false
             }
+        viewModel.likeStatus.observe(viewLifecycleOwner) {
+            adapter.notifyLikeChanged(it)
+        }
+    }
+
+    private fun initView() {
+        val recyclerView = binding.rv
+        recyclerView.adapter = adapter
 
         adapter.addLoadStateListener {
             when (it.refresh) {
@@ -80,8 +86,39 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
                 }
             }
         }
-        adapter.setLickListener { id, like ->
-            viewModel.like(id, like)
+
+        adapter.onLikeClick {
+            viewModel.like(it)
+        }
+
+        val launcher = registerResultOK {
+            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it?.getParcelableExtra("result", WebData::class.java)
+            } else {
+                it?.getParcelableExtra("result")
+            }
+            result?.let { data ->
+                adapter.notifyLikeChanged(
+                    LikeData(
+                        id = data.id,
+                        like = data.like,
+                        position = data.position,
+                    )
+                )
+            }
+        }
+        adapter.onItemClick { position, dataX ->
+            launcher.launch(newIntent<WebActivity> {
+                putExtra(
+                    "data", WebData(
+                        id = dataX.id,
+                        url = dataX.link,
+                        title = dataX.title,
+                        like = dataX.collect,
+                        position = position,
+                    )
+                )
+            })
         }
 
         binding.refresh.setOnRefreshListener {
@@ -90,16 +127,11 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
     }
 
     override fun observeBus() {
-        observeEvent<WebData>(EventBus.UPDATE_LIKE) {
-            if(it.requestPage == ArticlePage.SUBSCRIBE){
-                adapter.updateLikeItem(it)
-            }
-        }
         observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }
         observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
-            if (it == homeIndex && lifecycle.currentState == Lifecycle.State.RESUMED) {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.rv.smoothScrollToPosition(0)
                 binding.rv.post {
                     binding.refresh.isRefreshing = true

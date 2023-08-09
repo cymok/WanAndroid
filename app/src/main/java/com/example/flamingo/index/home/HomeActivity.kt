@@ -22,6 +22,7 @@ import com.example.flamingo.databinding.ViewTabLayoutBinding
 import com.example.flamingo.index.article.ArticleListActivity
 import com.example.flamingo.index.home.home.HomeFragment
 import com.example.flamingo.index.home.person.PersonFragment
+import com.example.flamingo.index.home.project.ProjectActivity
 import com.example.flamingo.index.home.project.ProjectFragment
 import com.example.flamingo.index.home.square.SquareFragment
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
@@ -35,7 +36,7 @@ import com.example.flamingo.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
-import splitties.bundle.put
+import splitties.activities.start
 import splitties.views.onClick
 
 class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
@@ -45,11 +46,11 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     }
 
     private val fragments = listOf(
-        HomeFragment().apply { arguments = Bundle().apply { put("homeIndex", 0) } },
-        ProjectFragment().apply { arguments = Bundle().apply { put("homeIndex", 1) } },
-        SquareFragment().apply { arguments = Bundle().apply { put("homeIndex", 2) } },
-        SubscribeFragment().apply { arguments = Bundle().apply { put("homeIndex", 3) } },
-        PersonFragment().apply { arguments = Bundle().apply { put("homeIndex", 4) } },
+        HomeFragment.getInstance(),
+        ProjectFragment.getInstance(true),
+        SquareFragment.getInstance(),
+        SubscribeFragment.getInstance(true),
+        PersonFragment.getInstance(),
     )
     private val titles = listOf("推荐", "项目", "广场", "订阅", "靓仔")
     private val tabIcons = listOf(
@@ -86,49 +87,48 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     private fun initDrawerLayout() {
         binding.viewInclude.run {
             tvHome.onClick {
-                ArticleListActivity.start(ArticlePage.HOME)
+                ArticleListActivity.start(arrayListOf(ArticlePage.HOME))
                 binding.root.close()
             }
             tvStudy.onClick {
-                ArticleListActivity.start(ArticlePage.STUDY)
+                ArticleListActivity.start(arrayListOf(ArticlePage.STUDY))
                 binding.root.close()
             }
             tvSquare.onClick {
-                ArticleListActivity.start(ArticlePage.SQUARE)
+                ArticleListActivity.start(arrayListOf(ArticlePage.SQUARE))
                 binding.root.close()
             }
             tvNavigation.onClick {
-                ArticleListActivity.start(ArticlePage.NAV)
+                ArticleListActivity.start(arrayListOf(ArticlePage.NAV))
                 binding.root.close()
             }
             tvTutorials.onClick {
-                ArticleListActivity.start(ArticlePage.TUTORIALS)
+                ArticleListActivity.start(arrayListOf(ArticlePage.TUTORIALS))
                 binding.root.close()
             }
             tvQa.onClick {
-                ArticleListActivity.start(ArticlePage.QA)
+                ArticleListActivity.start(arrayListOf(ArticlePage.QA))
                 binding.root.close()
             }
             tvProjectsHot.onClick {
-                ArticleListActivity.start(ArticlePage.PROJECT_HOT)
+                ArticleListActivity.start(arrayListOf(ArticlePage.PROJECT_HOT))
                 binding.root.close()
             }
             tvSubscribe.onClick {
-                ArticleListActivity.start(ArticlePage.SUBSCRIBE)
+                ArticleListActivity.start(arrayListOf(ArticlePage.SUBSCRIBE))
                 binding.root.close()
             }
             tvProjects.onClick {
-                ArticleListActivity.start(ArticlePage.PROJECT)
+//                ArticleListActivity.start(arrayListOf(ArticlePage.PROJECT))
+                start<ProjectActivity> {}
                 binding.root.close()
             }
             tvTools.onClick {
-                ArticleListActivity.start(ArticlePage.TOOLS)
+                ArticleListActivity.start(arrayListOf(ArticlePage.TOOLS))
                 binding.root.close()
             }
         }
     }
-
-//    private val floatViewHelper by lazy { FloatViewHelper111() }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
@@ -146,11 +146,6 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                         }
                     }
                 }
-
-//                if (floatViewHelper.isAvailable().not())
-//                    floatViewHelper.init(this, R.drawable.icon_person_selected) {
-//                        binding.root.open()
-//                    }
             }
         }
     }

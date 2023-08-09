@@ -39,7 +39,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
         }
         binding.llLogout.onClick {
             XPopup.Builder(this)
-                .asConfirm("提示", "要注销登录吗?") {
+                .asConfirm("移除收藏", "要注销登录吗?") {
                     viewModel.logout()
                 }.show()
         }

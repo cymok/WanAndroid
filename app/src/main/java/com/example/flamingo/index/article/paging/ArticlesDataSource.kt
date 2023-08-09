@@ -5,9 +5,10 @@ import androidx.paging.PagingState
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.DataX
 import com.example.flamingo.network.repository.WanRepository
+import com.example.flamingo.ui.getParent
 
 class ArticlesDataSource(
-    @ArticlePage private val whichPage: String,
+    @ArticlePage private val pagePath: List<String>,
     private val id: Int = 0,
 ) :
     PagingSource<Int, DataX>() {
@@ -20,7 +21,7 @@ class ArticlesDataSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataX> {
         return try {
 
-            val firstPage = when (whichPage) {
+            val firstPage = when (pagePath.getParent()) {
                 ArticlePage.HOME,
                 ArticlePage.SQUARE,
                 -> 0
@@ -58,7 +59,7 @@ class ArticlesDataSource(
         }
     }
 
-    private suspend fun requestList(page: Int) = when (whichPage) {
+    private suspend fun requestList(page: Int) = when (pagePath.getParent()) {
         ArticlePage.HOME -> {
             WanRepository.getHomeList(page = page)
         }

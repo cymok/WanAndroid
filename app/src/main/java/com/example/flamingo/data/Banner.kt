@@ -10,5 +10,6 @@ data class BannerItem(
     val order: Int,
     val title: String,
     val type: Int,
-    val url: String
+    val url: String,
+    var collect: Boolean, // 接口没有返回这个字段的
 )

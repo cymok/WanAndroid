@@ -14,12 +14,23 @@ import com.example.flamingo.index.home.project.fragment.ProjectTabFragment
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.observeEvent
 import com.google.android.material.tabs.TabLayoutMediator
+import splitties.bundle.put
 import splitties.views.topPadding
 
-class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding>() {
+class ProjectFragment private constructor() :
+    VVMBaseFragment<ProjectViewModel, FragmentProjectBinding>() {
 
     override val viewModel: ProjectViewModel get() = getViewModel()
     override val binding: FragmentProjectBinding by viewBinding(CreateMethod.INFLATE)
+
+    companion object {
+        fun getInstance(isPaddingTop: Boolean) =
+            ProjectFragment().apply {
+                arguments = Bundle().apply {
+                    put("isPaddingTop", isPaddingTop)
+                }
+            }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,8 +39,12 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
     }
 
     private fun initImmersion() {
-        val statusBarHeight = BarUtils.getStatusBarHeight()
-        binding.tabLayout.topPadding = statusBarHeight
+        val isPaddingTop = arguments?.getBoolean("isPaddingTop")
+        binding.tabLayout.topPadding = if (isPaddingTop == true) {
+            BarUtils.getStatusBarHeight()
+        } else {
+            0
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -38,10 +53,7 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
             val nameList = it.map { it.name }
 
             // ViewPager
-            val list = it.map {
-                val index = this.arguments?.getInt("homeIndex") ?: -1
-                ProjectTabFragment.getInstance(index, it)
-            }
+            val list = it.map { ProjectTabFragment.getInstance(it) }
             val vpAdapter = VpFragmentAdapter(this, list)
             binding.viewpager.adapter = vpAdapter
             binding.viewpager.currentItem = 0

@@ -1,6 +1,7 @@
 package com.example.flamingo.index.common
 
 import android.annotation.SuppressLint
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -10,6 +11,7 @@ import com.example.flamingo.R
 import com.example.flamingo.data.DataX
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.databinding.RvItemArticleBinding
+import com.example.flamingo.utils.gone
 import com.example.flamingo.utils.load
 import com.example.flamingo.utils.loadRes
 import com.example.flamingo.utils.visible
@@ -60,9 +62,9 @@ class ArticleListPagingAdapter :
                     "作者: ${item.author}"
                 }
 
-                tvTitle.text = item.title
+                tvTitle.text = Html.fromHtml(item.title)
 
-                tvSubtitle.text = item.desc
+                tvSubtitle.text = Html.fromHtml(item.desc)
                 tvSubtitle.visible(item.desc.isNotBlank())
 
                 tvClassification.text = listOf(
@@ -86,7 +88,12 @@ class ArticleListPagingAdapter :
                 ivTop.visible(item.type == 1)
                 ivNew.visible(item.fresh)
 
-                tag.adapter = ArticleTagAdapter(item.tags)
+                if (item.tags.isNullOrEmpty().not()) {
+                    tag.adapter = ArticleTagAdapter(item.tags!!)
+                    tag.visible()
+                } else {
+                    tag.gone()
+                }
 
                 // 收藏
                 if (item.collect) {

@@ -4,6 +4,8 @@ import com.example.flamingo.data.Articles
 import com.example.flamingo.data.ArticlesTree
 import com.example.flamingo.data.Banner
 import com.example.flamingo.data.DataX
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -74,9 +76,9 @@ interface WanService {
     ): ApiResult<Articles>
 
     // 最新项目 Tab (可以作为一个分类 插在'项目分类'最前面)
-    @GET("/article/listproject/0/json")
+    @GET("/article/listproject/{page}/json")
     suspend fun getNewProjectList(
-        @Path("page") page: Int = 1,
+        @Path("page") page: Int = 0,
         @Query("page_size") pageSize: Int = 10,
     ): ApiResult<Articles>
 
@@ -100,7 +102,7 @@ interface WanService {
     ): ApiResult<Articles>
 
     // 在某个公众号中搜索历史文章
-    @GET("/wxarticle/list/405/1/json?k=Java")
+    @GET("/wxarticle/list/{id}/{page}/json?k=Java")
     suspend fun searchWxArticleList(
         @Path("id") id: Int,
         @Path("page") page: Int = 1,
@@ -109,11 +111,12 @@ interface WanService {
     ): ApiResult<Articles>
 
     // 搜索 (支持多个关键词，用空格隔开)
+    @FormUrlEncoded
     @POST("/article/query/{page}/json")
     suspend fun search(
         @Path("page") page: Int = 0,
         @Query("page_size") pageSize: Int = 10,
-        @Path("k") k: String,
+        @Field("k") k: String,
     ): ApiResult<Articles>
 
     // 问答

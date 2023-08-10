@@ -24,6 +24,22 @@
             android:background="@color/divider" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="搜索" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,7 +144,7 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="16dp"
-            android:text="热门项目" />
+            android:text="最新项目" />
 
         <View
             android:layout_width="match_parent"

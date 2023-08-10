@@ -51,6 +51,10 @@ object WanRepository {
         apiService.getProjectList(id = id, page = page).apiData()!!
     }
 
+    suspend fun getNewProjectList(page: Int) = withContext(Dispatchers.IO) {
+        apiService.getNewProjectList(page = page).apiData()!!
+    }
+
     suspend fun getSquareList(page: Int) = withContext(Dispatchers.IO) {
         squareService.getSquareList(page = page).apiData()!!
     }
@@ -73,11 +77,15 @@ object WanRepository {
     }
 
     suspend fun unlikeMyLike(id: Int, originId: Int) = withContext(Dispatchers.IO) {
-        likeService.unlikeMyLike(id = id, originId = originId ).apiData()
+        likeService.unlikeMyLike(id = id, originId = originId).apiData()
     }
 
     suspend fun getLikeList(page: Int) = withContext(Dispatchers.IO) {
         likeService.getLikeList(page).apiData()!!
+    }
+
+    suspend fun search(page: Int, key: String) = withContext(Dispatchers.IO) {
+        apiService.search(page = page, k = key).apiData()!!
     }
 
 }

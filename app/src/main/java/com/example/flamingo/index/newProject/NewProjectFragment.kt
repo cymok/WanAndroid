@@ -1,62 +1,40 @@
-package com.example.flamingo.index.home.project.fragment
+package com.example.flamingo.index.newProject
 
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Lifecycle
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
-import com.example.flamingo.constant.EventBus
-import com.example.flamingo.data.ArticlesTreeItem
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
-import com.example.flamingo.databinding.FragmentProjectTabBinding
+import com.example.flamingo.databinding.FragmentArticleListBinding
 import com.example.flamingo.index.common.ArticleListPagingAdapter
 import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.newIntent
-import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.registerResultOK
 
-class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectTabBinding>() {
+class NewProjectFragment : VVMBaseFragment<NewProjectViewModel, FragmentArticleListBinding>() {
 
-    override val viewModel: ProjectTabViewModel get() = getViewModel()
-    override val binding: FragmentProjectTabBinding by viewBinding(CreateMethod.INFLATE)
+    override val viewModel: NewProjectViewModel by lazy { getViewModel() }
+    override val binding: FragmentArticleListBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter by lazy { ArticleListPagingAdapter() }
 
-    private var item: ArticlesTreeItem? = null
-
-    companion object {
-        fun getInstance(data: ArticlesTreeItem?) = ProjectTabFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable("data", data)
-            }
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable("data", ArticlesTreeItem::class.java)
-        } else {
-            arguments?.getParcelable("data")
-        }
-
         initView()
         observe()
     }
 
     private fun observe() {
-        viewModel.getArticlesWithPager(id = item?.id)
-            .observe(viewLifecycleOwner) {
-                adapter.submitData(lifecycle, it)
-                binding.refresh.isRefreshing = false
-            }
+        viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+            binding.refresh.isRefreshing = false
+        }
         viewModel.likeStatus.observe(viewLifecycleOwner) {
             adapter.notifyLikeChanged(it)
         }
@@ -88,7 +66,7 @@ class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectT
         }
 
         adapter.onLikeClick {
-            viewModel.like(it)
+            viewModel.like(it, true)
         }
 
         val launcher = registerResultOK {
@@ -111,7 +89,9 @@ class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectT
             launcher.launch(newIntent<WebActivity> {
                 putExtra(
                     "data", WebData(
+                        isMyLike = true,
                         id = dataX.id,
+                        originId = dataX.originId,
                         url = dataX.link,
                         title = dataX.title,
                         like = dataX.collect,
@@ -123,21 +103,6 @@ class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectT
 
         binding.refresh.setOnRefreshListener {
             adapter.refresh()
-        }
-    }
-
-    override fun observeBus() {
-        observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
-
-        }
-        observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
-            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
-                binding.rv.smoothScrollToPosition(0)
-                binding.rv.post {
-                    binding.refresh.isRefreshing = true
-                    adapter.refresh()
-                }
-            }
         }
     }
 

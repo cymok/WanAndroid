@@ -8,6 +8,7 @@ import com.example.flamingo.network.api.WanService
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
+import com.google.gson.GsonBuilder
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -34,7 +35,9 @@ object ServiceCreator {
         .baseUrl(BASE_URL)
         .client(okHttpClient.build())
         .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder()
+            .disableHtmlEscaping() // 禁止 Html 转义
+            .create()))
 
     private val retrofit = builder.build()
 

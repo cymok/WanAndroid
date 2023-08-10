@@ -82,6 +82,14 @@
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
+            android:name=".index.newProject.NewProjectActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.search.SearchActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
             android:name=".index.home.project.ProjectActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />

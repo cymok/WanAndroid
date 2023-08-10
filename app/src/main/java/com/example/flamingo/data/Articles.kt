@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Articles(
     val curPage: Int,
-    val datas: List<DataX>,
+    val datas: MutableList<DataX>,
     val offset: Int,
     val over: Boolean,
     val pageCount: Int,
@@ -46,7 +46,7 @@ data class DataX(
     val shareUser: String,
     val superChapterId: Int,
     val superChapterName: String,
-    val tags: List<Tag>,
+    val tags: List<Tag>?,
     val title: String,
     val type: Int,
     val userId: Int,

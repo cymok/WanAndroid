@@ -17,6 +17,7 @@ import com.example.flamingo.databinding.RvItemBannerBinding
 import com.example.flamingo.index.common.ArticleTagAdapter
 import com.example.flamingo.index.home.home.HomeBannerAdapter
 import com.example.flamingo.index.home.home.HomeFragment
+import com.example.flamingo.utils.gone
 import com.example.flamingo.utils.load
 import com.example.flamingo.utils.loadRes
 import com.example.flamingo.utils.visible
@@ -97,7 +98,7 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
                         item.author
                     }
 
-                    tvTitle.text = item.title
+                    tvTitle.text = Html.fromHtml(item.title)
 
                     tvSubtitle.text = Html.fromHtml(item.desc)
                     tvSubtitle.visible(item.desc.isNotBlank())
@@ -123,7 +124,12 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
                     ivTop.visible(item.type == 1)
                     ivNew.visible(item.fresh)
 
-                    tag.adapter = ArticleTagAdapter(item.tags)
+                    if (item.tags.isNullOrEmpty().not()) {
+                        tag.adapter = ArticleTagAdapter(item.tags!!)
+                        tag.visible()
+                    } else {
+                        tag.gone()
+                    }
 
                     // 收藏
                     if (item.collect) {

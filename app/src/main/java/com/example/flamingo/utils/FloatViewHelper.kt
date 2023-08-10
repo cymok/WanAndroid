@@ -6,7 +6,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
 
 object FloatViewHelper {
@@ -29,7 +28,6 @@ object FloatViewHelper {
             x = loc?.x ?: (ScreenUtils.getScreenWidth() - width)
             y = loc?.y ?: (ScreenUtils.getScreenHeight() * (3 / 4f) - height / 2).toInt()
         }
-        LogUtils.e(params.toJson())
         window.windowManager.addView(view, params)
     }
 

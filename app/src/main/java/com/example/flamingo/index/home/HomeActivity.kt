@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.graphics.Color
+import android.graphics.Point
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -26,12 +27,17 @@ import com.example.flamingo.index.home.project.ProjectActivity
 import com.example.flamingo.index.home.project.ProjectFragment
 import com.example.flamingo.index.home.square.SquareFragment
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
+import com.example.flamingo.index.newProject.NewProjectActivity
+import com.example.flamingo.index.search.SearchActivity
 import com.example.flamingo.utils.DraggableViewHelper
 import com.example.flamingo.utils.FloatViewHelper
+import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.loadCircle
 import com.example.flamingo.utils.loadRes
 import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.postEvent
+import com.example.flamingo.utils.screenHeight
+import com.example.flamingo.utils.screenWidth
 import com.example.flamingo.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -72,6 +78,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     override val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
 
     private val floatView by lazy { AppCompatImageView(this) }
+    private val searchView by lazy { AppCompatImageView(this) }
 
     private var secondLastIndex = -1
     private var lastIndex = -1
@@ -86,6 +93,10 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
 
     private fun initDrawerLayout() {
         binding.viewInclude.run {
+            tvSearch.onClick {
+                start<SearchActivity> {}
+                binding.root.close()
+            }
             tvHome.onClick {
                 ArticleListActivity.start(arrayListOf(ArticlePage.HOME))
                 binding.root.close()
@@ -111,7 +122,8 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                 binding.root.close()
             }
             tvProjectsHot.onClick {
-                ArticleListActivity.start(arrayListOf(ArticlePage.PROJECT_HOT))
+//                ArticleListActivity.start(arrayListOf(ArticlePage.PROJECT_HOT))
+                start<NewProjectActivity> {}
                 binding.root.close()
             }
             tvSubscribe.onClick {
@@ -145,6 +157,18 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                             open()
                         }
                     }
+                }
+            }
+            if (searchView.isAttachedToWindow.not()) {
+                searchView.loadCircle(R.drawable.icon_search)
+                FloatViewHelper.showInWindow(
+                    window, searchView, loc = Point(
+                        (screenWidth - 50.dp2px), (screenHeight * (1 / 2f) - 25.dp2px).toInt()
+                    ), sizeDp = 50
+                )
+                DraggableViewHelper.intrude(searchView)
+                searchView.onClick {
+                    start<SearchActivity>()
                 }
             }
         }

@@ -13,13 +13,18 @@ import com.example.flamingo.network.repository.WanRepository
 class ProjectTabViewModel : LikeViewModel() {
 
     fun getArticlesWithPager(
-        id: Int,
+        id: Int?,
     ): LiveData<PagingData<DataX>> {
         val pager = Pager(PagingConfig(pageSize = 10)) {
-            ArticleListDataSource(firstPage = 1) {
-                WanRepository.getProjectList(id = id, page = it)
+            if (id == null) { // 前面手动加在最前面的null 最新项目
+                ArticleListDataSource(firstPage = 0) {
+                    WanRepository.getNewProjectList(page = it)
+                }
+            } else {
+                ArticleListDataSource(firstPage = 1) {
+                    WanRepository.getProjectList(id = id, page = it)
+                }
             }
-            ProjectTabDataSource(id = id)
         }
         return pager.liveData
     }

@@ -8,6 +8,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.BarUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
+import com.example.flamingo.data.ArticlesTreeItem
 import com.example.flamingo.databinding.FragmentProjectBinding
 import com.example.flamingo.index.home.VpFragmentAdapter
 import com.example.flamingo.index.home.project.fragment.ProjectTabFragment
@@ -49,16 +50,20 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
     @SuppressLint("NotifyDataSetChanged")
     private fun observe() {
         viewModel.articlesTree.observe(viewLifecycleOwner) {
-            val nameList = it.map { it.name }
+            val finalList = mutableListOf<ArticlesTreeItem?>().apply {
+                add(null) // 最新
+                addAll(it)
+            }
 
             // ViewPager
-            val list = it.map { ProjectTabFragment.getInstance(it) }
+            val list = finalList.map { ProjectTabFragment.getInstance(it) }
             val vpAdapter = VpFragmentAdapter(this, list)
             binding.viewpager.adapter = vpAdapter
             binding.viewpager.currentItem = 0
             binding.viewpager.offscreenPageLimit = 2
 
             // TabLayout
+            val nameList = finalList.map { it?.name ?: "最新" }
             TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
                 tab.text = nameList[position]
             }.attach()

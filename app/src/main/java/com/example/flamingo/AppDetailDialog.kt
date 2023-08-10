@@ -90,7 +90,7 @@ class AppDetailDialog(context: Context?, var env: String = "", var uid: String =
             - App -
             [id${"\t\t\t\t"}] ${BuildConfig.APPLICATION_ID}
             [ver${"\t\t\t"}] ${BuildConfig.VERSION_NAME}_${BuildConfig.VERSION_CODE}
-            [flavor] ${BuildConfig.FLAVOR}_${if (BuildConfig.DEBUG) "Debug" else "Release"}
+            [flavor] ${BuildConfig.FLAVOR}${if (BuildConfig.DEBUG) "Debug" else "Release"}
             [env${"\t\t\t"}] $env
             [uid${"\t\t\t"}] $uid
             - App.Build -

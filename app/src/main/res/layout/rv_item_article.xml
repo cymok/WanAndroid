@@ -17,7 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="16dp">
+            android:paddingBottom="0dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_top"
@@ -115,19 +115,11 @@
                 tools:text="分类分类分类分类" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:layout_constraintStart_toEndOf="@id/tv_classification"
-                app:layout_constraintTop_toBottomOf="@id/barrier"
-                tools:text="标签标签标签标签标签标签" />
-
-            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:textColor="@color/transparent30"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -155,6 +147,18 @@
                 app:layout_constraintBottom_toBottomOf="@id/tv_classification"
                 app:layout_constraintEnd_toEndOf="@id/tv_title"
                 app:layout_constraintTop_toTopOf="@id/tv_classification" />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/tag"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginVertical="5dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tv_title"
+                app:layout_constraintStart_toStartOf="@id/tv_classification"
+                app:layout_constraintTop_toBottomOf="@id/tv_classification"
+                tools:text="标签标签标签标签标签标签" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

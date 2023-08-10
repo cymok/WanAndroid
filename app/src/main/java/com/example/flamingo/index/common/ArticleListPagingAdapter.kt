@@ -86,6 +86,8 @@ class ArticleListPagingAdapter :
                 ivTop.visible(item.type == 1)
                 ivNew.visible(item.fresh)
 
+                tag.adapter = ArticleTagAdapter(item.tags)
+
                 // 收藏
                 if (item.collect) {
                     ivStar.loadRes(R.drawable.icon_like_selected)

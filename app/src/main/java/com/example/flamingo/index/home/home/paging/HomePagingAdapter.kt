@@ -14,6 +14,7 @@ import com.example.flamingo.data.DataX
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.databinding.RvItemArticleBinding
 import com.example.flamingo.databinding.RvItemBannerBinding
+import com.example.flamingo.index.common.ArticleTagAdapter
 import com.example.flamingo.index.home.home.HomeBannerAdapter
 import com.example.flamingo.index.home.home.HomeFragment
 import com.example.flamingo.utils.load
@@ -121,6 +122,8 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
 
                     ivTop.visible(item.type == 1)
                     ivNew.visible(item.fresh)
+
+                    tag.adapter = ArticleTagAdapter(item.tags)
 
                     // 收藏
                     if (item.collect) {

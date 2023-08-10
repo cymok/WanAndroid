@@ -158,7 +158,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
 
         val adapter = HomeAdapter(this, fragments)
         viewpager.adapter = adapter
-        viewpager.currentItem = 2
+        viewpager.currentItem = 0
         viewpager.offscreenPageLimit = 1
 
         viewpager.isUserInputEnabled = false

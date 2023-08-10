@@ -11,7 +11,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.Banner
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
@@ -24,24 +23,12 @@ import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.registerResultOK
 import splitties.views.topPadding
 
-class HomeFragment private constructor() : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
+class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override val viewModel: HomeViewModel get() = getViewModel()
     override val binding: FragmentHomeBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter = HomePagingAdapter(this, Banner())
-
-    private val pagePath: List<String> by lazy {
-        mutableListOf<String>().apply {
-            val parentPath = arguments?.getStringArrayList("pagePath") ?: arrayListOf()
-            addAll(parentPath)
-            add(ArticlePage.HOME)
-        }
-    }
-
-    companion object {
-        fun getInstance() = HomeFragment()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

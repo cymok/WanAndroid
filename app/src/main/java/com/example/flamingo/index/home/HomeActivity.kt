@@ -46,11 +46,11 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     }
 
     private val fragments = listOf(
-        HomeFragment.getInstance(),
+        HomeFragment(),
         ProjectFragment.getInstance(true),
-        SquareFragment.getInstance(),
+        SquareFragment(),
         SubscribeFragment.getInstance(true),
-        PersonFragment.getInstance(),
+        PersonFragment(),
     )
     private val titles = listOf("推荐", "项目", "广场", "订阅", "靓仔")
     private val tabIcons = listOf(
@@ -58,7 +58,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
         R.drawable.icon_project,
         R.drawable.icon_squar,
         R.drawable.icon_subscribe,
-        R.drawable.icon_person
+        R.drawable.icon_conan
     )
 
     private val tabSelectedIcons = listOf(
@@ -66,7 +66,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
         R.drawable.icon_project_selected,
         R.drawable.icon_squar_selected,
         R.drawable.icon_subscribe_selected,
-        R.drawable.icon_person_selected
+        R.drawable.icon_conan_selected
     )
 
     override val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
@@ -134,7 +134,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             if (floatView.isAttachedToWindow.not()) {
-                floatView.loadCircle(R.drawable.icon_person_selected)
+                floatView.loadCircle(R.drawable.icon_conan_selected)
                 FloatViewHelper.showInWindow(window, floatView, sizeDp = 75)
                 DraggableViewHelper.intrude(floatView)
                 floatView.onClick {

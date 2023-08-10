@@ -1,12 +1,13 @@
-package com.example.flamingo.index.home.square.paging
+package com.example.flamingo.index.home.subscribe.fragment
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.DataX
 import com.example.flamingo.network.repository.WanRepository
 
-class SquareDataSource() :
+class SubscribeTabDataSource(
+    private val id: Int = 0,
+) :
     PagingSource<Int, DataX>() {
 
     override fun getRefreshKey(state: PagingState<Int, DataX>): Int? {
@@ -17,7 +18,7 @@ class SquareDataSource() :
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataX> {
         return try {
 
-            val firstPage = 0
+            val firstPage = 1
 
             // 当前页码
             val key = params.key ?: firstPage
@@ -26,7 +27,7 @@ class SquareDataSource() :
             val pageSize = params.loadSize
 
             // 网络请求
-            val result = WanRepository.getSquareList(page = key)
+            val result = WanRepository.getWxArticleList(id = id, page = key)
 
             // 前一页 页码
             val preKey = if (key > firstPage) {

@@ -1,15 +1,13 @@
-package com.example.flamingo.index.article.paging
+package com.example.flamingo.index.common
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.flamingo.data.ArticlePage
+import com.example.flamingo.data.Articles
 import com.example.flamingo.data.DataX
-import com.example.flamingo.network.repository.WanRepository
-import com.example.flamingo.ui.getParent
 
-class ArticlesDataSource(
-    @ArticlePage private val pagePath: List<String>,
-    private val id: Int = 0,
+class ArticleListDataSource(
+    private val firstPage: Int,
+    private val request: suspend (key: Int) -> Articles
 ) :
     PagingSource<Int, DataX>() {
 
@@ -21,14 +19,6 @@ class ArticlesDataSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataX> {
         return try {
 
-            val firstPage = when (pagePath.getParent()) {
-                ArticlePage.HOME,
-                ArticlePage.SQUARE,
-                -> 0
-
-                else -> 1
-            }
-
             // 当前页码
             val key = params.key ?: firstPage
 
@@ -36,7 +26,7 @@ class ArticlesDataSource(
             val pageSize = params.loadSize
 
             // 网络请求
-            val result = requestList(key)
+            val result = request.invoke(key)
 
             // 前一页 页码
             val preKey = if (key > firstPage) {
@@ -56,28 +46,6 @@ class ArticlesDataSource(
             LoadResult.Page(result.datas, preKey, nextKey)
         } catch (e: Exception) {
             LoadResult.Error(e)
-        }
-    }
-
-    private suspend fun requestList(page: Int) = when (pagePath.getParent()) {
-        ArticlePage.HOME -> {
-            WanRepository.getHomeList(page = page)
-        }
-
-        ArticlePage.PROJECT -> {
-            WanRepository.getProjectList(id = id, page = page)
-        }
-
-        ArticlePage.SQUARE -> {
-            WanRepository.getSquareList(page = page)
-        }
-
-        ArticlePage.SUBSCRIBE -> {
-            WanRepository.getWxArticleList(id = id, page = page)
-        }
-
-        else -> {
-            WanRepository.getHomeList(page = page)
         }
     }
 

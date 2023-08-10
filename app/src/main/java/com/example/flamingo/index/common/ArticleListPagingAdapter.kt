@@ -1,4 +1,4 @@
-package com.example.flamingo.index.article.paging
+package com.example.flamingo.index.common
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.flamingo.R
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.DataX
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.databinding.RvItemArticleBinding
@@ -17,10 +16,8 @@ import com.example.flamingo.utils.visible
 import com.lxj.xpopup.XPopup
 import splitties.views.onClick
 
-class ArticlesPagingAdapter(
-    @ArticlePage private val pagePath: List<String>
-) :
-    PagingDataAdapter<DataX, ArticlesPagingViewHolder>(object : DiffUtil.ItemCallback<DataX>() {
+class ArticleListPagingAdapter :
+    PagingDataAdapter<DataX, ArticleListPagingViewHolder>(object : DiffUtil.ItemCallback<DataX>() {
         override fun areItemsTheSame(oldItem: DataX, newItem: DataX): Boolean {
             return oldItem.id == newItem.id
         }
@@ -29,13 +26,6 @@ class ArticlesPagingAdapter(
             return oldItem == newItem
         }
     }) {
-
-    override fun getItemViewType(position: Int): Int {
-        return pagePath.hashCode()
-    }
-
-    var requestPage: List<String> = arrayListOf()
-
 
     var likeClickListener: ((LikeData) -> Unit)? = null
 
@@ -56,39 +46,34 @@ class ArticlesPagingAdapter(
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: ArticlesPagingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ArticleListPagingViewHolder, position: Int) {
         val item = getItem(position)
 
         holder.binding.run {
             item?.let {
 
-                when (pagePath.lastOrNull()) {
-                    ArticlePage.HOME,
-                    ArticlePage.SQUARE,
-                    -> {
-
-                    }
-
-                    ArticlePage.PROJECT,
-                    ArticlePage.SUBSCRIBE,
-                    -> {
-
-                    }
-
-                    else -> {
-
-                    }
-                }
-
                 tvTime.text = item.niceDate
-                tvAuthor.text = item.author
+
+                tvAuthor.text = if (item.superChapterName == "广场Tab") {
+                    "分享人: ${item.shareUser}"
+                } else {
+                    "作者: ${item.author}"
+                }
 
                 tvTitle.text = item.title
 
                 tvSubtitle.text = item.desc
                 tvSubtitle.visible(item.desc.isNotBlank())
 
-                tvClassification.text = "${item.superChapterName}·${item.chapterName}"
+                tvClassification.text = listOf(
+                    item.superChapterName,
+                    item.chapterName,
+                ).filter {
+                    // 解析为 null 了
+                    @Suppress("UselessCallOnNotNull")
+                    it.isNullOrBlank().not()
+                }.joinToString("/")
+
                 tvPosition.text = "[ ${position + 1} ]"
 
                 ivImg.load(item.envelopePic)
@@ -103,9 +88,9 @@ class ArticlesPagingAdapter(
 
                 // 收藏
                 if (item.collect) {
-                    ivStar.loadRes(R.drawable.icon_star_selected)
+                    ivStar.loadRes(R.drawable.icon_like_selected)
                 } else {
-                    ivStar.loadRes(R.drawable.icon_star)
+                    ivStar.loadRes(R.drawable.icon_like)
                 }
                 ivStar.onClick {
                     if (item.collect) {
@@ -114,6 +99,7 @@ class ArticlesPagingAdapter(
                                 likeClickListener?.invoke(
                                     LikeData(
                                         id = item.id,
+                                        originId = item.originId,
                                         like = false,
                                         position = position,
                                     )
@@ -123,6 +109,7 @@ class ArticlesPagingAdapter(
                         likeClickListener?.invoke(
                             LikeData(
                                 id = item.id,
+                                originId = item.originId,
                                 like = true,
                                 position = position,
                             )
@@ -134,8 +121,8 @@ class ArticlesPagingAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesPagingViewHolder {
-        return ArticlesPagingViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleListPagingViewHolder {
+        return ArticleListPagingViewHolder(
             RvItemArticleBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -146,4 +133,4 @@ class ArticlesPagingAdapter(
 
 }
 
-class ArticlesPagingViewHolder(val binding: RvItemArticleBinding) : ViewHolder(binding.root)
+class ArticleListPagingViewHolder(val binding: RvItemArticleBinding) : ViewHolder(binding.root)

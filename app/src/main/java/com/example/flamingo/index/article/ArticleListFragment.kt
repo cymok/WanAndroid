@@ -8,27 +8,24 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
-import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.data.ArticlesTreeItem
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
-import com.example.flamingo.databinding.FragmentArticlesBinding
-import com.example.flamingo.index.article.paging.ArticlesPagingAdapter
+import com.example.flamingo.databinding.FragmentArticleListBinding
+import com.example.flamingo.index.common.ArticleListPagingAdapter
 import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.newIntent
-import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.registerResultOK
 import splitties.views.topPadding
-import java.util.ArrayList
 
-class ArticleListFragment private constructor(): VVMBaseFragment<ArticleListViewModel, FragmentArticlesBinding>() {
+class ArticleListFragment: VVMBaseFragment<ArticleListViewModel, FragmentArticleListBinding>() {
 
     override val viewModel: ArticleListViewModel get() = getViewModel()
-    override val binding: FragmentArticlesBinding by viewBinding(CreateMethod.INFLATE)
+    override val binding: FragmentArticleListBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter by lazy { ArticlesPagingAdapter(pagePath) }
+    private val adapter by lazy { ArticleListPagingAdapter() }
 
     private val item: ArticlesTreeItem? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

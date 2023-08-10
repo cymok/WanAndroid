@@ -1,28 +1,26 @@
-package com.example.flamingo.index.home.project
+package com.example.flamingo.index.like
 
 import android.os.Bundle
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
-import com.example.flamingo.data.ArticlePage
 import com.example.flamingo.databinding.ActivityArticleListBinding
-import com.example.flamingo.ui.getCurrent
 
-class ProjectActivity : VBaseActivity<ActivityArticleListBinding>() {
+class ArticleLikeActivity : VBaseActivity<ActivityArticleListBinding>() {
 
     override val binding by lazy { ActivityArticleListBinding.inflate(layoutInflater) }
-
-    val pagePath = arrayListOf(ArticlePage.PROJECT)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            supportActionBar?.title = pagePath.getCurrent()
+
+            supportActionBar?.title = "收藏博文"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,
-                    ProjectFragment.getInstance(false),
+                    ArticleLikeFragment()
                 )
                 .commitNow()
+
         }
     }
 

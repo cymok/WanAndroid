@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menu_item_like"
-        android:icon="@drawable/icon_star"
+        android:icon="@drawable/icon_like"
         android:title="收藏"
         app:showAsAction="ifRoom" />
 

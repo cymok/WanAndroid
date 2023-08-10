@@ -89,14 +89,27 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
                 item?.let {
 
                     tvTime.text = item.niceDate
-                    tvAuthor.text = "分享人: ${item.author}"
+
+                    tvAuthor.text = if (item.superChapterName == "广场Tab") {
+                        "分享人: ${item.shareUser}"
+                    } else {
+                        item.author
+                    }
 
                     tvTitle.text = item.title
 
                     tvSubtitle.text = Html.fromHtml(item.desc)
                     tvSubtitle.visible(item.desc.isNotBlank())
 
-                    tvClassification.text = "${item.superChapterName}·${item.chapterName}"
+                    tvClassification.text = listOf(
+                        item.superChapterName,
+                        item.chapterName,
+                    ).filter {
+                        // 解析为 null 了
+                        @Suppress("UselessCallOnNotNull")
+                        it.isNullOrBlank().not()
+                    }.joinToString("/")
+
                     tvPosition.text = "[ $position ]"
 
                     ivImg.load(item.envelopePic)
@@ -111,9 +124,9 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
 
                     // 收藏
                     if (item.collect) {
-                        ivStar.loadRes(R.drawable.icon_star_selected)
+                        ivStar.loadRes(R.drawable.icon_like_selected)
                     } else {
-                        ivStar.loadRes(R.drawable.icon_star)
+                        ivStar.loadRes(R.drawable.icon_like)
                     }
                     ivStar.onClick {
                         if (item.collect) {
@@ -122,6 +135,7 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
                                     likeClickListener?.invoke(
                                         LikeData(
                                             id = item.id,
+                                            originId = item.originId,
                                             like = false,
                                             position = position,
                                         )
@@ -131,6 +145,7 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
                             likeClickListener?.invoke(
                                 LikeData(
                                     id = item.id,
+                                    originId = item.originId,
                                     like = true,
                                     position = position,
                                 )

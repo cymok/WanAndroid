@@ -105,9 +105,9 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
         super.viewModelObserve()
         viewModel.like.observe(this) {
             if (it) {
-                menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star_selected)
+                menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like_selected)
             } else {
-                menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star)
+                menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like)
             }
             webData.like = it
         }
@@ -187,9 +187,9 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
         menuInflater.inflate(R.menu.menu_web_activity, menu)
 
         if (webData.like) {
-            menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star_selected)
+            menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like_selected)
         } else {
-            menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_star)
+            menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like)
         }
 
         return true
@@ -201,10 +201,10 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
                 if (webData.like) {
                     XPopup.Builder(this)
                         .asConfirm("移除收藏", "《${webData.title}》") {
-                            viewModel.unlikeArticle(webData.id)
+                            viewModel.unlikeArticle(webData.id, webData.originId, webData.isMyLike)
                         }.show()
                 } else {
-                    viewModel.likeArticle(webData.id)
+                    viewModel.likeArticle(webData.id, webData.originId, webData.isMyLike)
                 }
             }
 

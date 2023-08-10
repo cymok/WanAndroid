@@ -8,19 +8,27 @@ class WebViewModel : BaseViewModel() {
 
     val like = MutableLiveData<Boolean>()
 
-    fun likeArticle(id: Int) {
+    fun likeArticle(id: Int, originId: Int, isMyLike: Boolean) {
         launch {
             startLoading()
-            WanRepository.likeArticle(id)
+            if (isMyLike) {
+                WanRepository.likeArticle(originId)
+            } else {
+                WanRepository.likeArticle(id)
+            }
             like.postValue(true)
             stopLoading()
         }
     }
 
-    fun unlikeArticle(id: Int) {
+    fun unlikeArticle(id: Int, originId: Int, isMyLike: Boolean) {
         launch {
             startLoading()
-            WanRepository.unlikeArticle(id)
+            if (isMyLike) {
+                WanRepository.unlikeMyLike(id, originId)
+            } else {
+                WanRepository.unlikeArticle(id)
+            }
             like.postValue(false)
             stopLoading()
         }

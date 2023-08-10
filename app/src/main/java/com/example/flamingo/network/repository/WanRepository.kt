@@ -72,5 +72,12 @@ object WanRepository {
         likeService.unlikeArticle(id).apiData()
     }
 
+    suspend fun unlikeMyLike(id: Int, originId: Int) = withContext(Dispatchers.IO) {
+        likeService.unlikeMyLike(id = id, originId = originId ).apiData()
+    }
+
+    suspend fun getLikeList(page: Int) = withContext(Dispatchers.IO) {
+        likeService.getLikeList(page).apiData()!!
+    }
 
 }

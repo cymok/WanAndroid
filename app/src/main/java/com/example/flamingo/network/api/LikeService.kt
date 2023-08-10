@@ -4,6 +4,7 @@ import com.example.flamingo.data.Articles
 import com.example.flamingo.data.Banner
 import okhttp3.ResponseBody
 import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -28,6 +29,7 @@ interface LikeService {
     ): ApiResult<Any>
 
     // 收藏站外文章
+    @FormUrlEncoded
     @POST("/lg/collect/add/json")
     suspend fun likeOutside(
         @Field("title") title: Int,
@@ -36,6 +38,7 @@ interface LikeService {
     ): ApiResult<ResponseBody>
 
     // 编辑收藏的文章，支持站内，站外
+    @FormUrlEncoded
     @POST("/lg/collect/user_article/update/{id}/json")
     suspend fun updateLike(
         @Path("id") id: Int,
@@ -51,6 +54,7 @@ interface LikeService {
     ): ApiResult<ResponseBody>
 
     // 取消收藏 - 我的收藏页面（该页面包含自己录入的内容） (上面的 `收藏文章列表` 接口)
+    @FormUrlEncoded
     @POST("/lg/uncollect/{id}/json")
     suspend fun unlikeMyLike(
         @Path("id") id: Int,
@@ -62,6 +66,7 @@ interface LikeService {
     suspend fun getSiteList(): ApiResult<Banner>
 
     // 收藏网址
+    @FormUrlEncoded
     @POST("/lg/collect/addtool/json")
     suspend fun likeSite(
         @Field("name") name: Int,
@@ -69,6 +74,7 @@ interface LikeService {
     ): ApiResult<Banner>
 
     // 编辑收藏网站
+    @FormUrlEncoded
     @POST("/lg/collect/updatetool/json")
     suspend fun updateSite(
         @Field("id") id: Int,
@@ -77,6 +83,7 @@ interface LikeService {
     ): ApiResult<Banner>
 
     // 删除收藏网站
+    @FormUrlEncoded
     @POST("/lg/collect/deletetool/json")
     suspend fun deleteSite(
         @Field("id") name: Int,

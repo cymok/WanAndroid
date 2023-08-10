@@ -7,11 +7,11 @@ import com.example.flamingo.App
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
 import com.example.flamingo.data.ArticlePage
-import com.example.flamingo.databinding.ActivityArticlesBinding
+import com.example.flamingo.databinding.ActivityArticleListBinding
 import com.example.flamingo.ui.getParent
 import com.example.flamingo.utils.toast
 
-class ArticleListActivity : VBaseActivity<ActivityArticlesBinding>() {
+class ArticleListActivity : VBaseActivity<ActivityArticleListBinding>() {
 
     companion object {
 
@@ -24,7 +24,7 @@ class ArticleListActivity : VBaseActivity<ActivityArticlesBinding>() {
         }
     }
 
-    override val binding by lazy { ActivityArticlesBinding.inflate(layoutInflater) }
+    override val binding by lazy { ActivityArticleListBinding.inflate(layoutInflater) }
 
     private val pagePath: List<String> by lazy {
         val pagePath = intent.getStringArrayListExtra("pagePath") ?: listOf<String>()

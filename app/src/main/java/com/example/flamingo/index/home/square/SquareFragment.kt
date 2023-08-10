@@ -14,7 +14,7 @@ import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.FragmentSquareBinding
-import com.example.flamingo.index.home.square.paging.SquarePagingAdapter
+import com.example.flamingo.index.common.ArticleListPagingAdapter
 import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.newIntent
@@ -22,16 +22,12 @@ import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.registerResultOK
 import splitties.views.topPadding
 
-class SquareFragment private constructor(): VVMBaseFragment<SquareViewModel, FragmentSquareBinding>() {
+class SquareFragment: VVMBaseFragment<SquareViewModel, FragmentSquareBinding>() {
 
     override val viewModel: SquareViewModel get() = getViewModel()
     override val binding: FragmentSquareBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter = SquarePagingAdapter()
-
-    companion object {
-        fun getInstance() = SquareFragment()
-    }
+    private val adapter by lazy { ArticleListPagingAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,11 +1,11 @@
-package com.example.flamingo.index.home.subscribe.fragment.paging
+package com.example.flamingo.index.home.project.fragment
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.flamingo.data.DataX
 import com.example.flamingo.network.repository.WanRepository
 
-class SubscribeTabDataSource(
+class ProjectTabDataSource(
     private val id: Int = 0,
 ) :
     PagingSource<Int, DataX>() {
@@ -27,7 +27,7 @@ class SubscribeTabDataSource(
             val pageSize = params.loadSize
 
             // 网络请求
-            val result = WanRepository.getWxArticleList(id = id, page = key)
+            val result = WanRepository.getProjectList(id = id, page = key)
 
             // 前一页 页码
             val preKey = if (key > firstPage) {

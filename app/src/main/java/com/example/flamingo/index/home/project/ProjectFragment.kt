@@ -17,8 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import splitties.bundle.put
 import splitties.views.topPadding
 
-class ProjectFragment private constructor() :
-    VVMBaseFragment<ProjectViewModel, FragmentProjectBinding>() {
+class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding>() {
 
     override val viewModel: ProjectViewModel get() = getViewModel()
     override val binding: FragmentProjectBinding by viewBinding(CreateMethod.INFLATE)

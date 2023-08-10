@@ -1,19 +1,17 @@
 package com.example.flamingo.index.home.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.data.DataX
-import com.example.flamingo.data.LikeData
+import com.example.flamingo.index.common.LikeViewModel
 import com.example.flamingo.index.home.home.paging.HomeDataSource
 import com.example.flamingo.network.repository.WanRepository
 
-class HomeViewModel : BaseViewModel() {
+class HomeViewModel : LikeViewModel() {
 
     // `liveData {}` 用于页面一开始就需要获取数据的情况,
     // 这是 Coroutine, 特殊页面异常要 catch, 例如需要登录后调用的接口
@@ -28,20 +26,6 @@ class HomeViewModel : BaseViewModel() {
             HomeDataSource()
         }
         return pager.liveData
-    }
-
-    val likeStatus = MutableLiveData<LikeData>()
-
-    fun like(likeData: LikeData) {
-        launch {
-            if (likeData.like) {
-                WanRepository.likeArticle(likeData.id)
-                likeStatus.postValue(likeData)
-            } else {
-                WanRepository.unlikeArticle(likeData.id)
-                likeStatus.postValue(likeData)
-            }
-        }
     }
 
 }

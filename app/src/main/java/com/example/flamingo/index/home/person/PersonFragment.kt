@@ -14,6 +14,7 @@ import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.SupperUserInfo
 import com.example.flamingo.databinding.FragmentPersonBinding
+import com.example.flamingo.index.like.ArticleLikeActivity
 import com.example.flamingo.index.setting.SettingActivity
 import com.example.flamingo.utils.UserUtils
 import com.example.flamingo.utils.dp2px
@@ -21,17 +22,13 @@ import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.load
 import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.postEvent
+import splitties.fragments.start
 import splitties.views.onClick
 
-class PersonFragment private constructor() :
-    VVMBaseFragment<PersonViewModel, FragmentPersonBinding>() {
+class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>() {
 
     override val viewModel: PersonViewModel get() = getViewModel()
     override val binding: FragmentPersonBinding by viewBinding(CreateMethod.INFLATE)
-
-    companion object {
-        fun getInstance() = PersonFragment()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,7 +94,7 @@ class PersonFragment private constructor() :
 
             }
             llArticle.onClick {
-
+                start<ArticleLikeActivity> {}
             }
             llShared.onClick {
 

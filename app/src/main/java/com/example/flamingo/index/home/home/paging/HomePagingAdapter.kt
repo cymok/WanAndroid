@@ -56,11 +56,13 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
     }
 
     fun notifyLikeChanged(likeData: LikeData) {
-        val item = getItem(likeData.position - 1)!! // index == 0 是 banner
-        item.collect = likeData.like
-        if (likeData.position == 0) {
+        if (likeData.position == 0) { // index == 0 是 banner
+            val item = bannerData[likeData.position2!!]
+            item.collect = likeData.like
             homeBannerAdapter.notifyLikeChanged(likeData)
         } else {
+            val item = getItem(likeData.position - 1)!! // index == 0 是 banner
+            item.collect = likeData.like
             notifyItemChanged(likeData.position)
         }
     }

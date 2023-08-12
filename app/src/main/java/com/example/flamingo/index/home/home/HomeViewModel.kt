@@ -23,15 +23,15 @@ class HomeViewModel : LikeViewModel() {
 
     fun getArticlesWithPager(): LiveData<PagingData<DataX>> {
         val pager = Pager(PagingConfig(pageSize = 10)) {
-            ArticleListDataSource(firstPage = 0) {
+            ArticleListDataSource(firstPage = 0) { key ->
                 // 网络请求
-                val result = WanRepository.getHomeList(page = it)
+                val result = async { WanRepository.getHomeList(page = key) }
                 // 首页加上置顶文章
-                if (it == 0) {
-                    val homeTopList = WanRepository.getHomeTopList()
-                    result.datas.addAll(0, homeTopList)
+                if (key == 0) {
+                    val homeTopList = async { WanRepository.getHomeTopList() }
+                    result.await().datas.addAll(0, homeTopList.await())
                 }
-                result
+                result.await()
             }
         }
         return pager.liveData

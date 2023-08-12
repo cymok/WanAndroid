@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="15dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_header"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6 楼"
+        app:layout_constraintBottom_toBottomOf="@id/iv_header"
+        app:layout_constraintEnd_toEndOf="@id/tv_content"
+        app:layout_constraintTop_toTopOf="@id/iv_header" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="站里最帅的帅比"
+        android:textColor="@color/primaryText"
+        app:layout_constraintBottom_toBottomOf="@id/iv_header"
+        app:layout_constraintStart_toEndOf="@id/iv_header"
+        app:layout_constraintTop_toTopOf="@id/iv_header" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:text="巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉"
+        android:textColor="@color/secondaryText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="2023-08-22 14:32"
+        app:layout_constraintStart_toStartOf="@id/tv_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_content" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_good_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="99+"
+        android:textColor="@color/secondaryText"
+        app:layout_constraintBottom_toBottomOf="@id/tv_time"
+        app:layout_constraintEnd_toEndOf="@id/tv_content"
+        app:layout_constraintTop_toTopOf="@id/tv_time" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_good"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/icon_good_selected"
+        app:layout_constraintBottom_toBottomOf="@id/tv_time"
+        app:layout_constraintEnd_toStartOf="@id/tv_good_num"
+        app:layout_constraintTop_toTopOf="@id/tv_time" />
+
+    <!-- 评论回复 再嵌套一层自己~ -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_time" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

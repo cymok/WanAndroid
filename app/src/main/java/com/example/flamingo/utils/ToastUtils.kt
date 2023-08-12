@@ -20,5 +20,6 @@ fun toastLong(any: Any?) {
 }
 
 fun logStack(text: String?) {
-    Log.e("Debug", Log.getStackTraceString(Throwable(text)))
+//    Log.e("Debug", Log.getStackTraceString(Throwable(text)))
+    Log.e("Debug", text, Throwable(text))
 }

@@ -1,71 +1,40 @@
-package com.example.flamingo.index.search
+package com.example.flamingo.index.qa
 
 import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import androidx.core.view.MenuProvider
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
-import com.example.flamingo.R
 import com.example.flamingo.base.fragment.VVMBaseFragment
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
-import com.example.flamingo.databinding.FragmentSearchBinding
+import com.example.flamingo.databinding.FragmentQaBinding
 import com.example.flamingo.index.common.ArticleListPagingAdapter
-import com.example.flamingo.index.web.WebActivity
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.newIntent
 import com.example.flamingo.utils.registerResultOK
 import com.example.flamingo.utils.visible
-import com.lxj.xpopup.XPopup
 
-class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>() {
+class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
 
-    override val viewModel: SearchViewModel by lazy { getViewModel() }
-    override val binding: FragmentSearchBinding by viewBinding(CreateMethod.INFLATE)
+    override val viewModel: QaViewModel by lazy { getViewModel() }
+    override val binding: FragmentQaBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter by lazy { ArticleListPagingAdapter() }
-
-    private var key: String = ""
-    private var isInitialized = false
-
-    private val popupView by lazy {
-        XPopup.Builder(requireContext())
-            .asInputConfirm("站内搜索", "", "请输入关键字") {
-                if (it.isNotBlank()) {
-                    search(it)
-                }
-            }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         observe()
-
-        showSearchDialog()
-    }
-
-    private fun showSearchDialog() {
-        popupView.apply {
-            inputContent = key
-        }.show()
-    }
-
-    private fun search(key: String) {
-        this.key = key
-        viewModel.search(key).observe(viewLifecycleOwner) {
-            adapter.submitData(lifecycle, it)
-            binding.refresh.isRefreshing = false
-        }
     }
 
     private fun observe() {
+        viewModel.getQaList().observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+            binding.refresh.isRefreshing = false
+        }
         viewModel.likeStatus.observe(viewLifecycleOwner) {
             adapter.notifyLikeChanged(it)
         }
@@ -76,8 +45,6 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
         recyclerView.adapter = adapter
 
         adapter.addLoadStateListener {
-            isInitialized = true
-
             when (it.refresh) {
                 is LoadState.Loading -> {
 
@@ -128,7 +95,7 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
             }
         }
         adapter.onItemClick { position, dataX ->
-            launcher.launch(newIntent<WebActivity> {
+            launcher.launch(newIntent<QaWebActivity> {
                 putExtra(
                     "data", WebData(
                         isMyLike = true,
@@ -145,29 +112,8 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
 
         binding.refresh.setOnRefreshListener {
             adapter.refresh()
-
-            // 页面未加载时 下拉刷新结束动画
-            if (isInitialized.not()) {
-                binding.refresh.isRefreshing = false
-            }
         }
 
-        createMenu()
-    }
-
-    private fun createMenu() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_search_activity, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if (menuItem.itemId == R.id.menu_item_search) {
-                    showSearchDialog()
-                }
-                return true
-            }
-        })
     }
 
 }

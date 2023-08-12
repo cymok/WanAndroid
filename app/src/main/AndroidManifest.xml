@@ -90,6 +90,14 @@
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
+            android:name=".index.qa.QaActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.qa.QaWebActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
             android:name=".index.home.project.ProjectActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
@@ -151,6 +159,29 @@
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
+
+        <!-- umeng 厂商通道 start -->
+        <!-- huawei -->
+        <meta-data android:name="com.huawei.hms.client.appid" android:value="appid=${huawei_app_id}"/>
+        <!-- vivo -->
+        <meta-data android:name="com.vivo.push.app_id" android:value="${vivo_app_id}"/>
+        <meta-data android:name="com.vivo.push.api_key" android:value="${vivo_app_key}"/>
+        <!-- honer -->
+        <meta-data android:name="com.hihonor.push.app_id" android:value="${honer_app_id}"/>
+        <!-- meizu -->
+        <receiver
+            android:name=".receiver.MfrMzMessageReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
+                <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
+                <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
+                <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
+                <action android:name="com.meizu.c2dm.intent.RECEIVE" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+        <!-- umeng end -->
 
     </application>
 

@@ -29,13 +29,41 @@ android {
             useSupportLibrary true
         }
 
+        // 微信 需要在代码 配置 app id
+        buildConfigField "String", "WX_APP_ID", wx_app_id
+
+        // 配置 BuildConfig 的字段, 友盟 小米 OPPO 是让开发者在代码初始化给 SDK 传入相关 app id 和 key
+        buildConfigField "String", "UMENG_APP_KEY", umeng_app_key
+        buildConfigField "String", "UMENG_MESSAGE_SECRET", umeng_message_secret
+        buildConfigField "String", "UMENG_MASTER_SECRET", umeng_master_secret
+
+        buildConfigField "String", "XIAOMI_APP_ID", xiaomi_app_id
+        buildConfigField "String", "XIAOMI_APP_KEY", xiaomi_app_key
+        buildConfigField "String", "XIAOMI_APP_SECRET", xiaomi_app_secret
+
+        buildConfigField "String", "OPPO_APP_KEY", oppo_app_key
+        buildConfigField "String", "OPPO_MASTER_SECRET", oppo_master_secret
+
+        buildConfigField "String", "MEIZU_APP_ID", meizu_app_id
+        buildConfigField "String", "MEIZU_APP_KEY", meizu_app_key
+
+        // 配置 清单文件 的占位变量, 华为 Vivo 荣耀 是在 SDK 里是读取 让开发者在清单文件相关 meta-data 配置的 id 和 key
+        manifestPlaceholders = [
+                huawei_app_id: huawei_app_id,
+
+                vivo_app_id  : vivo_app_id,
+                vivo_app_key : vivo_app_key,
+
+                honer_app_id : honer_app_id,
+        ]
+
         buildConfigField "String", "COMMIT_ID", "\"${gitCommitId}\""
         buildConfigField "String", "BUILD_TIME", "\"${time.time}\""
         buildConfigField "String", "OS_ARCH", "\"${System.properties['os.arch']}\""
         buildConfigField "String", "OS_NAME", "\"${System.properties['os.name']}\""
         buildConfigField "String", "USER_NAME", "\"${System.properties['user.name']}\""
         buildConfigField "String", "JAVA_VERSION", "\"${System.properties['java.version']}\""
-//        buildConfigField "String", "KOTLIN_VERSION", "\"${null}\""
+//        buildConfigField "String", "KOTLIN_VERSION", "\"${kotlin_version}\""
 //        buildConfigField "String", "FLUTTER_VERSION", "\"${flutter_version}\""
     }
 
@@ -64,6 +92,8 @@ android {
     productFlavors {
         app {
             dimension "mode"
+            manifestPlaceholders = [app_channel: "\"${name}\""]
+            buildConfigField "String", "APP_CHANNEL", "\"${name}\""
         }
     }
 
@@ -216,21 +246,45 @@ dependencies {
 
     // 弹窗
     // https://github.com/li-xiaojun/XPopup
-    implementation ('com.github.li-xiaojun:XPopup:2.9.19'){
+    implementation('com.github.li-xiaojun:XPopup:2.9.19') {
         exclude group: "com.davemorrissey.labs", module: "subsampling-scale-image-view-androidx"
     }
 
     // 刷新
     // https://github.com/scwang90/SmartRefreshLayout
-    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
-    implementation  'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
-    implementation  'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
-    implementation  'io.github.scwang90:refresh-header-falsify:2.0.6'     //虚拟刷新头
-    implementation  'io.github.scwang90:refresh-header-material:2.0.6'    //谷歌刷新头
-    implementation  'io.github.scwang90:refresh-header-two-level:2.0.6'   //二级刷新头
+    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
+    implementation 'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
+    implementation 'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
+    implementation 'io.github.scwang90:refresh-header-falsify:2.0.6'     //虚拟刷新头
+    implementation 'io.github.scwang90:refresh-header-material:2.0.6'    //谷歌刷新头
+    implementation 'io.github.scwang90:refresh-header-two-level:2.0.6'   //二级刷新头
 
     // 流动布局 标签
     // https://github.com/hongyangAndroid/FlowLayout
     implementation "com.hyman:flowlayout-lib:1.1.2"
+
+    //友盟 推送
+    implementation 'com.umeng.umsdk:common:9.6.3'
+    implementation 'com.umeng.umsdk:asms:1.8.0'
+    implementation 'com.umeng.umsdk:push:6.6.1'
+    implementation 'com.umeng.umsdk:uyumao:1.1.2'
+    //Umeng-xiaomi推送
+    implementation 'com.umeng.umsdk:xiaomi-umengaccs:2.0.0'
+    implementation 'com.umeng.umsdk:xiaomi-push:5.6.2'
+    //Umeng-huawei推送
+    implementation 'com.umeng.umsdk:huawei-umengaccs:2.0.0'
+    implementation 'com.huawei.hms:push:6.9.0.300'
+    //Umeng-oppo推送
+    implementation 'com.umeng.umsdk:oppo-umengaccs:2.0.0'
+    implementation 'com.umeng.umsdk:oppo-push:3.1.0'
+    //Umeng-vivo推送
+    implementation 'com.umeng.umsdk:vivo-umengaccs:2.0.0'
+    implementation 'com.umeng.umsdk:vivo-push:3.0.0.4'
+    //Umeng-honer推送
+    implementation 'com.umeng.umsdk:honor-umengaccs:2.0.0'
+    implementation 'com.umeng.umsdk:honor-push:7.0.41.301'
+    //Umeng-meizu推送
+    implementation 'com.umeng.umsdk:meizu-umengaccs:2.0.0'
+    implementation 'com.umeng.umsdk:meizu-push:4.2.3'
 
 }

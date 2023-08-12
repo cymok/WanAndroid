@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.flamingo.base.BaseViewModel
 import com.example.flamingo.network.repository.WanRepository
 
-class WebViewModel : BaseViewModel() {
+open class WebViewModel : BaseViewModel() {
 
     val like = MutableLiveData<Boolean>()
 

@@ -31,4 +31,12 @@ object UserUtils {
 
     val isLogin get() = getSupperUserInfo()?.userInfo != null && getSupperUserInfo()?.userInfo?.id != null
 
+    fun isAcceptAgreement(): Boolean {
+        return SPUtils.getInstance().getBoolean("ACCEPT_AGREEMENT", false)
+    }
+
+    fun acceptAgreement(accept: Boolean) {
+        SPUtils.getInstance().put("ACCEPT_AGREEMENT", accept)
+    }
+
 }

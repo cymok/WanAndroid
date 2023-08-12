@@ -136,7 +136,7 @@
             android:background="@color/divider" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_projects_hot"
+            android:id="@+id/tv_projects"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
@@ -144,7 +144,7 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="16dp"
-            android:text="最新项目" />
+            android:text="项目" />
 
         <View
             android:layout_width="match_parent"
@@ -161,22 +161,6 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="公众号" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/divider" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_projects"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="项目分类" />
 
         <View
             android:layout_width="match_parent"

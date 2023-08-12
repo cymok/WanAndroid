@@ -3,6 +3,7 @@ package com.example.flamingo.network.api
 import com.example.flamingo.data.Articles
 import com.example.flamingo.data.ArticlesTree
 import com.example.flamingo.data.Banner
+import com.example.flamingo.data.CommentList
 import com.example.flamingo.data.DataX
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -127,10 +128,10 @@ interface WanService {
     ): ApiResult<Articles>
 
     // 问答评论列表
-    @GET("/wenda/comments/问答id/json")
+    @GET("/wenda/comments/{id}/json")
     suspend fun getQACommentList(
         @Path("id") id: Int = 1,
         @Query("page_size") pageSize: Int = 10,
-    ): ApiResult<Articles>
+    ): ApiResult<CommentList>
 
 }

@@ -13,7 +13,9 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
 import com.example.flamingo.constant.EventBus
@@ -27,10 +29,12 @@ import com.example.flamingo.index.home.project.ProjectActivity
 import com.example.flamingo.index.home.project.ProjectFragment
 import com.example.flamingo.index.home.square.SquareFragment
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
-import com.example.flamingo.index.newProject.NewProjectActivity
+import com.example.flamingo.index.qa.QaActivity
 import com.example.flamingo.index.search.SearchActivity
 import com.example.flamingo.utils.DraggableViewHelper
 import com.example.flamingo.utils.FloatViewHelper
+import com.example.flamingo.utils.UmengUtils
+import com.example.flamingo.utils.UserUtils
 import com.example.flamingo.utils.dp2px
 import com.example.flamingo.utils.loadCircle
 import com.example.flamingo.utils.loadRes
@@ -42,6 +46,11 @@ import com.example.flamingo.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
+import com.umeng.message.PushAgent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import splitties.activities.start
 import splitties.views.onClick
 
@@ -86,7 +95,39 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        registerUmeng()
         initView()
+    }
+
+    private fun registerUmeng() {
+        val agreed = UserUtils.isAcceptAgreement()
+        if (agreed) {
+            // Umeng 需在用户同意隐私政策协议之后调用，否则会出现合规问题
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    //建议在子线程中初始化（启动优化）
+                    UmengUtils.init(activity)
+                }
+                delay(1000)
+                PushAgent.getInstance(activity).onAppStart()
+
+                val deviceToken = UmengUtils.getDeviceToken(activity)
+                LogUtils.e("umeng", "deviceToken = $deviceToken")
+
+                if (deviceToken.isBlank()) {
+                    // 拿不到 deviceToken 再次尝试注册
+                    UmengUtils.preInit(activity)
+                    withContext(Dispatchers.IO) {
+                        UmengUtils.init(activity)
+                    }
+                    delay(1000)
+                    PushAgent.getInstance(activity).onAppStart()
+
+                    val deviceTokenAgain = UmengUtils.getDeviceToken(activity)
+                    LogUtils.e("umeng", "deviceToken = $deviceTokenAgain")
+                }
+            }
+        }
     }
 
     override fun initStatusBarDarkFont() = true
@@ -118,21 +159,17 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                 binding.root.close()
             }
             tvQa.onClick {
-                ArticleListActivity.start(arrayListOf(ArticlePage.QA))
-                binding.root.close()
-            }
-            tvProjectsHot.onClick {
-//                ArticleListActivity.start(arrayListOf(ArticlePage.PROJECT_HOT))
-                start<NewProjectActivity> {}
-                binding.root.close()
-            }
-            tvSubscribe.onClick {
-                ArticleListActivity.start(arrayListOf(ArticlePage.SUBSCRIBE))
+//                ArticleListActivity.start(arrayListOf(ArticlePage.QA))
+                start<QaActivity> {}
                 binding.root.close()
             }
             tvProjects.onClick {
 //                ArticleListActivity.start(arrayListOf(ArticlePage.PROJECT))
                 start<ProjectActivity> {}
+                binding.root.close()
+            }
+            tvSubscribe.onClick {
+                ArticleListActivity.start(arrayListOf(ArticlePage.SUBSCRIBE))
                 binding.root.close()
             }
             tvTools.onClick {

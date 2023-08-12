@@ -88,4 +88,12 @@ object WanRepository {
         apiService.search(page = page, k = key).apiData()!!
     }
 
+    suspend fun getQAList(page: Int) = withContext(Dispatchers.IO) {
+        apiService.getQAList(page = page).apiData()!!
+    }
+
+    suspend fun getQACommentList(id: Int) = withContext(Dispatchers.IO) {
+        apiService.getQACommentList(id = id).apiData()!!
+    }
+
 }

@@ -1,14 +1,11 @@
-package com.example.flamingo.index.newProject
+package com.example.flamingo.index.qa
 
 import android.os.Bundle
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
 import com.example.flamingo.databinding.ActivityArticleListBinding
 
-/**
- * 最新项目 已经整合进项目分类 关掉单独页面的入口
- */
-class NewProjectActivity : VBaseActivity<ActivityArticleListBinding>() {
+class QaActivity  : VBaseActivity<ActivityArticleListBinding>() {
 
     override val binding by lazy { ActivityArticleListBinding.inflate(layoutInflater) }
 
@@ -16,11 +13,11 @@ class NewProjectActivity : VBaseActivity<ActivityArticleListBinding>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
 
-            supportActionBar?.title = "最新项目"
+            supportActionBar?.title = "问答"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,
-                    NewProjectFragment()
+                    QaFragment()
                 )
                 .commitNow()
 

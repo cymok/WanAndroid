@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_purity">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_comment_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:text="评论 99+"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_by_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="最新"
+        app:layout_constraintBottom_toBottomOf="@id/tv_comment_num"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_comment_num" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:checked="true"
+        app:layout_constraintBottom_toBottomOf="@id/tv_comment_num"
+        app:layout_constraintEnd_toStartOf="@id/tv_by_time"
+        app:layout_constraintTop_toTopOf="@id/tv_comment_num" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_by_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="默认"
+        app:layout_constraintBottom_toBottomOf="@id/tv_comment_num"
+        app:layout_constraintEnd_toStartOf="@id/sw"
+        app:layout_constraintTop_toTopOf="@id/tv_comment_num" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_comment_num"
+        tools:itemCount="6"
+        tools:listitem="@layout/rv_item_comment" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,14 +6,17 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.config.matiss.CoilImageEngine
 import com.example.flamingo.data.ImageInfo
 import com.example.flamingo.utils.getFile
@@ -43,6 +46,7 @@ class PickObserver : DefaultLifecycleObserver {
     private lateinit var takeLauncher: ActivityResultLauncher<Uri>
     private lateinit var fileLauncher: ActivityResultLauncher<String>
     private lateinit var albumLauncher: ActivityResultLauncher<Intent>
+    private lateinit var albumLauncher33: ActivityResultLauncher<Intent>
     private lateinit var matisseLauncher: ActivityResultLauncher<Matisse>
 
     constructor(activity: ComponentActivity) {
@@ -143,6 +147,25 @@ class PickObserver : DefaultLifecycleObserver {
                     }
                 }
 
+        // 从相册选择图片
+        albumLauncher33 =
+            (if (owner is ComponentActivity) (owner as ComponentActivity) else (owner as Fragment))
+                .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { atyResult ->
+                    if (atyResult.resultCode == Activity.RESULT_OK) {
+                        val clipData = atyResult.data?.clipData
+                        clipData?.let {
+                            for (i in 0 until it.itemCount) {
+                                val uri = it.getItemAt(i)
+                                // todo what to do
+                                LogUtils.e(uri)
+                            }
+                        }
+                    } else {
+                        // 取消选择
+                        viewModel.errCode.postValue(PickViewModel.ERR_CANCEL)
+                    }
+                }
+
         // Matisse-Compose
         matisseLauncher =
             (if (owner is ComponentActivity) (owner as ComponentActivity) else (owner as Fragment))
@@ -217,6 +240,20 @@ class PickObserver : DefaultLifecycleObserver {
         this.crop = crop
         albumLauncher.launch(Intent(Intent.ACTION_PICK).apply {
             setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+        })
+    }
+
+    /**
+     * 从 相册 选择
+     */
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun pickAlbum33(crop: Boolean = true) {
+        this.crop = crop
+        // 最多可选数
+        val maxNum = 3
+        albumLauncher33.launch(Intent(MediaStore.ACTION_PICK_IMAGES).apply {
+            setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+            putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, maxNum)
         })
     }
 

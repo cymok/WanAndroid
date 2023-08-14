@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VBaseActivity
 import com.example.flamingo.constant.EventBus
@@ -26,10 +27,11 @@ import com.example.flamingo.index.article.ArticleListActivity
 import com.example.flamingo.index.home.home.HomeFragment
 import com.example.flamingo.index.home.person.PersonFragment
 import com.example.flamingo.index.home.project.ProjectActivity
-import com.example.flamingo.index.home.project.ProjectFragment
 import com.example.flamingo.index.home.square.SquareFragment
+import com.example.flamingo.index.home.subscribe.SubscribeActivity
 import com.example.flamingo.index.home.subscribe.SubscribeFragment
 import com.example.flamingo.index.qa.QaActivity
+import com.example.flamingo.index.qa.QaFragment
 import com.example.flamingo.index.search.SearchActivity
 import com.example.flamingo.utils.DraggableViewHelper
 import com.example.flamingo.utils.FloatViewHelper
@@ -40,8 +42,6 @@ import com.example.flamingo.utils.loadCircle
 import com.example.flamingo.utils.loadRes
 import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.postEvent
-import com.example.flamingo.utils.screenHeight
-import com.example.flamingo.utils.screenWidth
 import com.example.flamingo.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -62,12 +62,12 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
 
     private val fragments = listOf(
         HomeFragment(),
-        ProjectFragment.getInstance(true),
+        QaFragment.getInstance(true),
         SquareFragment(),
         SubscribeFragment.getInstance(true),
         PersonFragment(),
     )
-    private val titles = listOf("推荐", "项目", "广场", "订阅", "靓仔")
+    private val titles = listOf("推荐", "问答", "广场", "订阅", "靓仔")
     private val tabIcons = listOf(
         R.drawable.icon_home,
         R.drawable.icon_project,
@@ -87,7 +87,6 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     override val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
 
     private val floatView by lazy { AppCompatImageView(this) }
-    private val searchView by lazy { AppCompatImageView(this) }
 
     private var secondLastIndex = -1
     private var lastIndex = -1
@@ -112,7 +111,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                 PushAgent.getInstance(activity).onAppStart()
 
                 val deviceToken = UmengUtils.getDeviceToken(activity)
-                LogUtils.e("umeng", "deviceToken = $deviceToken")
+                LogUtils.eTag("umeng", "deviceToken = $deviceToken")
 
                 if (deviceToken.isBlank()) {
                     // 拿不到 deviceToken 再次尝试注册
@@ -124,7 +123,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                     PushAgent.getInstance(activity).onAppStart()
 
                     val deviceTokenAgain = UmengUtils.getDeviceToken(activity)
-                    LogUtils.e("umeng", "deviceToken = $deviceTokenAgain")
+                    LogUtils.eTag("umeng", "deviceToken = $deviceTokenAgain")
                 }
             }
         }
@@ -169,7 +168,8 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                 binding.root.close()
             }
             tvSubscribe.onClick {
-                ArticleListActivity.start(arrayListOf(ArticlePage.SUBSCRIBE))
+//                ArticleListActivity.start(arrayListOf(ArticlePage.SUBSCRIBE))
+                start<SubscribeActivity> {}
                 binding.root.close()
             }
             tvTools.onClick {
@@ -184,7 +184,13 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
         if (hasFocus) {
             if (floatView.isAttachedToWindow.not()) {
                 floatView.loadCircle(R.drawable.icon_conan_selected)
-                FloatViewHelper.showInWindow(window, floatView, sizeDp = 75)
+                val sizeDp = 75
+                FloatViewHelper.showInWindow(
+                    window, floatView, loc = Point(
+                        (ScreenUtils.getScreenWidth() - sizeDp.dp2px),
+                        (ScreenUtils.getScreenHeight() * (3 / 4f) - (sizeDp / 2f).dp2px).toInt()
+                    ), sizeDp = sizeDp
+                )
                 DraggableViewHelper.intrude(floatView)
                 floatView.onClick {
                     binding.root.run {
@@ -194,18 +200,6 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
                             open()
                         }
                     }
-                }
-            }
-            if (searchView.isAttachedToWindow.not()) {
-                searchView.loadCircle(R.drawable.icon_search)
-                FloatViewHelper.showInWindow(
-                    window, searchView, loc = Point(
-                        (screenWidth - 50.dp2px), (screenHeight * (1 / 2f) - 25.dp2px).toInt()
-                    ), sizeDp = 50
-                )
-                DraggableViewHelper.intrude(searchView)
-                searchView.onClick {
-                    start<SearchActivity>()
                 }
             }
         }
@@ -219,7 +213,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
 
         val adapter = HomeAdapter(this, fragments)
         viewpager.adapter = adapter
-        viewpager.currentItem = 0
+        viewpager.setCurrentItem(0, false)
         viewpager.offscreenPageLimit = 1
 
         viewpager.isUserInputEnabled = false
@@ -295,7 +289,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
             }
         })
 
-        TabLayoutMediator(tabLayout, viewpager) { tab, position ->
+        TabLayoutMediator(tabLayout, viewpager, true, false) { tab, position ->
             tab.customView = ViewTabLayoutBinding.inflate(layoutInflater).apply {
                 tabText.text = titles[position]
                 tabIcon.loadRes(tabIcons[position])
@@ -308,7 +302,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
      * 调用此方法 可以更改选中的 tab
      */
     fun changeIndex(index: Int) {
-        binding.viewpager.currentItem = index
+        binding.viewpager.setCurrentItem(index, false)
     }
 
     /**

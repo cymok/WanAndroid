@@ -26,7 +26,7 @@ object FloatViewHelper {
             height = (sizeDp ?: 100).dp2px
             // View xy 坐标
             x = loc?.x ?: (ScreenUtils.getScreenWidth() - width)
-            y = loc?.y ?: (ScreenUtils.getScreenHeight() * (3 / 4f) - height / 2).toInt()
+            y = loc?.y ?: (ScreenUtils.getScreenHeight() * (3 / 4f) - height / 2f).toInt()
         }
         window.windowManager.addView(view, params)
     }

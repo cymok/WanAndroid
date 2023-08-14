@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.WebChromeClient
@@ -49,7 +50,7 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
         }
         this.webData = data
 
-        supportActionBar?.title = webData.title ?: "文章"
+        supportActionBar?.title = Html.fromHtml(webData.title ?: "文章")
 
         initView()
 
@@ -116,7 +117,7 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
                 }
 
                 override fun onReceivedTitle(view: WebView?, title: String?) {
-                    supportActionBar?.title = webData.title ?: title ?: "文章"
+                    supportActionBar?.title = Html.fromHtml(webData.title ?: title ?: "文章")
                 }
             }
             webViewClient = object : WebViewClient() {

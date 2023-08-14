@@ -2,6 +2,11 @@ package com.example.flamingo.index.setting
 
 import android.os.Bundle
 import android.os.SystemClock
+import androidx.lifecycle.lifecycleScope
+import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.FileUtils
+import com.blankj.utilcode.util.PathUtils
+import com.bumptech.glide.Glide
 import com.example.flamingo.AppDetailDialog
 import com.example.flamingo.R
 import com.example.flamingo.base.activity.VVMBaseActivity
@@ -10,6 +15,9 @@ import com.example.flamingo.utils.UserUtils
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.toast
 import com.lxj.xpopup.XPopup
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import splitties.views.onClick
 
 class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding>() {
@@ -25,7 +33,22 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
     override fun initStatusBarColor() = R.color.status_bar
 
     private fun initView() {
-        binding.llCache.onClick {}
+        val cachePath = PathUtils.getExternalAppCachePath()
+        val len = FileUtils.getLength(cachePath)
+        val size = ConvertUtils.byte2FitMemorySize(len, 2)
+        binding.tvCache.text = size
+        binding.llCache.onClick {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    Glide.get(activity).clearDiskCache()
+                    FileUtils.deleteFilesInDir(cachePath)
+                }
+                toast("清理完成")
+                val lenNew = FileUtils.getLength(cachePath)
+                val sizeNew = ConvertUtils.byte2FitMemorySize(lenNew, 2)
+                binding.tvCache.text = sizeNew
+            }
+        }
         binding.llSkgin.onClick {}
         binding.llSource.onClick {}
         binding.llVersion.onClick {

@@ -17,7 +17,7 @@ interface WanService {
     /*
         // 会在 请求体 以 json 提交
         @POST("/login")
-        suspend fun postTest1(@Body user: User): ApiResult<Any>
+        suspend fun postTest(@Body user: User): ApiResult<Any>
 
         // 请求头指定内容为 json 类型, 可直接传 String 类型的 json
         @Headers("Content-Type: application/json")
@@ -26,7 +26,6 @@ interface WanService {
 
         // 以表单方式提交
         @FormUrlEncoded
-        @POST("user/edit")
         @POST("/login")
         suspend fun postTest3(
             @Field("username") username: String,
@@ -34,20 +33,59 @@ interface WanService {
         ): ApiResult<Any>
     */
 
-    /*
-        @POST("/xxx/xxx")
-        suspend fun uploadTest(@Part part: List<MultipartBody.Part>): ApiResult<String>
-
         // [Part] 后面支持三种类型，[RequestBody]、[MultipartBody.Part] 、任意类型
         // 除 [MultipartBody.Part] 以外，其它类型都必须带上表单字段
         // ([MultipartBody.Part] 中已经包含了表单字段的信息)
-        @POST("/upload/path")
+
+        // 可
+        // @Part("info") info: RequestBody,
+        // @Part downloadUrl: MultipartBody.Part,
+
+        // 可
+        // @Part partList: List<MultipartBody.Part>
+/*
+        // 第一种 单个文件 需要写明字段名`@Part("file")`
         @Multipart
+        @POST("/upload/path")
         suspend fun uploadTest(
-            @Part("name") name: RequestBody,
-            @Part filePart: MultipartBody.Part,
-        ): ApiResult<String>
-    */
+            @Part("name") reqBody: RequestBody
+        ): ApiResult<ResponseBody>
+
+        // 第一种 多个文件 需要在 Map 的 key 写明字段名
+        @Multipart
+        @POST("/upload/path")
+        suspend fun uploadTest2(
+            @PartMap reqBodyMap: Map<String, RequestBody>
+        ): ApiResult<ResponseBody>
+
+        // 第二种 单文件 注解不用写字段名 Part里面已经包含字段名
+        @Multipart
+        @POST("/upload/path")
+        suspend fun uploadTest3(
+            @Part part: MultipartBody.Part
+        ): ApiResult<ResponseBody>
+
+        // 第二种 多文件 注解不用写字段名 Part里面已经包含字段名
+        @Multipart
+        @POST("/upload/path")
+        suspend fun uploadTest4(
+            @Part partList: List<MultipartBody.Part>
+        ): ApiResult<ResponseBody>
+
+        // 第三种 单文件 需要写明字段名`@Part("file") file: File` ? 未实践
+        @Multipart
+        @POST("/upload/path")
+        suspend fun uploadTest5(
+            @Part("file") file: File
+        ): ApiResult<ResponseBody>
+
+        // 第三种 多文件 `@Part fileMap: Map<String, File>` ? 未实践
+        @Multipart
+        @POST("/upload/path")
+        suspend fun uploadTest5(
+            @PartMap fileMap: Map<String, File>
+        ): ApiResult<ResponseBody>
+*/
 
     // banner
     @GET("/banner/json")
@@ -124,7 +162,8 @@ interface WanService {
     @GET("/wenda/list/{page}/json")
     suspend fun getQAList(
         @Path("page") page: Int = 1,
-        @Query("page_size") pageSize: Int = 10,
+        // 接口 bug, 传了 page_size 返回列表没有置顶数据, 不传是正常的
+//        @Query("page_size") pageSize: Int = 10,
     ): ApiResult<Articles>
 
     // 问答评论列表

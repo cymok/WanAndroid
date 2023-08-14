@@ -3,19 +3,25 @@ package com.example.flamingo.index.qa
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Lifecycle
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.LogUtils
 import com.example.flamingo.base.fragment.VVMBaseFragment
+import com.example.flamingo.constant.EventBus
 import com.example.flamingo.data.LikeData
 import com.example.flamingo.data.WebData
 import com.example.flamingo.databinding.FragmentQaBinding
 import com.example.flamingo.index.common.ArticleListPagingAdapter
 import com.example.flamingo.utils.getViewModel
 import com.example.flamingo.utils.newIntent
+import com.example.flamingo.utils.observeEvent
 import com.example.flamingo.utils.registerResultOK
 import com.example.flamingo.utils.visible
+import splitties.bundle.put
+import splitties.views.topPadding
 
 class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
 
@@ -24,10 +30,29 @@ class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
 
     private val adapter by lazy { ArticleListPagingAdapter() }
 
+    companion object {
+        fun getInstance(isPaddingTop: Boolean) =
+            QaFragment().apply {
+                arguments = Bundle().apply {
+                    put("isPaddingTop", isPaddingTop)
+                }
+            }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initImmersion()
         initView()
         observe()
+    }
+
+    private fun initImmersion() {
+        val isPaddingTop = arguments?.getBoolean("isPaddingTop")
+        binding.rv.topPadding = if (isPaddingTop == true) {
+            BarUtils.getStatusBarHeight()
+        } else {
+            0
+        }
     }
 
     private fun observe() {
@@ -114,6 +139,21 @@ class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
             adapter.refresh()
         }
 
+    }
+
+    override fun observeBus() {
+        observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
+
+        }
+        observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
+                binding.rv.smoothScrollToPosition(0)
+                binding.rv.post {
+                    binding.refresh.isRefreshing = true
+                    adapter.refresh()
+                }
+            }
+        }
     }
 
 }

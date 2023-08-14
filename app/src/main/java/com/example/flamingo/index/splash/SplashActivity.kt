@@ -2,12 +2,13 @@ package com.example.flamingo.index.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
-import com.example.flamingo.base.activity.BaseActivity
+import com.blankj.utilcode.util.AppUtils
 import com.example.flamingo.base.activity.VBaseActivity
-import com.example.flamingo.base.activity.VMBaseActivity
 import com.example.flamingo.databinding.ActivitySplashBinding
 import com.example.flamingo.index.home.HomeActivity
+import com.example.flamingo.utils.UserUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -35,10 +36,33 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        initCountDown()
+        val isAccept = UserUtils.isAcceptAgreement()
+        if (isAccept.not()) {
+            AlertDialog.Builder(this)
+                .setTitle("请阅读《用户协议》和《隐私政策》,\n您是否同意? (假如有的话)")
+                .setNegativeButton("拒绝") { _, _ ->
+                    AppUtils.exitApp()
+                }
+                .setPositiveButton("同意") { _, _ ->
+                    UserUtils.acceptAgreement(true)
+                    nextAction()
+                }
+                .setCancelable(false)
+                .show()
+        } else {
+            nextAction()
+        }
+    }
+
+    private fun nextAction() {
+        initCountDown {
+            start<HomeActivity> {}
+            finish()
+        }
 
         binding.tvSkip.onClick {
             mCountDown?.cancel()
+
             start<HomeActivity> {}
             finish()
         }
@@ -47,15 +71,12 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
     override fun initStatusBarDarkFont() = true
 
     @SuppressLint("SetTextI18n")
-    private fun initCountDown() {
+    private fun initCountDown(block: () -> Unit) {
         mCountDown = countDownByFlow(COUNTDOWN_TIME, lifecycleScope, {
             if (it == 0) mCountDown?.cancel()
             binding.tv.text = it.toString()
             binding.tvSkip.text = "跳过(${it})"
-        }, {
-            start<HomeActivity> {}
-            finish()
-        })
+        }, block)
     }
 
     /**

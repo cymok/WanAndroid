@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.WebChromeClient
@@ -128,7 +129,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
         }
         this.webData = data
 
-        supportActionBar?.title = webData.title ?: "文章"
+        supportActionBar?.title = Html.fromHtml(webData.title ?: "文章")
 
         binding.webView.run {
             settings.run {
@@ -162,7 +163,7 @@ class WebActivity : VVMBaseActivity<WebViewModel, ActivityWebBinding>() {
                 }
 
                 override fun onReceivedTitle(view: WebView?, title: String?) {
-                    supportActionBar?.title = webData.title ?: title ?: "文章"
+                    supportActionBar?.title = Html.fromHtml(webData.title ?: title ?: "文章")
                 }
             }
             webViewClient = object : WebViewClient() {

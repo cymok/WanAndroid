@@ -2,9 +2,12 @@ package com.example.flamingo
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import coil.Coil
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SPUtils
 import com.example.flamingo.config.CoilConfig
 import com.example.flamingo.utils.UmengUtils
@@ -13,6 +16,9 @@ import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.umeng.commonsdk.UMConfigure
+import com.umeng.message.PushAgent
+import com.umeng.message.UmengMessageHandler
+import com.umeng.message.entity.UMessage
 import org.android.agoo.honor.HonorRegister
 import org.android.agoo.huawei.HuaWeiRegister
 import org.android.agoo.mezu.MeizuRegister
@@ -40,7 +46,7 @@ class App : Application() {
         initNightModel()
         initCoil()
         initSmartRefreshLayout()
-        initUmengSDK()
+//        initUmengSDK()
     }
 
     private fun initUmengSDK() {
@@ -54,6 +60,31 @@ class App : Application() {
         VivoRegister.register(this) // 日志过滤 tag：PushMessageReceiver
         HonorRegister.register(this) // 日志过滤：HonorRegister
         MeizuRegister.register(this, BuildConfig.MEIZU_APP_ID, BuildConfig.MEIZU_APP_KEY) // 日志过滤 tag：MeizuPushReceiver
+
+        umengCustomMessage()
+    }
+
+    private fun umengCustomMessage() {
+        object : UmengMessageHandler() {
+            override fun dealWithCustomMessage(context: Context?, msg: UMessage?) {
+                super.dealWithCustomMessage(context, msg)
+                try {
+                    val json = GsonUtils.toJson(msg)
+                    msg?.let {
+                        // 自定义消息内容
+                        val msgContent = msg.custom
+                        // 自定义消息参数
+                        val msgExtra = msg.extra
+                        // 执行业务
+                        // ...
+                    }
+                } catch (e: Exception) {
+                    LogUtils.e(e)
+                }
+            }
+        }.let {
+            PushAgent.getInstance(this).messageHandler = it
+        }
     }
 
     @SuppressLint("SimpleDateFormat")

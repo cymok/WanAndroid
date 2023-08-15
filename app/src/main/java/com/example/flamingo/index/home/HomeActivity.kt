@@ -94,7 +94,7 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        registerUmeng()
+//        registerUmeng()
         initView()
     }
 

@@ -1,6 +1,6 @@
 # 项目架构
 
-## MVVM 架构, 基于 Kotlin, JetPack: Lifecycle + LiveData + ViewModel + Paging, 网络: Retrofit2 + OkHttp3 + Coroutine, 本地缓存: 
+## MVVM 架构, 基于 Kotlin, JetPack: Lifecycle + LiveData + ViewModel + Paging, 网络: Retrofit2 + OkHttp3 + Coroutine, 
 
 ### 功能及技术点
 
@@ -22,15 +22,13 @@
 
 [x] 列表加载, Paging 组件
 
-[x] 列表刷新, [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout) 
+[x] 列表刷新, ~~[SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)~~ 原生
 
-[] 黑暗模式, 自动适应系统设置, TODO: 手动模式
+[x] 深色模式, 跟随系统 + 手动模式
 
-[] 首页, 调整为一个列表, 用 rv 的 multiType
+[x] 首页, 调整为一个列表, Banner + Other接口 + Paging 的列表聚合
 
-[] TODO 收藏页面, 二级 Tab
-
-[] TODO 个人中心, 设置, 登入, 登出
+[] TODO 二级 Tab
 
 [] TODO 本地缓存, [LitePal](https://github.com/guolindev/LitePal) Room Sqlite
 

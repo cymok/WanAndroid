@@ -33,6 +33,7 @@ abstract class BaseActivity(@LayoutRes layoutId: Int = 0) : AppCompatActivity(la
         immersionBar {
             statusBarColor(initStatusBarColor())
             navigationBarColor(initNavBarColor())
+            // 状态栏字体颜色 (系统自动变色优先, 即对低版本系统不会自动变色有效)
             statusBarDarkFont(initStatusBarDarkFont())
         }
 

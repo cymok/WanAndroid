@@ -24,8 +24,6 @@ class ProjectActivity : VBaseActivity<ActivityArticleListBinding>() {
         }
     }
 
-    override fun initStatusBarDarkFont() = true
-
     override fun initStatusBarColor() = R.color.status_bar
 
 }

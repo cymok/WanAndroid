@@ -129,8 +129,6 @@ class HomeActivity : VBaseActivity<ActivityHomeBinding>() {
         }
     }
 
-    override fun initStatusBarDarkFont() = true
-
     private fun initDrawerLayout() {
         binding.viewInclude.run {
             tvSearch.onClick {

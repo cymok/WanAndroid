@@ -68,8 +68,6 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
         }
     }
 
-    override fun initStatusBarDarkFont() = true
-
     @SuppressLint("SetTextI18n")
     private fun initCountDown(block: () -> Unit) {
         mCountDown = countDownByFlow(COUNTDOWN_TIME, lifecycleScope, {

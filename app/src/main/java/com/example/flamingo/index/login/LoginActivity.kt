@@ -16,8 +16,6 @@ class LoginActivity : VVMBaseActivity<LoginViewModel, ActivityLoginBinding>() {
 
     private var loginOrRegister = true
 
-    override fun initStatusBarDarkFont() = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

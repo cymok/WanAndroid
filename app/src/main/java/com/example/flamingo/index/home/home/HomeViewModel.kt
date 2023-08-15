@@ -17,6 +17,7 @@ class HomeViewModel : LikeViewModel() {
     // 这是 Coroutine, 特殊页面异常要 catch, 例如需要登录后调用的接口
     // 不 catch 的话 崩了也不知道啥情况 没有 log
     val banner = liveData {
+        startLoading()
         val result = WanRepository.getBanner()
         emit(result)
     }
@@ -31,6 +32,7 @@ class HomeViewModel : LikeViewModel() {
                     val homeTopList = async { WanRepository.getHomeTopList() }
                     result.await().datas.addAll(0, homeTopList.await())
                 }
+                stopLoading()
                 result.await()
             }
         }

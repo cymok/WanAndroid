@@ -8,26 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primary">@color/purple_500</color>
-    <color name="primaryDark">@color/purple_200</color>
-    <color name="accent">#6B39E6</color>
-
     <color name="status_bar">@color/purple_500</color>
-
-    <color name="divider">#66666666</color>
 
     <color name="background">@color/md_grey_50</color>
     <color name="background_purity">@color/white</color>
     <color name="background_card">@color/md_grey_100</color>
     <color name="background_menu">@color/md_grey_200</color>
     <color name="background_prefs">#7fffffff</color>
-
-    <color name="background_setting">@color/md_grey_300</color>
-
-    <color name="transparent">#00000000</color>
-    <color name="transparent10">#10000000</color>
-    <color name="transparent30">#30000000</color>
-    <color name="transparent50">#50000000</color>
 
     <color name="primaryText">#333333</color>
     <color name="secondaryText">#8a000000</color>
@@ -36,6 +23,17 @@
     <color name="wx_foreground_pressed">#DDDDDD</color>
     <color name="wx_background">#E5E5E5</color>
     <color name="wx_tab">#EFEFEF</color>
+
+    <color name="primary">@color/purple_500</color>
+    <color name="primaryDark">@color/purple_200</color>
+    <color name="accent">#6B39E6</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="transparent10">#10000000</color>
+    <color name="transparent30">#30000000</color>
+    <color name="transparent50">#50000000</color>
+
+    <color name="divider">#66666666</color>
 
     <color name="icon_color_back">#8a8a8a</color>
     <color name="icon_color_fore">#d4237a</color>

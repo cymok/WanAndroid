@@ -2,8 +2,10 @@ package com.example.flamingo
 
 import android.annotation.SuppressLint
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import coil.Coil
+import com.blankj.utilcode.util.SPUtils
 import com.example.flamingo.config.CoilConfig
 import com.example.flamingo.utils.UmengUtils
 import com.example.flamingo.utils.getViewModel
@@ -35,6 +37,7 @@ class App : Application() {
         super.onCreate()
         INSTANCE = this
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleEventObserver())
+        initNightModel()
         initCoil()
         initSmartRefreshLayout()
         initUmengSDK()
@@ -66,6 +69,11 @@ class App : Application() {
 
     private fun initCoil() {
         Coil.setImageLoader(CoilConfig.getImageLoader(this))
+    }
+
+    private fun initNightModel() {
+        val lightModel = SPUtils.getInstance().getInt("night_module")
+        AppCompatDelegate.setDefaultNightMode(lightModel)
     }
 
 }

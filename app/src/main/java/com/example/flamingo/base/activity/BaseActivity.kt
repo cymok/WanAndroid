@@ -1,10 +1,13 @@
 package com.example.flamingo.base.activity
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.blankj.utilcode.util.SPUtils
 import com.example.flamingo.R
 import com.example.flamingo.base.dialog.LoadingDialog
 import com.example.flamingo.utils.hideSoftInput
@@ -42,7 +45,19 @@ abstract class BaseActivity(@LayoutRes layoutId: Int = 0) : AppCompatActivity(la
     @ColorRes
     protected open fun initNavBarColor(): Int = R.color.black
 
-    protected open fun initStatusBarDarkFont() = false
+    protected open fun initStatusBarDarkFont(): Boolean {
+        // 非深色模式都默认设置黑色字体
+        val lightModel = SPUtils.getInstance().getInt("night_module")
+        return lightModel != AppCompatDelegate.MODE_NIGHT_YES
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        immersionBar {
+            // 低版本系统状态栏字体不会自动变色
+            statusBarDarkFont(initStatusBarDarkFont())
+        }
+    }
 
     override fun finish() {
         currentFocus?.hideSoftInput()

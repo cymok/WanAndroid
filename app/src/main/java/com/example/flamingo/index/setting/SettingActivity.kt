@@ -2,10 +2,12 @@ package com.example.flamingo.index.setting
 
 import android.os.Bundle
 import android.os.SystemClock
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
+import com.blankj.utilcode.util.SPUtils
 import com.bumptech.glide.Glide
 import com.example.flamingo.AppDetailDialog
 import com.example.flamingo.R
@@ -49,7 +51,33 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 binding.tvCache.text = sizeNew
             }
         }
-        binding.llSkgin.onClick {}
+        initViewLightModel()
+        binding.llSkgin.onClick {
+            XPopup.Builder(this)
+                .asCenterList(
+                    "选择模式", arrayOf(
+                        "跟随系统", "普通模式", "深色模式"
+                    )
+                ) { position, text ->
+                    val model = when (position) {
+                        1 -> {
+                            AppCompatDelegate.MODE_NIGHT_NO
+                        }
+
+                        2 -> {
+                            AppCompatDelegate.MODE_NIGHT_YES
+                        }
+
+                        else -> {
+                            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                        }
+                    }
+                    SPUtils.getInstance().put("night_module", model)
+                    initViewLightModel()
+                    AppCompatDelegate.setDefaultNightMode(model)
+                }
+                .show()
+        }
         binding.llSource.onClick {}
         binding.llVersion.onClick {
             onMultiClick {
@@ -65,6 +93,22 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 .asConfirm("提示", "要注销登录吗?") {
                     viewModel.logout()
                 }.show()
+        }
+    }
+
+    private fun initViewLightModel() {
+        binding.tvSkin.text = when (SPUtils.getInstance().getInt("night_module")) {
+            AppCompatDelegate.MODE_NIGHT_NO -> {
+                "普通模式"
+            }
+
+            AppCompatDelegate.MODE_NIGHT_YES -> {
+                "深色模式"
+            }
+
+            else -> {
+                "跟随系统"
+            }
         }
     }
 

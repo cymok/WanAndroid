@@ -52,7 +52,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
             }
         }
         initViewLightModel()
-        binding.llSkgin.onClick {
+        binding.llNightModel.onClick {
             XPopup.Builder(this)
                 .asCenterList(
                     "选择模式", arrayOf(
@@ -97,7 +97,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
     }
 
     private fun initViewLightModel() {
-        binding.tvSkin.text = when (SPUtils.getInstance().getInt("night_module")) {
+        binding.tvNightModel.text = when (SPUtils.getInstance().getInt("night_module")) {
             AppCompatDelegate.MODE_NIGHT_NO -> {
                 "普通模式"
             }

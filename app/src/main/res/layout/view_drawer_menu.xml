@@ -64,7 +64,8 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="16dp"
-            android:text="学习路线" />
+            android:text="学习路线"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
@@ -96,7 +97,8 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="16dp"
-            android:text="导航" />
+            android:text="导航"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
@@ -112,7 +114,8 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="16dp"
-            android:text="教程" />
+            android:text="教程"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
@@ -176,7 +179,8 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="16dp"
-            android:text="工具" />
+            android:text="工具"
+            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"

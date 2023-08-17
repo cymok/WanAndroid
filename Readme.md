@@ -1,10 +1,12 @@
-# 项目架构
+# WanAndroid 传统 Kotlin 版
 
-## MVVM 架构, 基于 Kotlin, JetPack: Lifecycle + LiveData + ViewModel + Paging, 网络: Retrofit2 + OkHttp3 + Coroutine, 
+## 项目架构
 
-### 功能及技术点
+MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + Paging
 
-[x] 网络, [OkHttp3](https://github.com/square/okhttp) + [Retrofit2](https://github.com/square/retrofit), [PersistentCookieJar](https://github.com/franmontiel/PersistentCookieJar)
+## 功能及技术点
+
+[x] 网络, [OkHttp3](https://github.com/square/okhttp) + [Retrofit2](https://github.com/square/retrofit) + Coroutine, [PersistentCookieJar](https://github.com/franmontiel/PersistentCookieJar)
 
 [x] 图片, [Glide](https://github.com/bumptech/glide)
 
@@ -14,9 +16,9 @@
 
 [x] 首页导航, 使用 TabLayout + ViewPager2 + Fragment, 自定义 TabItem, 再次点击 Tab 刷新页面
 
-[x] 侧滑导航, DrawerLayout + 悬浮可拖拽自动贴边 View
+[x] DrawerLayout 侧滑导航
 
-[x] 状态栏沉浸, [ImmersionBar](https://github.com/gyf-dev/ImmersionBar), Fragment 使用 paddingTop 解决
+[x] 状态栏沉浸, [ImmersionBar](https://github.com/gyf-dev/ImmersionBar)
 
 [x] Banner, [banner](https://github.com/youth5201314/banner)
 
@@ -28,7 +30,7 @@
 
 [x] 首页, 调整为一个列表, Banner + Other接口 + Paging 的列表聚合
 
-[] TODO 二级 Tab
+[x] 可拖拽悬浮按钮 可自动贴边
 
 [] TODO 本地缓存, [LitePal](https://github.com/guolindev/LitePal) Room Sqlite
 
@@ -45,18 +47,3 @@
   - ViewBinding 扩展, [ViewBindingPropertyDelegate](https://github.com/androidbroadcast/ViewBindingPropertyDelegate)
 
   - RecyclerView ItemDecoration [SpacingItemDecoration](https://github.com/grzegorzojdana/SpacingItemDecoration)
-
-  - 
-
----
-
-### 代码相关
-
-- V - 使用 `ViewBinding`, 基类带 `V` 的, [VBaseActivity] [VVMBaseActivity] [VBaseFragment] [VVMBaseFragment], 只需继承实现 `binding`
-- VM - 使用 `ViewModel`, 基类带 `VM` 的, [VMBaseActivity] [VVMBaseActivity] [VMBaseFragment] [VVMBaseFragment], 只需继承实现 `viewModel`
-- VVM - 综合以上两个, 基类带 `VVM` 的, [VVMBaseActivity] [VVMBaseFragment], 需继承实现 `binding` `viewModel`
-
-根据情况, 需要 `ViewModel` 的页面就继承带 `VM` 的类, 需要 `ViewBinding` 的页面就继承带 `V` 的类
-
----
-

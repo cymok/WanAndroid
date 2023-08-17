@@ -49,6 +49,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".index.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".index.login.LoginActivity"
             android:exported="false" />
         <activity
@@ -56,41 +59,11 @@
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
-            android:name=".index.home.HomeActivity"
-            android:exported="false" />
-<!--
-        <activity
-            android:name=".index.home.HomeActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
--->
-        <activity
             android:name=".index.web.WebActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
-            android:name=".index.article.ArticleListActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.ActionBar" />
-        <activity
-            android:name=".index.like.ArticleLikeActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.ActionBar" />
-        <activity
-            android:name=".index.newProject.NewProjectActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.ActionBar" />
-        <activity
-            android:name=".index.search.SearchActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.ActionBar" />
-        <activity
-            android:name=".index.qa.QaActivity"
+            android:name=".index.common.ArticleWebActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
@@ -98,11 +71,31 @@
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
-            android:name=".index.home.project.ProjectActivity"
+            android:name=".index.search.SearchActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
         <activity
-            android:name=".index.home.subscribe.SubscribeActivity"
+            android:name=".index.like.ArticleLikeActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.home.HomeActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.square.SquareActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.qa.QaActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.project.ProjectActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.subscribe.SubscribeActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
 

@@ -22,7 +22,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Flamingo"
+rootProject.name = "WanAndroid"
 include ':app'
 include ':module_common'
 include ':module_lint_lib'

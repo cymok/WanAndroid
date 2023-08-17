@@ -14,11 +14,11 @@ def gitCommitId = cmdGitCommitId.execute().text.trim()
 def time = new Date()
 
 android {
-    namespace 'com.example.flamingo'
+    namespace 'com.example.wan.android'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.flamingo"
+        applicationId "com.example.wan.android"
         minSdk 21
         targetSdk 33
         versionCode 1

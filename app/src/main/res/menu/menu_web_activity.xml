@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_item_like"
-        android:icon="@drawable/icon_like"
-        android:title="收藏"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/menu_item_refresh"
         android:icon="@drawable/icon_loading"
         android:title="刷新"

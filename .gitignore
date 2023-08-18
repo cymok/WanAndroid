@@ -14,3 +14,4 @@ local.properties
 /*/release/
 
 lint-baseline.xml
+full-r8-config.txt

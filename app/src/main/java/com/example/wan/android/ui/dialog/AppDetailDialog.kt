@@ -1,4 +1,4 @@
-package com.example.wan.android
+package com.example.wan.android.ui.dialog
 
 import android.app.AlertDialog
 import android.content.Context
@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import com.example.wan.android.BuildConfig
 import com.example.wan.android.utils.dp2px
 import java.text.SimpleDateFormat
 import java.util.Locale

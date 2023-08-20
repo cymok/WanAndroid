@@ -13,14 +13,12 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.constant.EventBus
-import com.example.wan.android.databinding.ActivityHomeBinding
+import com.example.wan.android.databinding.ActivityMainBinding
 import com.example.wan.android.databinding.ViewTabLayoutBinding
 import com.example.wan.android.index.home.HomeActivity
 import com.example.wan.android.index.home.HomeFragment
@@ -36,7 +34,6 @@ import com.example.wan.android.index.subscribe.SubscribeFragment
 import com.example.wan.android.index.web.WebActivity
 import com.example.wan.android.utils.DraggableViewHelper
 import com.example.wan.android.utils.FloatViewHelper
-import com.example.wan.android.utils.UmengUtils
 import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.dp2px
 import com.example.wan.android.utils.loadCircle
@@ -47,15 +44,10 @@ import com.example.wan.android.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
-import com.umeng.message.PushAgent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import splitties.activities.start
 import splitties.views.onClick
 
-class MainActivity : VBaseActivity<ActivityHomeBinding>() {
+class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
     companion object {
         const val DELAY_TIME: Long = 1000
@@ -85,7 +77,7 @@ class MainActivity : VBaseActivity<ActivityHomeBinding>() {
         R.drawable.icon_person_selected
     )
 
-    override val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
+    override val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val floatView by lazy { AppCompatImageView(this) }
 
@@ -103,34 +95,7 @@ class MainActivity : VBaseActivity<ActivityHomeBinding>() {
         val agreed = UserUtils.isAcceptAgreement()
         if (agreed.not()) return
         // 获取用户信息的SDK 需在用户同意隐私政策协议之后调用，否则会出现合规问题
-//        initUmengSDK()
-    }
 
-    private fun initUmengSDK() {
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                //建议在子线程中初始化（启动优化）
-                UmengUtils.init(activity)
-            }
-            delay(1000)
-            PushAgent.getInstance(activity).onAppStart()
-
-            val deviceToken = UmengUtils.getDeviceToken(activity)
-            LogUtils.e("umeng", "deviceToken = $deviceToken")
-
-            if (deviceToken.isBlank()) {
-                // 拿不到 deviceToken 再次尝试注册
-                UmengUtils.preInit(activity)
-                withContext(Dispatchers.IO) {
-                    UmengUtils.init(activity)
-                }
-                delay(1000)
-                PushAgent.getInstance(activity).onAppStart()
-
-                val deviceTokenAgain = UmengUtils.getDeviceToken(activity)
-                LogUtils.e("umeng", "deviceToken = $deviceTokenAgain")
-            }
-        }
     }
 
     private fun initDrawerLayout() {
@@ -216,7 +181,7 @@ class MainActivity : VBaseActivity<ActivityHomeBinding>() {
         val tabLayout = binding.tabLayout
 
         viewpager.adapter = MainAdapter(this, fragments)
-        viewpager.currentItem = 0
+        viewpager.currentItem = 2
         viewpager.offscreenPageLimit = 1
 
         viewpager.isUserInputEnabled = false

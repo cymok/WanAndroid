@@ -10,11 +10,11 @@ import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
 import com.blankj.utilcode.util.SPUtils
 import com.bumptech.glide.Glide
-import com.example.wan.android.AppDetailDialog
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.databinding.ActivitySettingBinding
 import com.example.wan.android.index.web.WebActivity
+import com.example.wan.android.ui.dialog.AppDetailDialog
 import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.toast

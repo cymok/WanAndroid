@@ -1,216 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".others.first.FirstActivity">
+    android:background="@color/wx_background">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-
-        <!-- AppBarLayout里面 需要顶上去的 View 设置这个属性
-         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-         -->
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="路径: " />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_uri"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="null" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_path"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="null" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/wx_foreground"
+            app:tabGravity="fill"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt0"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="自定义" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt00"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="自定义2" />
+    <!-- 注意 DrawerLayout 的 菜单 View 要设置 layout_gravity -->
+    <include
+        android:id="@+id/view_include"
+        layout="@layout/view_drawer_menu" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="拍照" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="图库" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Pick" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="bt4" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="bt5" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="bt6" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Matisse-Zhihu" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Matisse-Compose" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="bt9" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="test" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

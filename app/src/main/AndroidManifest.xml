@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -12,11 +13,6 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-    <!-- Android 11+ -->
-    <queries>
-        <package android:name="com.tencent.mm" />
-    </queries>
 
     <!-- 适配 Android 10 沙盒
     android:requestLegacyExternalStorage="true"
@@ -44,7 +40,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -99,44 +94,6 @@
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
 
-        <activity
-            android:name=".others.main.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".others.first.FirstActivity"
-            android:exported="false" />
-        <activity
-            android:name=".others.second.SecondActivity"
-            android:exported="false" />
-        <activity
-            android:name=".others.third.ThirdActivity"
-            android:exported="false" />
-        <activity
-            android:name=".others.coroutine.CoroutineActivity"
-            android:exported="false" />
-        <activity
-            android:name=".others.compose.ComposeActivity"
-            android:exported="false" />
-
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:exported="false" />
-
-        <!--wechat start-->
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:taskAffinity="${applicationId}"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:taskAffinity="${applicationId}"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--wechat end-->
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -156,29 +113,6 @@
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
-
-        <!-- umeng 厂商通道 start -->
-        <!-- huawei -->
-        <meta-data android:name="com.huawei.hms.client.appid" android:value="appid=${huawei_app_id}"/>
-        <!-- vivo -->
-        <meta-data android:name="com.vivo.push.app_id" android:value="${vivo_app_id}"/>
-        <meta-data android:name="com.vivo.push.api_key" android:value="${vivo_app_key}"/>
-        <!-- honer -->
-        <meta-data android:name="com.hihonor.push.app_id" android:value="${honer_app_id}"/>
-        <!-- meizu -->
-        <receiver
-            android:name=".receiver.MfrMzMessageReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
-                <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
-                <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
-                <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
-                <action android:name="com.meizu.c2dm.intent.RECEIVE" />
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </receiver>
-        <!-- umeng end -->
 
     </application>
 

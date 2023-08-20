@@ -30,7 +30,6 @@ inline fun <reified EVENT> AppCompatActivity.observeEvent(
     }
 }
 
-
 inline fun <reified EVENT> AppCompatActivity.observeEventSticky(
     vararg tags: String,
     noinline observer: (EVENT) -> Unit
@@ -66,4 +65,3 @@ inline fun <reified EVENT> Fragment.observeEventSticky(
         eventObservable<EVENT>(it).observeSticky(this, o)
     }
 }
-

@@ -11,6 +11,7 @@ import com.example.wan.android.constant.EventBus
 import com.example.wan.android.databinding.FragmentSubscribeBinding
 import com.example.wan.android.index.common.VpFragmentAdapter
 import com.example.wan.android.index.subscribe.fragment.SubscribeTabFragment
+import com.example.wan.android.utils.TextUtils.htmlDecode
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.observeEvent
 import com.google.android.material.tabs.TabLayoutMediator
@@ -49,7 +50,6 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
     @SuppressLint("NotifyDataSetChanged")
     private fun observe() {
         viewModel.articlesTree.observe(viewLifecycleOwner) {
-            val nameList = it.map { it.name }
 
             // ViewPager
             val list = it.map { item -> SubscribeTabFragment.getInstance(item) }
@@ -59,6 +59,7 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
             binding.viewpager.offscreenPageLimit = 2
 
             // TabLayout
+            val nameList = it.map { it.name.htmlDecode() }
             TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
                 tab.text = nameList[position]
             }.attach()

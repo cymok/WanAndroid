@@ -29,7 +29,7 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             title: String? = null,
         ) {
             ActivityUtils.startActivity(
-                Intent(com.example.wan.android.App.INSTANCE, WebActivity::class.java).apply {
+                Intent(App.INSTANCE, WebActivity::class.java).apply {
                     putExtra("url", url)
                     putExtra("title", title)
                 }

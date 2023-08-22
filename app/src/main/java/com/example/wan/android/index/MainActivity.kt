@@ -34,7 +34,6 @@ import com.example.wan.android.index.subscribe.SubscribeFragment
 import com.example.wan.android.index.web.WebActivity
 import com.example.wan.android.utils.DraggableViewHelper
 import com.example.wan.android.utils.FloatViewHelper
-import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.dp2px
 import com.example.wan.android.utils.loadCircle
 import com.example.wan.android.utils.loadRes
@@ -46,6 +45,8 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import splitties.activities.start
 import splitties.views.onClick
+
+typealias MyAppUtils = com.example.wan.android.utils.AppUtils
 
 class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
@@ -92,7 +93,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
     }
 
     private fun initSDKWithPrivacy() {
-        val agreed = UserUtils.isAcceptAgreement()
+        val agreed = MyAppUtils.isAcceptAgreement()
         if (agreed.not()) return
         // 获取用户信息的SDK 需在用户同意隐私政策协议之后调用，否则会出现合规问题
 
@@ -181,7 +182,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         val tabLayout = binding.tabLayout
 
         viewpager.adapter = MainAdapter(this, fragments)
-        viewpager.currentItem = 2
+        viewpager.currentItem = 0
         viewpager.offscreenPageLimit = 1
 
         viewpager.isUserInputEnabled = false

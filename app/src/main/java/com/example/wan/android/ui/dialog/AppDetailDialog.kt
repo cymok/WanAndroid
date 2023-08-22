@@ -11,10 +11,11 @@ import android.widget.ScrollView
 import android.widget.TextView
 import com.example.wan.android.BuildConfig
 import com.example.wan.android.utils.dp2px
+import com.example.wan.android.utils.ext.setTypeface
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AppDetailDialog(context: Context?, var env: String = "", var uid: String = "") :
+class AppDetailDialog(context: Context?, val env: String = "", val uid: String = "") :
     AlertDialog(context) {
 
     override fun show() {
@@ -52,6 +53,7 @@ class AppDetailDialog(context: Context?, var env: String = "", var uid: String =
                         setPadding(16.dp2px, 16.dp2px, 16.dp2px, 16.dp2px)
                         val text = getInfo()
                         this.text = text
+                        this.setTypeface("fonts/JetBrainsMono-Light.ttf")
                     })
                 })
             })

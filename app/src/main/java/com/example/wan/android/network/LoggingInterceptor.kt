@@ -35,8 +35,11 @@ class LoggingInterceptor : Interceptor {
      */
     private fun getResponseInfo(response: Response?): String {
         var str = ""
-        if (response == null || !response.isSuccessful) {
-            return str
+        if (response == null) {
+            return ""
+        }
+        if (!response.isSuccessful) {
+            return response.body?.string() ?: ""
         }
         val responseBody = response.body
         val contentLength = responseBody!!.contentLength()

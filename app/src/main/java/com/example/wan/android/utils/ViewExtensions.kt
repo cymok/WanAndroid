@@ -30,7 +30,7 @@ val View.activity: AppCompatActivity?
     get() = getCompatActivity(context)
 
 fun View.hideSoftInput() = run {
-    val imm = com.example.wan.android.App.INSTANCE.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    val imm = App.INSTANCE.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
     imm?.let {
         imm.hideSoftInputFromWindow(this.windowToken, 0)
     }

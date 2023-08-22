@@ -4,11 +4,12 @@ import com.blankj.utilcode.util.PathUtils
 import java.io.File
 
 object AppConst {
-    const val WX_APP_ID = ""
-    const val imageCacheSize: Long = 1024 * 1024 * 512 // 512 MB
-    val glidePath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "glide" }
-    val coilPath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "coil" }
 
+    val crashPath by lazy { PathUtils.getFilesPathExternalFirst() + File.separator + "crash" }
+    val okhttpCachePath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "okhttp" }
+    const val OKHTTP_CACHE_SIZE: Long = 1024 * 1024 * 64 // 64 MB
+    val glidePath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "glide" }
+    const val IMAGE_CACHE_SIZE: Long = 1024 * 1024 * 256 // 256 MB
 
     const val refresh = 1
     const val loading = 2

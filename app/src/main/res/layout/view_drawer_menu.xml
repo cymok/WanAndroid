@@ -6,17 +6,23 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="@color/wx_foreground"
+    android:fillViewport="true"
     android:orientation="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="HardcodedText">
+    <!-- DrawerLayout 的布局 一定要设置 -->
+    <!-- android:layout_gravity="start" -->
 
+    <!-- NestedScrollView + LinearLayoutCompat 不能设置 -->
+    <!-- android:layout_gravity="center" -->
+    <!-- NestedScrollView + LinearLayoutCompat 否则实际内容超出高度时会被顶上去一块看不见 -->
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
-        tools:ignore="HardcodedText">
+        android:paddingVertical="50dp">
 
         <View
             android:layout_width="match_parent"
@@ -53,7 +59,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/divider" />
+            android:background="@color/divider"
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_study"
@@ -86,7 +93,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/divider" />
+            android:background="@color/divider"
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_navigation"
@@ -103,7 +111,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/divider" />
+            android:background="@color/divider"
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_tutorials"
@@ -168,7 +177,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/divider" />
+            android:background="@color/divider"
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_tools"

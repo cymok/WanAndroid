@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.blankj.utilcode.util.CrashUtils
 import com.blankj.utilcode.util.SPUtils
+import com.example.wan.android.constant.AppConst
 import com.example.wan.android.utils.getViewModel
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
@@ -29,6 +31,7 @@ class App : Application() {
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleEventObserver())
         initNightModel()
         initSmartRefreshLayout()
+        CrashUtils.init(AppConst.crashPath)
     }
 
     @SuppressLint("SimpleDateFormat")

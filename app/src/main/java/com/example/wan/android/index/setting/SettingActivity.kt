@@ -1,10 +1,12 @@
 package com.example.wan.android.index.setting
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
@@ -16,6 +18,9 @@ import com.example.wan.android.databinding.ActivitySettingBinding
 import com.example.wan.android.index.web.WebActivity
 import com.example.wan.android.ui.dialog.AppDetailDialog
 import com.example.wan.android.utils.UserUtils
+import com.example.wan.android.utils.ext.alert
+import com.example.wan.android.utils.ext.cancel
+import com.example.wan.android.utils.ext.ok
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.toast
 import kotlinx.coroutines.Dispatchers
@@ -35,17 +40,16 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
 
     override fun initStatusBarColor() = R.color.status_bar
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
         val cachePath = PathUtils.getExternalAppCachePath()
         val len = FileUtils.getLength(cachePath)
         val size = ConvertUtils.byte2FitMemorySize(len, 2)
         binding.tvCache.text = size
         binding.llCache.onClick {
-            AlertDialog.Builder(this)
-                .setTitle("提示")
-                .setMessage("将会清理图片、网站等缓存，是否继续？")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定") { dialog, which ->
+            alert("提示", "将会清理图片、网站等缓存，是否继续？") {
+                cancel {}
+                ok {
                     lifecycleScope.launch {
                         withContext(Dispatchers.IO) {
                             Glide.get(activity).clearDiskCache()
@@ -57,21 +61,20 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                         binding.tvCache.text = sizeNew
                     }
                 }
-                .show()
+            }.show()
         }
         initViewLightModel()
         binding.llNightModel.onClick {
             val currentMode = binding.tvNightModel.text
-            val nightModeArray = arrayOf("跟随系统", "普通模式", "深色模式")
+            val nightModeArray = arrayOf("跟随系统", "始终关闭", "始终开启")
             val index = try {
                 nightModeArray.toList().indexOf(currentMode)
             } catch (e: Exception) {
                 0
             }
             var selectModel = SPUtils.getInstance().getInt("night_module")
-            AlertDialog.Builder(this)
-                .setTitle("选择模式")
-                .setSingleChoiceItems(nightModeArray, index) { dialog, which ->
+            alert("深色模式") {
+                setSingleChoiceItems(nightModeArray, index) { dialog, which ->
                     selectModel = when (which) {
                         1 -> {
                             AppCompatDelegate.MODE_NIGHT_NO
@@ -86,18 +89,23 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                         }
                     }
                 }
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定") { dialog, which ->
+                cancel {}
+                ok {
                     SPUtils.getInstance().put("night_module", selectModel)
                     initViewLightModel()
                     AppCompatDelegate.setDefaultNightMode(selectModel)
-                }.show()
+                }
+            }.show()
         }
         binding.llWebSite.onClick {
             val url = "https://wanandroid.com/"
             WebActivity.start(url)
         }
-        binding.llSource.onClick {}
+        binding.llSource.onClick {
+            alert("APP 源码", "时机还未成熟, 写完了就开源") {
+                ok {}
+            }.show()
+        }
         binding.llVersion.onClick {
             onMultiClick {
                 AppDetailDialog(
@@ -107,28 +115,25 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 ).show()
             }
         }
+        binding.tvVersion.text = "Version ${AppUtils.getAppVersionName()}"
         binding.llLogout.onClick {
-            AlertDialog.Builder(this)
-                .setTitle("提示")
-                .setMessage("要注销登录吗?")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定") { dialog, which ->
-                    lifecycleScope.launch {
-                        viewModel.logout()
-                    }
+            alert("提示", "要注销登录吗?") {
+                cancel {}
+                ok {
+                    viewModel.logout()
                 }
-                .show()
+            }.show()
         }
     }
 
     private fun initViewLightModel() {
         binding.tvNightModel.text = when (SPUtils.getInstance().getInt("night_module")) {
             AppCompatDelegate.MODE_NIGHT_NO -> {
-                "普通模式"
+                "始终关闭"
             }
 
             AppCompatDelegate.MODE_NIGHT_YES -> {
-                "深色模式"
+                "始终开启"
             }
 
             else -> {

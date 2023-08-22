@@ -2,13 +2,14 @@ package com.example.wan.android.index.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivitySplashBinding
 import com.example.wan.android.index.MainActivity
-import com.example.wan.android.utils.UserUtils
+import com.example.wan.android.utils.ext.alert
+import com.example.wan.android.utils.ext.cancel
+import com.example.wan.android.utils.ext.ok
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,6 +21,8 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import splitties.activities.start
 import splitties.views.onClick
+
+typealias MyAppUtils = com.example.wan.android.utils.AppUtils
 
 class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
     companion object {
@@ -46,26 +49,24 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
     }
 
     private fun initPrivacyDialog(afterAction: () -> Unit) {
-        val isAccept = UserUtils.isAcceptAgreement()
+        val isAccept = MyAppUtils.isAcceptAgreement()
         if (isAccept.not()) {
-            AlertDialog.Builder(this)
-                .setTitle("请阅读《用户协议》和《隐私政策》,\n您是否同意? (假如有的话)")
-                .setNegativeButton("拒绝") { _, _ ->
+            alert("提示", "请阅读《用户协议》和《隐私政策》,\n您是否同意? (假如有的话)", false) {
+                cancel("拒绝") {
                     AppUtils.exitApp()
                 }
-                .setPositiveButton("同意") { _, _ ->
-                    UserUtils.acceptAgreement(true)
+                ok("同意") {
+                    MyAppUtils.acceptAgreement(true)
                     afterAction.invoke()
                 }
-                .setCancelable(false)
-                .show()
+            }.show()
         } else {
             afterAction.invoke()
         }
     }
 
     private fun initSDKWithPrivacy(afterAction: () -> Unit) {
-        val agreed = UserUtils.isAcceptAgreement()
+        val agreed = MyAppUtils.isAcceptAgreement()
         if (agreed.not()) return
 
         // 在此初始化访问设备信息的SDK

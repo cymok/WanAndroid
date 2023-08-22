@@ -21,7 +21,7 @@ class GlideConfig : AppGlideModule() {
             format(DecodeFormat.PREFER_ARGB_8888)
         })
 
-        builder.setDiskCache(DiskLruCacheFactory(AppConst.glidePath, AppConst.imageCacheSize))
+        builder.setDiskCache(DiskLruCacheFactory(AppConst.glidePath, AppConst.IMAGE_CACHE_SIZE))
 
         // 日志级别
         builder.setLogLevel(Log.DEBUG)

@@ -3,23 +3,30 @@ package com.example.wan.android.utils
 import android.util.Log
 import com.blankj.utilcode.util.ToastUtils
 
-fun toast(any: Any?) {
-    toastShort(any.toString())
+@Suppress("NOTHING_TO_INLINE")
+inline fun toast(any: Any?) {
+    toastShort(any)
 }
 
-fun toastShort(any: Any?) {
+@Suppress("NOTHING_TO_INLINE")
+inline fun toastShort(any: Any?) {
     ToastUtils.showShort(any.toString())
-    Log.e("toast", any.toString())
-//    logStack(any.toString())
+    log(any)
 }
 
-fun toastLong(any: Any?) {
+@Suppress("NOTHING_TO_INLINE")
+inline fun toastLong(any: Any?) {
     ToastUtils.showLong(any.toString())
-    Log.e("toast", any.toString())
-//    logStack(any.toString())
+    log(any)
 }
 
-fun logStack(text: String?) {
-//    Log.e("Debug", Log.getStackTraceString(Throwable(text)))
-    Log.e("Debug", text, Throwable(text))
+@Suppress("NOTHING_TO_INLINE")
+inline fun log(any: Any?, tag: String? = "log") {
+    Log.e(tag, any.toString())
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun logStack(text: String?) {
+//    Log.e("logStack", Log.getStackTraceString(Throwable(text)))
+    Log.e("logStack", text, Throwable(text))
 }

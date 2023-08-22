@@ -12,6 +12,7 @@ import com.example.wan.android.data.ArticlesTreeItem
 import com.example.wan.android.databinding.FragmentProjectBinding
 import com.example.wan.android.index.common.VpFragmentAdapter
 import com.example.wan.android.index.project.fragment.ProjectTabFragment
+import com.example.wan.android.utils.TextUtils.htmlDecode
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.observeEvent
 import com.google.android.material.tabs.TabLayoutMediator
@@ -63,7 +64,7 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
             binding.viewpager.offscreenPageLimit = 2
 
             // TabLayout
-            val nameList = finalList.map { it?.name ?: "最新项目" }
+            val nameList = finalList.map { it?.name?.htmlDecode() ?: "最新项目" }
             TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
                 tab.text = nameList[position]
             }.attach()

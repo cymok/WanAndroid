@@ -48,7 +48,7 @@ abstract class BaseActivity(@LayoutRes layoutId: Int = 0) : AppCompatActivity(la
 
     protected open fun initStatusBarDarkFont(): Boolean {
         // 非深色模式都默认设置黑色字体
-        val lightModel = SPUtils.getInstance().getInt("night_module")
+        val lightModel = SPUtils.getInstance().getInt("night_model")
         return lightModel != AppCompatDelegate.MODE_NIGHT_YES
     }
 

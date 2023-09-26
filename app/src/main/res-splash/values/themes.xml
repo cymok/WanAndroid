@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- https://developer.android.com/develop/ui/views/launch/splash-screen -->
+    <style name="SplashScreen" parent="Theme.SplashScreen">
+        <!-- 利用 layer-list 适配低于 Android 12 的 启动白屏页 SplashScreen 品牌图片，但低于 Android 6.0 的还不能完美适配 -->
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+        <!-- 启动画面 背景颜色 -->
+        <item name="windowSplashScreenBackground">@color/transparent</item>
+        <!-- 启动画面 中心 icon, 这里可以是图片、帧动画等 -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/shape_transparent</item>
+        <!-- 启动画面 中心 icon 背景颜色 -->
+        <item name="windowSplashScreenIconBackgroundColor">@color/transparent</item>
+        <!-- icon 动画时长, 最长时间为 1000 毫秒, 这个属性不会对屏幕显示的实际时间产生任何影响 -->
+        <item name="windowSplashScreenAnimationDuration">0</item>
+        <!--
+        启动画面 底部的品牌图片, 图片会被拉伸,
+        从模拟器截图测量比例为 2.5:1 (即 1坤:1, 或 🐓:1)
+        Branded image: this must be 200×80 dp.
+        -->
+        <!--<item name="android:windowSplashScreenBrandingImage" tools:targetApi="s">
+            @drawable/bilibili
+        </item>-->
+        <!-- 必选项, Splash 退出后的主题 -->
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+
+</resources>

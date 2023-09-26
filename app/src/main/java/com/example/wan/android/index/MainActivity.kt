@@ -7,6 +7,7 @@ import android.animation.ValueAnimator
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,7 +15,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
 import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
+import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.constant.EventBus
@@ -87,6 +90,14 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.mainCreateTime = System.currentTimeMillis()
+        LogUtils.e("""
+            启动耗时
+            App.attachBaseContext: ${0}
+            App.onCreate: ${App.appCreateTime - App.launchTime}
+            Splash.onCreate: ${App.splashCreateTime - App.launchTime}
+            Main.onCreate: ${App.mainCreateTime - App.launchTime}
+        """.trimIndent())
         setContentView(binding.root)
         initSDKWithPrivacy()
         initView()

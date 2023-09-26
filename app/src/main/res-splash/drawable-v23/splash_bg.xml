@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/black" />
+    <!-- 低于 API23 不能指定 bitmap 宽高, 还需要另外适配 -->
+    <item
+        android:width="200dp"
+        android:height="80dp"
+        android:bottom="60dp"
+        android:gravity="center|bottom">
+        <bitmap android:src="@drawable/bilibili" />
+    </item>
+</layer-list>

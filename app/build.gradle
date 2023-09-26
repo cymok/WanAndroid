@@ -122,38 +122,39 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.core:core-ktx:1.10.1'
-    def lifecycle_version = "2.6.1"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_version}"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycle_version}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${lifecycle_version}"
+    def lifecycleVersion = "2.6.2"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0" // 停止维护
-    implementation "androidx.lifecycle:lifecycle-process:${lifecycle_version}"
-    implementation "androidx.lifecycle:lifecycle-service:${lifecycle_version}"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-process:${lifecycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-service:${lifecycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${lifecycleVersion}"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    def navigation_version = "2.6.0" // 2.7.0 需要 compileSdk 34
-    implementation "androidx.navigation:navigation-fragment-ktx:${navigation_version}"
-    implementation "androidx.navigation:navigation-ui-ktx:${navigation_version}"
+    def navigationVersion = "2.6.0" // 2.7.0 需要 compileSdk 34
+    implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
+    implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     implementation "androidx.palette:palette-ktx:1.0.0"
     implementation "androidx.room:room-ktx:2.5.2"
     implementation "androidx.sqlite:sqlite-ktx:2.3.1"
     implementation "androidx.work:work-runtime-ktx:2.8.1"
-    implementation "androidx.paging:paging-runtime-ktx:3.2.0"
+    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation "androidx.core:core-splashscreen:1.0.1"
     // 快乐库 - 扩展
     // https://github.com/LouisCAD/Splitties
-    def splitties_version = "3.0.0"
-    implementation "com.louiscad.splitties:splitties-fun-pack-android-base:${splitties_version}"
-    implementation "com.louiscad.splitties:splitties-fun-pack-android-base-with-views-dsl:${splitties_version}"
-    implementation "com.louiscad.splitties:splitties-fun-pack-android-appcompat:${splitties_version}"
-    implementation "com.louiscad.splitties:splitties-fun-pack-android-appcompat-with-views-dsl:${splitties_version}"
-    implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components:${splitties_version}"
-    implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components-with-views-dsl:${splitties_version}"
+    def splittiesVersion = "3.0.0"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-base:${splittiesVersion}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-base-with-views-dsl:${splittiesVersion}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-appcompat:${splittiesVersion}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-appcompat-with-views-dsl:${splittiesVersion}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components:${splittiesVersion}"
+    implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components-with-views-dsl:${splittiesVersion}"
     // 快乐库 - 工具
     // https://github.com/Blankj/AndroidUtilCode
     implementation 'com.blankj:utilcodex:1.31.1'
-    //沉浸状态栏
+    // 沉浸状态栏
     // https://github.com/gyf-dev/ImmersionBar
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
     implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
@@ -163,10 +164,10 @@ dependencies {
     // https://github.com/square/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.11.0'
     // https://github.com/square/retrofit
-    def retrofit_version = "2.9.0"
-    implementation "com.squareup.retrofit2:retrofit:${retrofit_version}"
-    implementation "com.squareup.retrofit2:converter-gson:${retrofit_version}"
-    implementation "com.squareup.retrofit2:converter-scalars:${retrofit_version}"
+    def retrofitVersion = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
     // https://github.com/franmontiel/PersistentCookieJar
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     // 数据库
@@ -174,10 +175,10 @@ dependencies {
     implementation 'org.litepal.guolindev:core:3.2.3'
     // 图片
     // https://github.com/bumptech/glide
-    def glide_version = "4.15.1"
-    implementation "com.github.bumptech.glide:glide:${glide_version}"
-    kapt "com.github.bumptech.glide:compiler:${glide_version}"
-    implementation "com.github.bumptech.glide:okhttp3-integration:${glide_version}"
+    def glideVersion = "4.15.1"
+    implementation "com.github.bumptech.glide:glide:${glideVersion}"
+    kapt "com.github.bumptech.glide:compiler:${glideVersion}"
+    implementation "com.github.bumptech.glide:okhttp3-integration:${glideVersion}"
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
     // 权限
     // https://github.com/guolindev/PermissionX

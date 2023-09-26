@@ -3,17 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/wx_background">
+    android:background="@color/black">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textSize="200sp"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/splash_1080"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintDimensionRatio="1080:1369"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -28,5 +25,23 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 设置 ImageView 对应 windowSplashScreenBrandingImage
+    源码中的宽高 dimen
+    starting_surface_brand_image_width 200dp
+    starting_surface_brand_image_height 80dp
+    布局属性
+    android:scaleType="fitXY"
+    android:layout_marginBottom="60dp"
+    -->
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="60dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/bilibili"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

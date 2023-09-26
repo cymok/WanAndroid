@@ -2,8 +2,12 @@ package com.example.wan.android.index.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.splashscreen.SplashScreenViewProvider
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
+import com.example.wan.android.App
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivitySplashBinding
 import com.example.wan.android.index.MainActivity
@@ -19,12 +23,15 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import splitties.activities.start
 import splitties.views.onClick
+import java.util.concurrent.atomic.AtomicBoolean
 
 typealias MyAppUtils = com.example.wan.android.utils.AppUtils
 
 class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
+
     companion object {
         const val COUNTDOWN_TIME = 3
     }
@@ -35,14 +42,40 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
 
     private var mCountDown: Job? = null
 
+    override fun initStatusBarDarkFont() = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        initPrivacyDialog {
-            initSDKWithPrivacy {
-                initView {
-                    start<MainActivity> {}
-                    finish()
+        App.splashCreateTime = System.currentTimeMillis()
+        setSplashScreen(splashScreen)
+    }
+
+    private fun setSplashScreen(splashScreen: SplashScreen) {
+        var isShowSplash = true
+
+        // 每次 UI 绘制前，会判断 SplashScreen 是否继续展示在屏幕上，直到不再满足条件时，展示完毕并执行 setOnExitAnimationListener
+        splashScreen.setKeepOnScreenCondition {
+            isShowSplash
+        }
+
+        lifecycleScope.launch {
+            // SplashScreen 展示时长
+            delay(1000) // SplashScreen 仅用于过渡启动, 这里设置 0, 后续展示 AD 或倒计时使用自己的页面
+            // SplashScreen 展示完毕
+            isShowSplash = false
+        }
+
+        // SplashScreen 展示完毕的监听方法
+        splashScreen.setOnExitAnimationListener { splashScreenViewProvider ->
+            splashScreenViewProvider.view.animate().alpha(0f).setDuration(250L).start()
+
+            initPrivacyDialog {
+                initSDKWithPrivacy {
+                    initView {
+                        start<MainActivity> {}
+                        finish()
+                    }
                 }
             }
         }
@@ -88,7 +121,6 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
     private fun initCountDown(block: () -> Unit) {
         mCountDown = countDownByFlow(COUNTDOWN_TIME, lifecycleScope, {
             if (it == 0) mCountDown?.cancel()
-            binding.tv.text = it.toString()
             binding.tvSkip.text = "跳过(${it})"
         }) {
             block.invoke()

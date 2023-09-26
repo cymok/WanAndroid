@@ -91,31 +91,31 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
         // @formatter:off
         return """
             - App -
-            [id${"\t\t\t\t"}] ${BuildConfig.APPLICATION_ID}
-            [ver${"\t\t\t"}] ${BuildConfig.VERSION_NAME}_${BuildConfig.VERSION_CODE}
+            [id    ] ${BuildConfig.APPLICATION_ID}
+            [ver   ] ${BuildConfig.VERSION_NAME}_${BuildConfig.VERSION_CODE}
             [flavor] ${BuildConfig.FLAVOR}${if (BuildConfig.DEBUG) "Debug" else "Release"}
-            [env${"\t\t\t"}] $env
-            [uid${"\t\t\t"}] $uid
+            [env   ] $env
+            [uid   ] $uid
             - App.Build -
             [commit] ${BuildConfig.COMMIT_ID}
-            [java${"\t\t"}] ${null}
+            [java  ] ${null}
             [kotlin] ${null}
             [flutter] ${null}
-            [arch${"\t\t"}] ${BuildConfig.OS_ARCH}
-            [host${"\t\t"}] ${BuildConfig.OS_NAME}
-            [by${"\t\t\t\t"}] ${BuildConfig.USER_NAME}
-            [time${"\t\t"}] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(BuildConfig.BUILD_TIME.toLong())}
+            [arch  ] ${BuildConfig.OS_ARCH}
+            [host  ] ${BuildConfig.OS_NAME}
+            [by    ] ${BuildConfig.USER_NAME}
+            [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(BuildConfig.BUILD_TIME.toLong())}
             - System -
-            [abi${"\t\t\t"}] ${Build.SUPPORTED_ABIS.joinToString(", ")}
-            [bands${"\t"}] ${Build.BRAND}
-            [model${"\t"}] ${Build.MODEL}
-            [ver${"\t\t\t"}] Android ${Build.VERSION.RELEASE}
-            [api${"\t\t\t"}] ${Build.VERSION.SDK_INT}
-            [lang${"\t\t"}] ${Locale.getDefault().language}
+            [abi   ] ${Build.SUPPORTED_ABIS.joinToString(", ")}
+            [bands ] ${Build.BRAND}
+            [model ] ${Build.MODEL}
+            [ver   ] Android ${Build.VERSION.RELEASE}
+            [api   ] ${Build.VERSION.SDK_INT}
+            [lang  ] ${Locale.getDefault().language}
             - System.Build -
-            [host${"\t\t"}] ${Build.HOST}
-            [by${"\t\t\t\t"}] ${Build.USER}
-            [time${"\t\t"}] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Build.TIME)}
+            [host  ] ${Build.HOST}
+            [by    ] ${Build.USER}
+            [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Build.TIME)}
         """.trimIndent()
         // @formatter:on
     }

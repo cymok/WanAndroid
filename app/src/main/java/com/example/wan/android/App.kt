@@ -2,6 +2,8 @@ package com.example.wan.android
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
+import android.os.SystemClock
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.blankj.utilcode.util.CrashUtils
@@ -21,12 +23,23 @@ class App : Application() {
         lateinit var INSTANCE: App
             private set
 
+        var launchTime = 0L
+        var appCreateTime = 0L
+        var splashCreateTime = 0L
+        var mainCreateTime = 0L
+
     }
 
     val appViewModel: AppViewModel by lazy { getViewModel() }
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        launchTime = System.currentTimeMillis()
+    }
+
     override fun onCreate() {
         super.onCreate()
+        appCreateTime = System.currentTimeMillis()
         INSTANCE = this
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleEventObserver())
         initNightModel()
@@ -46,7 +59,7 @@ class App : Application() {
     }
 
     private fun initNightModel() {
-        val lightModel = SPUtils.getInstance().getInt("night_module")
+        val lightModel = SPUtils.getInstance().getInt("night_model")
         AppCompatDelegate.setDefaultNightMode(lightModel)
     }
 

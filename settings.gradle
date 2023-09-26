@@ -1,24 +1,26 @@
 pluginManagement {
     repositories {
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/public' } // central仓和jcenter仓的聚合仓
         google()
         mavenCentral()
 
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         mavenLocal()
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/public' } // central仓和jcenter仓的聚合仓
         maven { url 'https://jitpack.io' }
         google()
         mavenCentral()
     }
 }
+
 rootProject.name = "WanAndroid"
 include ':app'
 include ':module_common'

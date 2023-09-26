@@ -1,6 +1,13 @@
 package com.example.wan.android.utils
 
+import android.app.ActivityManager
+import android.content.Context
+import android.os.Build
+import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.SPUtils
+import com.example.wan.android.BuildConfig
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object AppUtils {
 
@@ -56,6 +63,45 @@ object AppUtils {
 
         // 相等
         return false
+    }
+
+    fun getHeapSize(context: Context): Int {
+        val activityManager =
+            ContextCompat.getSystemService(context, ActivityManager::class.java) ?: return -1
+        return activityManager.largeMemoryClass
+    }
+
+    fun getAppInfo(env: String = "", uid: String = ""): String {
+        // @formatter:off
+        return """
+            - App -
+            [id    ] ${BuildConfig.APPLICATION_ID}
+            [ver   ] ${BuildConfig.VERSION_NAME}_${BuildConfig.VERSION_CODE}
+            [flavor] ${BuildConfig.FLAVOR}${if (BuildConfig.DEBUG) "Debug" else "Release"}
+            [env   ] $env
+            [uid   ] $uid
+            - App.Build -
+            [commit] ${BuildConfig.COMMIT_ID}
+            [java  ] ${null}
+            [kotlin] ${null}
+            [flutter] ${null}
+            [arch  ] ${BuildConfig.OS_ARCH}
+            [host  ] ${BuildConfig.OS_NAME}
+            [by    ] ${BuildConfig.USER_NAME}
+            [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(BuildConfig.BUILD_TIME.toLong())}
+            - System -
+            [abi   ] ${Build.SUPPORTED_ABIS.joinToString(", ")}
+            [bands ] ${Build.BRAND}
+            [model ] ${Build.MODEL}
+            [ver   ] Android ${Build.VERSION.RELEASE}
+            [api   ] ${Build.VERSION.SDK_INT}
+            [lang  ] ${Locale.getDefault().language}
+            - System.Build -
+            [host  ] ${Build.HOST}
+            [by    ] ${Build.USER}
+            [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Build.TIME)}
+        """.trimIndent()
+        // @formatter:on
     }
 
 }

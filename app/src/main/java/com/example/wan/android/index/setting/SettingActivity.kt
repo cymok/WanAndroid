@@ -1,9 +1,10 @@
 package com.example.wan.android.index.setting
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
@@ -11,9 +12,12 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
 import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.ToastUtils
+import com.blankj.utilcode.util.ZipUtils
 import com.bumptech.glide.Glide
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
+import com.example.wan.android.constant.AppConst
 import com.example.wan.android.databinding.ActivitySettingBinding
 import com.example.wan.android.index.web.WebActivity
 import com.example.wan.android.ui.dialog.AppDetailDialog
@@ -21,12 +25,14 @@ import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.ext.alert
 import com.example.wan.android.utils.ext.cancel
 import com.example.wan.android.utils.ext.ok
+import com.example.wan.android.utils.getUri
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import splitties.views.onClick
+import java.io.File
 
 class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding>() {
 
@@ -40,7 +46,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
 
     override fun initStatusBarColor() = R.color.status_bar
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "IntentReset")
     private fun initView() {
         val cachePath = PathUtils.getExternalAppCachePath()
         val len = FileUtils.getLength(cachePath)
@@ -72,7 +78,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
             } catch (e: Exception) {
                 0
             }
-            var selectModel = SPUtils.getInstance().getInt("night_module")
+            var selectModel = SPUtils.getInstance().getInt("night_model")
             alert("深色模式") {
                 setSingleChoiceItems(nightModeArray, index) { dialog, which ->
                     selectModel = when (which) {
@@ -91,7 +97,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 }
                 cancel {}
                 ok {
-                    SPUtils.getInstance().put("night_module", selectModel)
+                    SPUtils.getInstance().put("night_model", selectModel)
                     initViewLightModel()
                     AppCompatDelegate.setDefaultNightMode(selectModel)
                 }
@@ -101,13 +107,70 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
             val url = "https://wanandroid.com/"
             WebActivity.start(url)
         }
+        binding.llReport.onClick {
+            val email = getString(R.string.email)
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(email)) // 网易邮箱 未能识别。 Gmail、Mail.ru、Outlook、厂商自带邮件APP 都能正常识别
+                putExtra(Intent.EXTRA_SUBJECT, "${getString(R.string.app_name)}-反馈/建议")
+//                putExtra(Intent.EXTRA_TEXT, "")
+            }
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(Intent.createChooser(intent, "选择邮件APP"))
+            } else {
+                ToastUtils.showShort("您未安装邮件APP")
+            }
+        }
+        binding.llLog.onClick {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val zipFilePath =
+                    PathUtils.getCachePathExternalFirst() + File.separator + "crash.zip"
+                ZipUtils.zipFile(
+                    AppConst.crashPath,
+                    zipFilePath
+                )
+                launch(Dispatchers.Main) {
+                    val email = getString(R.string.email)
+                    // ACTION_SENDTO 无附件
+                    // ACTION_SEND 一个附件
+                    // ACTION_SEND_MULTIPLE 多个附件
+                    /*
+                    https://developer.android.com/guide/components/intents-common#Email
+                    ACTION_SENDTO (for no attachment) or
+                    ACTION_SEND (for one attachment) or
+                    ACTION_SEND_MULTIPLE (for multiple attachments)
+                    */
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf(email)) // 网易邮箱 未能识别。 Gmail、Mail.ru、Outlook、厂商自带邮件APP 都能正常识别
+                        putExtra(Intent.EXTRA_SUBJECT, "${getString(R.string.app_name)}-崩溃日志上报")
+                        putExtra(Intent.EXTRA_TEXT, com.example.wan.android.utils.AppUtils.getAppInfo(
+                            "null",
+                            UserUtils.getSupperUserInfo()?.userInfo?.username ?: "null"
+                        ))
+                        putExtra(Intent.EXTRA_STREAM, File(zipFilePath).getUri())
+                        type = "application/octet-stream"
+                    }
+                    if (intent.resolveActivity(packageManager) != null) {
+                        alert("提示", "请选择一款邮件App") {
+                            ok {
+                                startActivity(Intent.createChooser(intent, "选择邮件APP"))
+                            }
+                        }.show()
+                    } else {
+                        ToastUtils.showShort("您未安装邮件APP")
+                    }
+                }
+            }
+        }
         binding.llSource.onClick {
-            alert("APP 源码", "时机还未成熟, 写完了就开源") {
+            alert("APP 源码", "心急食唔到热豆腐") {
                 ok {}
             }.show()
         }
         binding.llVersion.onClick {
-            onMultiClick {
+            onMultiClick({ i ->
+                ToastUtils.showShort("快速再按 $i 次 查看更多")
+            }) {
                 AppDetailDialog(
                     context = activity,
                     env = "null",
@@ -127,7 +190,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
     }
 
     private fun initViewLightModel() {
-        binding.tvNightModel.text = when (SPUtils.getInstance().getInt("night_module")) {
+        binding.tvNightModel.text = when (SPUtils.getInstance().getInt("night_model")) {
             AppCompatDelegate.MODE_NIGHT_NO -> {
                 "始终关闭"
             }
@@ -154,15 +217,26 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
     }
 
     private val size = 5
-    private val time = 200 * size
+    private val interval = 200
     private var mHints: Array<Long?> = arrayOfNulls(size)
 
-    private fun onMultiClick(listener: () -> Unit) {
-        System.arraycopy(mHints, 1, mHints, 0, mHints.size - 1)//每次点击时，数组向前移动一位
-        mHints[mHints.size - 1] = SystemClock.uptimeMillis()//为数组最后一位赋值
-        if (SystemClock.uptimeMillis() - (mHints[0] ?: 0L) <= time) {//连续点击之间有效间隔
+    private fun onMultiClick(
+        continueListener: ((Int) -> Unit)? = null,
+        listener: () -> Unit
+    ) {
+        System.arraycopy(mHints, 1, mHints, 0, mHints.size - 1) // 每次点击时，数组向前移动一位
+        mHints[mHints.size - 1] = SystemClock.uptimeMillis() // 为数组最后一位赋值
+        val time = interval * size
+        if (SystemClock.uptimeMillis() - (mHints[0] ?: 0L) <= time) { // 连续点击之间有效间隔
             mHints = arrayOfNulls(size)
             listener()
+        } else {
+            for (i in 0 until size) {
+                if (SystemClock.uptimeMillis() - (mHints[i] ?: 0L) <= time) {
+                    continueListener?.invoke(i)
+                    break
+                }
+            }
         }
     }
 

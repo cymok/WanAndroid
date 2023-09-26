@@ -10,9 +10,9 @@ import android.view.WindowManager
 
 inline val Context.touchSlop: Int get() = ViewConfiguration.get(this).scaledTouchSlop
 
-inline val Activity.screenWidth get() = this.resources.displayMetrics.widthPixels
+inline val Context.screenWidth get() = this.resources.displayMetrics.widthPixels
 
-inline val Activity.screenHeight get() = this.resources.displayMetrics.heightPixels
+inline val Context.screenHeight get() = this.resources.displayMetrics.heightPixels
 
 inline val Activity.statusBarHeight: Int
     @SuppressLint("InternalInsetResource", "DiscouragedApi")
@@ -39,7 +39,7 @@ fun Activity.isFullscreen2(): Boolean {
     return false
 }
 
-fun Activity.isFullscreen3(): Boolean {
+fun Context.isFullscreen3(): Boolean {
     val typedValue = TypedValue()
     this.theme.obtainStyledAttributes(intArrayOf(android.R.attr.windowFullscreen))
         .getValue(0, typedValue)

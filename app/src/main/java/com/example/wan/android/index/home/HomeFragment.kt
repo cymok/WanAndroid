@@ -48,6 +48,11 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
         observe()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun initImmersion() {
         val isPaddingTop = arguments?.getBoolean("isPaddingTop")
         binding.rv.topPadding = if (isPaddingTop == true) {

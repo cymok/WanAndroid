@@ -132,6 +132,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-service:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${lifecycleVersion}"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02' // 1.1 新特性 registerFragmentTransactionCallback
     def navigationVersion = "2.6.0" // 2.7.0 需要 compileSdk 34
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"

@@ -7,13 +7,16 @@ import android.animation.ValueAnimator
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter.FragmentTransactionCallback.OnPostEventListener
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
@@ -40,7 +43,6 @@ import com.example.wan.android.utils.FloatViewHelper
 import com.example.wan.android.utils.dp2px
 import com.example.wan.android.utils.loadCircle
 import com.example.wan.android.utils.loadRes
-import com.example.wan.android.utils.observeEvent
 import com.example.wan.android.utils.postEvent
 import com.example.wan.android.utils.toast
 import com.google.android.material.tabs.TabLayout
@@ -85,19 +87,17 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
     private val floatView by lazy { AppCompatImageView(this) }
 
-    private var secondLastIndex = -1
-    private var lastIndex = -1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.mainCreateTime = System.currentTimeMillis()
-        LogUtils.e("""
+        val text = """
             启动耗时
             App.attachBaseContext: ${0}
             App.onCreate: ${App.appCreateTime - App.launchTime}
             Splash.onCreate: ${App.splashCreateTime - App.launchTime}
             Main.onCreate: ${App.mainCreateTime - App.launchTime}
-        """.trimIndent())
+        """.trimIndent()
+        LogUtils.e(text)
         setContentView(binding.root)
         initSDKWithPrivacy()
         initView()
@@ -192,9 +192,33 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         val viewpager = binding.viewpager
         val tabLayout = binding.tabLayout
 
-        viewpager.adapter = MainAdapter(this, fragments)
+//        ViewPager(this).adapter = MainLazyAdapter(this, fragments)
+        viewpager.adapter = MainAdapter(this, fragments).apply {
+            // registerFragmentTransactionCallback 是 ViewPager2 v1.1 的 API
+            registerFragmentTransactionCallback(object :
+                FragmentStateAdapter.FragmentTransactionCallback() {
+                override fun onFragmentMaxLifecyclePreUpdated(
+                    fragment: Fragment,
+                    maxLifecycleState: Lifecycle.State
+                ): OnPostEventListener {
+                    return if (maxLifecycleState == Lifecycle.State.RESUMED) {
+                        LogUtils.e("${fragment.javaClass.simpleName} maxLifecycleState=${maxLifecycleState}")
+                        OnPostEventListener {
+                            // do nothing
+                        }
+                    } else {
+                        super.onFragmentMaxLifecyclePreUpdated(fragment, maxLifecycleState)
+                    }
+                }
+
+                override fun onFragmentPreAdded(fragment: Fragment): OnPostEventListener {
+                    return super.onFragmentPreAdded(fragment)
+                }
+            })
+        }
+//        val pagerAdapter = MainLazyAdapter(this, fragments)
         viewpager.currentItem = 0
-        viewpager.offscreenPageLimit = 1
+        viewpager.offscreenPageLimit = 2
 
         viewpager.isUserInputEnabled = false
 
@@ -289,8 +313,6 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
      * tab 选中, 重复点击不会执行
      */
     fun onPageChanged(pageIndex: Int) {
-        secondLastIndex = lastIndex
-        lastIndex = pageIndex
         postEvent(EventBus.HOME_TAB_CHANGED, pageIndex, 500)
     }
 
@@ -315,9 +337,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
     }
 
     override fun observeBus() {
-        observeEvent<Int>(EventBus.CHANGE_HOME_TAB) {
-            changeIndex(secondLastIndex)
-        }
+
     }
 
 }

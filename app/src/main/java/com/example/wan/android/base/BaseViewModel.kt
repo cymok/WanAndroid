@@ -58,9 +58,12 @@ abstract class BaseViewModel : ViewModel(),
      * @return Job
      */
     protected fun launch(
+        requireLogin: Boolean = false,
         showErrorToast: Boolean = true,
+        onStart: (suspend () -> Unit)? = null,
         cancel: Cancel? = null,
         error: Error? = null,
+        onCompleted: (suspend () -> Unit)? = null,
         block: Block<Unit>,
     ): Job {
         return viewModelScope.launch {
@@ -75,10 +78,12 @@ abstract class BaseViewModel : ViewModel(),
 
                     else -> {
                         stopLoading()
-                        onError(e, showErrorToast)
+                        onError(e, showErrorToast, requireLogin)
                         error?.invoke(e)
                     }
                 }
+            } finally {
+                onCompleted?.invoke()
             }
         }
     }
@@ -107,7 +112,11 @@ abstract class BaseViewModel : ViewModel(),
      * @param e 异常
      * @param showErrorToast 是否显示错误吐司
      */
-    protected fun onError(e: Exception, showErrorToast: Boolean = true) {
+    protected fun onError(
+        e: Exception,
+        showErrorToast: Boolean = true,
+        requireLogin: Boolean = false,
+    ) {
         loadingStatus.postValue(AppConst.error)
         when (e) {
             is ApiException -> {
@@ -117,7 +126,9 @@ abstract class BaseViewModel : ViewModel(),
                         if (showErrorToast) {
                             toast(e.message)
                         }
-                        loginStatus.postValue(false)
+                        if (requireLogin) {
+                            loginStatus.postValue(false)
+                        }
                         onLogout()
                     }
                     // 其他错误

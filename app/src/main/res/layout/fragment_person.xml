@@ -19,6 +19,7 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/wx_foreground"
@@ -74,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="邮箱: android@google.com"
+                    android:text="邮箱: null"
                     android:textColor="@color/secondaryText"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="@id/tv_username"

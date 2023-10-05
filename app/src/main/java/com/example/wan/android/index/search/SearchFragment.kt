@@ -52,6 +52,11 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
         showSearchDialog()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun showSearchDialog() {
         popupView.apply {
             inputContent = key

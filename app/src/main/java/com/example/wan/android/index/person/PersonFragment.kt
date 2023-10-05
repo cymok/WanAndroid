@@ -9,19 +9,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.blankj.utilcode.util.ToastUtils
 import com.example.wan.android.R
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
+import com.example.wan.android.data.CoinInfo
+import com.example.wan.android.data.CollectArticleInfo
 import com.example.wan.android.data.SupperUserInfo
+import com.example.wan.android.data.UserInfo
 import com.example.wan.android.databinding.FragmentPersonBinding
 import com.example.wan.android.index.like.ArticleLikeActivity
+import com.example.wan.android.index.login.LoginActivity
 import com.example.wan.android.index.setting.SettingActivity
 import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.dp2px
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.load
 import com.example.wan.android.utils.observeEvent
-import com.example.wan.android.utils.postEvent
 import splitties.fragments.start
 import splitties.views.onClick
 
@@ -36,8 +40,17 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
         observe()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun initData() {
-        viewModel.getUserInfo()
+        if (UserUtils.isLogin) {
+            viewModel.getUserInfo()
+        } else {
+            binding.refresh.isRefreshing = false
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -48,11 +61,16 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
         }
     }
 
+    private fun resetInfo() {
+        val supperUserInfo = SupperUserInfo()
+        setInfo(supperUserInfo)
+    }
+
     @SuppressLint("SetTextI18n")
     private fun setInfo(it: SupperUserInfo) {
         binding.run {
             it.collectArticleInfo?.let {
-                tvLikeNum.text = "${it.count} 篇"
+                tvLikeNum.text = "收藏量: ${it.count} 篇"
             }
             it.coinInfo?.let {
                 tvPoints.text = "积分: ${it.coinCount}"
@@ -73,6 +91,7 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
     }
 
     private fun initView() {
+        resetInfo()
         val supperUserInfo = UserUtils.getSupperUserInfo()
         if (supperUserInfo != null) {
             setInfo(supperUserInfo)
@@ -82,31 +101,61 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
             initData()
         }
 
-        val settingLauncher =
+        val loginLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    // 设置页面退出登录后 原路回退
+                    onLoginSucceed()
+                } else {
                     onCancelLogin()
                 }
             }
-        binding.run {
-            llCoin.onClick {
-
+        val settingLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    resetInfo()
+                }
             }
+        binding.run {
+            layoutInfo.onClick {
+                if (UserUtils.isLogin.not()) {
+                    loginLauncher.launch(Intent(activity, LoginActivity::class.java))
+                } else {
+
+                }
+            }
+
+            llCoin.onClick {
+                if (UserUtils.isLogin.not()) {
+                    loginLauncher.launch(Intent(activity, LoginActivity::class.java))
+                } else {
+                    ToastUtils.showShort("开发中")
+                }
+            }
+
             llArticle.onClick {
-                start<ArticleLikeActivity> {}
+                if (UserUtils.isLogin.not()) {
+                    loginLauncher.launch(Intent(activity, LoginActivity::class.java))
+                } else {
+                    start<ArticleLikeActivity> {}
+                }
             }
             llShared.onClick {
-
+                if (UserUtils.isLogin.not()) {
+                    loginLauncher.launch(Intent(activity, LoginActivity::class.java))
+                } else {
+                    ToastUtils.showShort("开发中")
+                }
             }
             llSite.onClick {
-
+                if (UserUtils.isLogin.not()) {
+                    loginLauncher.launch(Intent(activity, LoginActivity::class.java))
+                } else {
+                    ToastUtils.showShort("开发中")
+                }
             }
+
             llSettings.onClick {
                 settingLauncher.launch(Intent(activity, SettingActivity::class.java))
-            }
-            llCoin.onClick {
-
             }
         }
     }
@@ -134,7 +183,7 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
     }
 
     override fun onCancelLogin() {
-        postEvent(EventBus.CHANGE_HOME_TAB, -1)
+
     }
 
 }

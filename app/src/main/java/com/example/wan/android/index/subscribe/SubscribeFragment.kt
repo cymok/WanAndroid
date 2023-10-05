@@ -38,6 +38,11 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
         observe()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun initImmersion() {
         val isPaddingTop = arguments?.getBoolean("isPaddingTop")
         binding.tabLayout.topPadding = if (isPaddingTop == true) {

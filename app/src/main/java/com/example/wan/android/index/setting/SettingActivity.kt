@@ -72,7 +72,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
         initViewLightModel()
         binding.llNightModel.onClick {
             val currentMode = binding.tvNightModel.text
-            val nightModeArray = arrayOf("跟随系统", "始终关闭", "始终开启")
+            val nightModeArray = arrayOf("跟随系统", "普通模式", "深色模式")
             val index = try {
                 nightModeArray.toList().indexOf(currentMode)
             } catch (e: Exception) {
@@ -192,11 +192,11 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
     private fun initViewLightModel() {
         binding.tvNightModel.text = when (SPUtils.getInstance().getInt("night_model")) {
             AppCompatDelegate.MODE_NIGHT_NO -> {
-                "始终关闭"
+                "普通模式"
             }
 
             AppCompatDelegate.MODE_NIGHT_YES -> {
-                "始终开启"
+                "深色模式"
             }
 
             else -> {

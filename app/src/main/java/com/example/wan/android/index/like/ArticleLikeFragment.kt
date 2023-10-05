@@ -29,6 +29,11 @@ class ArticleLikeFragment : VVMBaseFragment<ArticleLikeViewModel, FragmentArticl
         observe()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun observe() {
         viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)

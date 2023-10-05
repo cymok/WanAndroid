@@ -4,7 +4,13 @@ data class SupperUserInfo(
     val coinInfo: CoinInfo?,
     val collectArticleInfo: CollectArticleInfo?,
     val userInfo: UserInfo
-)
+) {
+    constructor() : this(
+        CoinInfo(),
+        CollectArticleInfo(),
+        UserInfo(),
+    )
+}
 
 //@Parcelize
 data class UserInfo(
@@ -22,16 +28,46 @@ data class UserInfo(
     val type: Int,
     val username: String
 )// : Parcelable
+{
+    constructor() : this(
+        false,
+        listOf(),
+        -1,
+        listOf(),
+        "null",
+        "",
+        -1,
+        "未登录",
+        "",
+        "",
+        "",
+        -1,
+        "null",
+    )
+}
 
 data class CoinInfo(
     val coinCount: Int,
     val level: Int,
     val nickname: String,
-    val rank: String,
+    val rank: Int,
     val userId: Int,
     val username: String
-)
+) {
+    constructor() : this(
+        -1,
+        -1,
+        "",
+        -1,
+        -1,
+        "",
+    )
+}
 
 data class CollectArticleInfo(
     val count: Int
-)
+) {
+    constructor() : this(
+        -1,
+    )
+}

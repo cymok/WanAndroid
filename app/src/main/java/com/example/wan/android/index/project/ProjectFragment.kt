@@ -39,6 +39,11 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
         observe()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun initImmersion() {
         val isPaddingTop = arguments?.getBoolean("isPaddingTop")
         binding.tabLayout.topPadding = if (isPaddingTop == true) {

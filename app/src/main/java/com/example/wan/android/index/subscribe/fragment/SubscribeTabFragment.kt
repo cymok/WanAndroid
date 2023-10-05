@@ -51,12 +51,15 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
         observe()
     }
 
-    private fun observe() {
+    override fun lazyLoad() {
         viewModel.getArticlesWithPager(id = item?.id ?: 0)
             .observe(viewLifecycleOwner) {
                 adapter.submitData(lifecycle, it)
                 binding.refresh.isRefreshing = false
             }
+    }
+
+    private fun observe() {
         viewModel.likeStatus.observe(viewLifecycleOwner) {
             adapter.notifyLikeChanged(it)
         }

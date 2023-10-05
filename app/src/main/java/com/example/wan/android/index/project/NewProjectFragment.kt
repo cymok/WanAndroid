@@ -30,6 +30,11 @@ class NewProjectFragment : VVMBaseFragment<NewProjectViewModel, FragmentArticleL
         observe()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun observe() {
         viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)

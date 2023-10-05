@@ -33,7 +33,7 @@ typealias MyAppUtils = com.example.wan.android.utils.AppUtils
 class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
 
     companion object {
-        const val COUNTDOWN_TIME = 3
+        const val COUNTDOWN_TIME = 1
     }
 
     override val binding by lazy {
@@ -121,7 +121,7 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
     private fun initCountDown(block: () -> Unit) {
         mCountDown = countDownByFlow(COUNTDOWN_TIME, lifecycleScope, {
             if (it == 0) mCountDown?.cancel()
-            binding.tvSkip.text = "跳过(${it})"
+//            binding.tvSkip.text = "跳过(${it})"
         }) {
             block.invoke()
         }

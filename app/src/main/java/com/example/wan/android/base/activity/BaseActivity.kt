@@ -69,11 +69,11 @@ abstract class BaseActivity(@LayoutRes layoutId: Int = 0) : AppCompatActivity(la
 
     }
 
-    fun showLoading() {
+    protected open fun showLoading() {
         loadingDialog.show()
     }
 
-    fun dismissLoading() {
+    protected open fun dismissLoading() {
         if (loadingDialog.isShowing) {
             loadingDialog.dismiss()
         }

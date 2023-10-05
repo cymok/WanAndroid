@@ -34,6 +34,11 @@ class SquareMixFragment : VBaseFragment<FragmentSquareMixBinding>() {
         initView()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun initImmersion() {
         val isPaddingTop = arguments?.getBoolean("isPaddingTop")
         binding.tabLayout.topPadding = if (isPaddingTop == true) {

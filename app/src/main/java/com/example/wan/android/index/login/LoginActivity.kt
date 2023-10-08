@@ -39,6 +39,9 @@ class LoginActivity : VVMBaseActivity<LoginViewModel, ActivityLoginBinding>() {
                 }
                 // 软键盘确认
                 setOnEditorActionListener { _, actionId, _ ->
+                    if(btLogin.isEnabled.not()){
+                        return@setOnEditorActionListener false
+                    }
                     when (actionId) {
                         EditorInfo.IME_ACTION_DONE ->
                             if (loginOrRegister) {
@@ -82,13 +85,15 @@ class LoginActivity : VVMBaseActivity<LoginViewModel, ActivityLoginBinding>() {
 
     private fun setUI() {
         if (loginOrRegister) {
+            binding.tvTitle.text = "登录"
             binding.tvAnother.text = "去注册"
-            binding.btLogin.text = "登录"
             binding.etPassword.setImeActionLabel("登录", EditorInfo.IME_ACTION_DONE)
+            binding.btLogin.text = "登录"
         } else {
+            binding.tvTitle.text = "注册"
             binding.tvAnother.text = "去登录"
-            binding.btLogin.text = "注册"
             binding.etPassword.setImeActionLabel("注册", EditorInfo.IME_ACTION_DONE)
+            binding.btLogin.text = "注册"
         }
     }
 

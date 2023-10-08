@@ -41,8 +41,8 @@ import com.example.wan.android.index.web.WebActivity
 import com.example.wan.android.utils.DraggableViewHelper
 import com.example.wan.android.utils.FloatViewHelper
 import com.example.wan.android.utils.dp2px
-import com.example.wan.android.utils.loadCircle
-import com.example.wan.android.utils.loadRes
+import com.example.wan.android.utils.ext.loadCircle
+import com.example.wan.android.utils.ext.loadRes
 import com.example.wan.android.utils.postEvent
 import com.example.wan.android.utils.toast
 import com.google.android.material.tabs.TabLayout

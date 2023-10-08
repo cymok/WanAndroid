@@ -19,7 +19,7 @@ import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
 import com.example.wan.android.utils.observeEvent
 import com.example.wan.android.utils.registerResultOK
-import com.example.wan.android.utils.visible
+import com.example.wan.android.utils.ext.visible
 import splitties.bundle.put
 import splitties.views.topPadding
 

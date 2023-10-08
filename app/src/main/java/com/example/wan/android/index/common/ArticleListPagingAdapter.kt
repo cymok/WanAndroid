@@ -11,10 +11,10 @@ import com.example.wan.android.R
 import com.example.wan.android.data.DataX
 import com.example.wan.android.data.LikeData
 import com.example.wan.android.databinding.RvItemArticleBinding
-import com.example.wan.android.utils.gone
-import com.example.wan.android.utils.load
-import com.example.wan.android.utils.loadRes
-import com.example.wan.android.utils.visible
+import com.example.wan.android.utils.ext.gone
+import com.example.wan.android.utils.ext.load
+import com.example.wan.android.utils.ext.loadRes
+import com.example.wan.android.utils.ext.visible
 import com.lxj.xpopup.XPopup
 import splitties.views.onClick
 

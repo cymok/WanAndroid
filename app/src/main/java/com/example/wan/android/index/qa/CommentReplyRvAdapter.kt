@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wan.android.R
 import com.example.wan.android.data.ReplyComment
 import com.example.wan.android.databinding.RvItemCommentReplyBinding
-import com.example.wan.android.utils.gone
+import com.example.wan.android.utils.ext.gone
 import splitties.systemservices.layoutInflater
 import splitties.views.imageResource
 

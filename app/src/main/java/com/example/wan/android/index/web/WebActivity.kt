@@ -18,7 +18,7 @@ import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.utils.toastLong
-import com.example.wan.android.utils.visible
+import com.example.wan.android.utils.ext.visible
 
 class WebActivity : VBaseActivity<ActivityWebBinding>() {
 

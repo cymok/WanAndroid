@@ -88,6 +88,7 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
     }
 
     private fun getInfo(): String {
+        // 请打开设置 --> Editor --> Code Style --> Formatter --> 勾上 `Turn formatter on/off ...`
         // @formatter:off
         return """
             - App -

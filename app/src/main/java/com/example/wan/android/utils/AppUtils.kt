@@ -72,6 +72,7 @@ object AppUtils {
     }
 
     fun getAppInfo(env: String = "", uid: String = ""): String {
+        // 请打开设置 --> Editor --> Code Style --> Formatter --> 勾上 `Turn formatter on/off ...`
         // @formatter:off
         return """
             - App -

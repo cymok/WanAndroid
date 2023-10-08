@@ -7,7 +7,7 @@ import com.example.wan.android.data.Banner
 import com.example.wan.android.data.BannerItem
 import com.example.wan.android.data.LikeData
 import com.example.wan.android.databinding.ViewBannerBinding
-import com.example.wan.android.utils.load
+import com.example.wan.android.utils.ext.load
 import com.youth.banner.adapter.BannerAdapter
 import splitties.views.onClick
 

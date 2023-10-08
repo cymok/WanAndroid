@@ -21,7 +21,7 @@ import com.example.wan.android.index.common.ArticleWebActivity
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
 import com.example.wan.android.utils.registerResultOK
-import com.example.wan.android.utils.visible
+import com.example.wan.android.utils.ext.visible
 import com.lxj.xpopup.XPopup
 import splitties.views.onClick
 

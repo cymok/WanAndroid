@@ -1,4 +1,4 @@
-package com.example.wan.android.utils
+package com.example.wan.android.utils.ext
 
 import android.annotation.SuppressLint
 import android.app.Activity

@@ -10,6 +10,7 @@ import android.view.animation.BounceInterpolator
 import androidx.annotation.FloatRange
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ScreenUtils
+import com.example.wan.android.utils.ext.touchSlop
 import splitties.systemservices.windowManager
 import kotlin.math.abs
 

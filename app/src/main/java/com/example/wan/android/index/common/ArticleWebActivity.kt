@@ -21,7 +21,7 @@ import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.toast
 import com.example.wan.android.utils.toastLong
-import com.example.wan.android.utils.visible
+import com.example.wan.android.utils.ext.visible
 import com.lxj.xpopup.XPopup
 
 class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBinding>() {

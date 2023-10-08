@@ -1,4 +1,4 @@
-package com.example.wan.android.utils
+package com.example.wan.android.utils.ext
 
 import android.text.Editable
 import android.text.TextWatcher

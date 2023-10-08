@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.databinding.ActivityLoginBinding
-import com.example.wan.android.utils.afterTextChanged
+import com.example.wan.android.utils.ext.afterTextChanged
 import com.example.wan.android.utils.getViewModel
 import splitties.views.onClick
 

@@ -17,10 +17,10 @@ import com.example.wan.android.databinding.RvItemBannerBinding
 import com.example.wan.android.index.common.ArticleTagAdapter
 import com.example.wan.android.index.home.HomeBannerAdapter
 import com.example.wan.android.index.home.HomeFragment
-import com.example.wan.android.utils.gone
-import com.example.wan.android.utils.load
-import com.example.wan.android.utils.loadRes
-import com.example.wan.android.utils.visible
+import com.example.wan.android.utils.ext.gone
+import com.example.wan.android.utils.ext.load
+import com.example.wan.android.utils.ext.loadRes
+import com.example.wan.android.utils.ext.visible
 import com.lxj.xpopup.XPopup
 import com.youth.banner.indicator.CircleIndicator
 import splitties.views.onClick

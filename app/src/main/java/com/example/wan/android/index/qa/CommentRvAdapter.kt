@@ -8,7 +8,7 @@ import com.blankj.utilcode.util.ColorUtils
 import com.example.wan.android.R
 import com.example.wan.android.data.Comment
 import com.example.wan.android.databinding.RvItemCommentBinding
-import com.example.wan.android.utils.visible
+import com.example.wan.android.utils.ext.visible
 import splitties.systemservices.layoutInflater
 import splitties.views.imageResource
 

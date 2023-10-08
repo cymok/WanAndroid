@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.blankj.utilcode.util.SPUtils
 import com.example.wan.android.R
 import com.example.wan.android.base.dialog.LoadingDialog
-import com.example.wan.android.utils.hideSoftInput
+import com.example.wan.android.utils.ext.hideSoftInput
 import com.gyf.immersionbar.ktx.immersionBar
 
 abstract class BaseActivity(@LayoutRes layoutId: Int = 0) : AppCompatActivity(layoutId) {

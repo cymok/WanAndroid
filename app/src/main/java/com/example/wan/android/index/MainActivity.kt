@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter.FragmentTransactionCallback.OnPostEventListener
-import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.example.wan.android.App
@@ -329,10 +329,11 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
     override fun onBackPressed() {
         val secondClickTime = System.currentTimeMillis()
         if (secondClickTime - firstClickTime > 1000) {
-            toast("再次'返回'退出程序")
+            toast("再按一次, 将返回主屏幕")
             firstClickTime = secondClickTime
         } else {
-            AppUtils.exitApp()
+//            AppUtils.exitApp()
+            ActivityUtils.startHomeActivity()
         }
     }
 

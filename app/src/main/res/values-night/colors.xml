@@ -17,4 +17,10 @@
     <color name="wx_background">#151515</color>
     <color name="wx_tab">#212121</color>
 
+    <color name="foreground10">#10FFFFFF</color>
+    <color name="foreground30">#30FFFFFF</color>
+    <color name="foreground50">#50FFFFFF</color>
+    <color name="foreground70">#70FFFFFF</color>
+    <color name="foreground90">#90FFFFFF</color>
+
 </resources>

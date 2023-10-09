@@ -29,9 +29,12 @@
     <color name="accent">#6B39E6</color>
 
     <color name="transparent">#00000000</color>
-    <color name="transparent10">#10000000</color>
-    <color name="transparent30">#30000000</color>
-    <color name="transparent50">#50000000</color>
+
+    <color name="foreground10">#10000000</color>
+    <color name="foreground30">#30000000</color>
+    <color name="foreground50">#50000000</color>
+    <color name="foreground70">#70000000</color>
+    <color name="foreground90">#90000000</color>
 
     <color name="divider">#66666666</color>
 

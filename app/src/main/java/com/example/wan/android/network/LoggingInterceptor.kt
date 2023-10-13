@@ -15,14 +15,14 @@ class LoggingInterceptor : Interceptor {
         val request = chain.request()
         val t1 = System.nanoTime()
         val msgRequest = "request(${request.method}): ${request.url}\n" +
-//                "${request.headers.toString().trim()}\n" +
+//                "${request.headers.toStringCustom().trim()}\n" +
                 getRequestInfo(request)
         Log.e(TAG, msgRequest)
 
         val response = chain.proceed(request)
         val t2 = System.nanoTime()
         val msgResponse = "response for ${response.request.url} in ${(t2 - t1) / 1e6} ms\n" +
-//                "${response.headers.toString().trim()}\n" +
+//                "${response.headers.toStringCustom().trim()}\n" +
                 getResponseInfo(response)
         Log.e(TAG, msgResponse)
 

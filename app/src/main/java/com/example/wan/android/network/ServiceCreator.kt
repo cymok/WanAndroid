@@ -33,24 +33,29 @@ object ServiceCreator {
 //        .addInterceptor(HeaderInterceptor())
 //        .addInterceptor(CookiesInterceptor())
         .addInterceptor(LoggingInterceptor())
+        .build()
 
-    private val builder = Retrofit.Builder()
+    private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(okHttpClient.build())
+        .client(okHttpClient)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder()
             .disableHtmlEscaping() // 禁止 Html 转义
             .create()))
+        .build()
 
-    private val retrofit = builder.build()
-
-    inline fun <reified T> Retrofit.create(): T = this.create(T::class.java)
+    fun clearCache() {
+        okHttpClient.cache?.evictAll()
+    }
 
     fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 
-    val wanApiService = retrofit.create(WanService::class.java)
-    val userApiService = retrofit.create(UserService::class.java)
-    val squareApiService = retrofit.create(SquareService::class.java)
-    val likeApiService = retrofit.create(LikeService::class.java)
+    private inline fun <reified T> Retrofit.create(): T = this.create(T::class.java)
+
+//    val wanApiService = retrofit.create(WanService::class.java)
+    val wanApiService = retrofit.create<WanService>()
+    val userApiService = retrofit.create<UserService>()
+    val squareApiService = retrofit.create<SquareService>()
+    val likeApiService = retrofit.create<LikeService>()
 
 }

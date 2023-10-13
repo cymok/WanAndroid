@@ -20,6 +20,7 @@ import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.constant.AppConst
 import com.example.wan.android.databinding.ActivitySettingBinding
 import com.example.wan.android.index.web.WebActivity
+import com.example.wan.android.network.ServiceCreator
 import com.example.wan.android.ui.dialog.AppDetailDialog
 import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.ext.alert
@@ -29,6 +30,7 @@ import com.example.wan.android.utils.getUri
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.toast
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import splitties.views.onClick
@@ -53,18 +55,22 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
         val size = ConvertUtils.byte2FitMemorySize(len, 2)
         binding.tvCache.text = size
         binding.llCache.onClick {
-            alert("提示", "将会清理图片、网站等缓存，是否继续？") {
+            alert("提示", "将会清理图片、网络请求等缓存，是否继续？") {
                 cancel {}
                 ok {
                     lifecycleScope.launch {
+                        showLoading()
                         withContext(Dispatchers.IO) {
-                            Glide.get(activity).clearDiskCache()
-                            FileUtils.deleteFilesInDir(cachePath)
+                            Glide.get(activity).clearDiskCache() // glide api 清除缓存
+                            ServiceCreator.clearCache() // okhttp api 清除缓存
+                            FileUtils.deleteAllInDir(cachePath) // 删除 APP 私有目录 的 cache 目录
                         }
+                        delay(200) // 假装正在努力清除缓存, 清理得太快就连 loading 都看不到
                         toast("清理完成")
                         val lenNew = FileUtils.getLength(cachePath)
                         val sizeNew = ConvertUtils.byte2FitMemorySize(lenNew, 2)
                         binding.tvCache.text = sizeNew
+                        dismissLoading()
                     }
                 }
             }.show()

@@ -1,11 +1,10 @@
 package com.example.wan.android
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
-import android.os.SystemClock
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.multidex.MultiDexApplication
 import com.blankj.utilcode.util.CrashUtils
 import com.blankj.utilcode.util.SPUtils
 import com.example.wan.android.constant.AppConst
@@ -15,7 +14,7 @@ import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import java.text.SimpleDateFormat
 
-class App : Application() {
+class App : MultiDexApplication() {
 
     companion object {
 

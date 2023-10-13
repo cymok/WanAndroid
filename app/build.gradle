@@ -26,15 +26,25 @@ android {
         versionCode 1
         versionName "0.1"
 
+        multiDexEnabled true
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
 
         buildConfigField "String", "COMMIT_ID", "\"${gitCommitId}\""
         buildConfigField "String", "BUILD_TIME", "\"${time.time}\""
         buildConfigField "String", "OS_ARCH", "\"${System.properties['os.arch']}\""
+        // On Java 11 (11.0.15) and Java 17 (17.0.3), System.getProperty("os.name") returns Windows 11, but "os.version" still reports 10.0
         buildConfigField "String", "OS_NAME", "\"${System.properties['os.name']}\""
         buildConfigField "String", "USER_NAME", "\"${System.properties['user.name']}\""
-//        buildConfigField "String", "JAVA_VERSION", "\"${System.properties['java.version']}\""
-//        buildConfigField "String", "KOTLIN_VERSION", "\"${kotlin_version}\""
+        buildConfigField "String", "GRADLE_VERSION", "\"${gradle.gradleVersion}\""
+        buildConfigField "String", "GRADLE_JDK", "\"${System.properties['java.version']}\""
+        buildConfigField "String", "JAVA_JVM", "\"1.8\"" // 对应 compileOptions
+        buildConfigField "String", "KOTLIN_JVM", "\"1.8\"" // 对应 kotlinOptions
+        buildConfigField "String", "KOTLIN_VERSION", "\"${kotlin_version}\""
 //        buildConfigField "String", "FLUTTER_VERSION", "\"${flutter_version}\""
     }
 
@@ -122,6 +132,8 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation "androidx.multidex:multidex:2.0.1"
 
     // Android
     // KTX https://developer.android.com/kotlin/ktx

@@ -174,7 +174,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 AppDetailDialog(
                     context = activity,
                     env = "null",
-                    uid = UserUtils.getSupperUserInfo()?.userInfo?.username ?: "null",
+                    uid = "${UserUtils.getSupperUserInfo()?.userInfo?.id ?: "null"}",
                 ).show()
             }
         }

@@ -99,16 +99,18 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
             [uid   ] $uid
             - App.Build -
             [commit] ${BuildConfig.COMMIT_ID}
-            [java  ] ${null}
-            [kotlin] ${null}
-            [flutter] ${null}
+            [gradle] ${BuildConfig.GRADLE_VERSION}
+            [gr_jdk] ${BuildConfig.GRADLE_JDK}
+            [ja_jvm] ${BuildConfig.JAVA_JVM}
+            [kt_jvm] ${BuildConfig.KOTLIN_JVM}
+            [kt_ver] ${BuildConfig.KOTLIN_VERSION}
             [arch  ] ${BuildConfig.OS_ARCH}
             [host  ] ${BuildConfig.OS_NAME}
             [by    ] ${BuildConfig.USER_NAME}
             [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(BuildConfig.BUILD_TIME.toLong())}
             - System -
             [abi   ] ${Build.SUPPORTED_ABIS.joinToString(", ")}
-            [bands ] ${Build.BRAND}
+            [brand ] ${Build.BRAND}
             [model ] ${Build.MODEL}
             [ver   ] Android ${Build.VERSION.RELEASE}
             [api   ] ${Build.VERSION.SDK_INT}

@@ -1,8 +1,10 @@
+// https://developer.android.com/build
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 
 apply from: "../config_source.gradle"
@@ -14,6 +16,7 @@ def time = new Date()
 
 android {
     namespace 'com.example.wan.android'
+//    testNamespace  'com.example.wan.android.test'
     compileSdk 33
 
     defaultConfig {
@@ -30,11 +33,12 @@ android {
         buildConfigField "String", "OS_ARCH", "\"${System.properties['os.arch']}\""
         buildConfigField "String", "OS_NAME", "\"${System.properties['os.name']}\""
         buildConfigField "String", "USER_NAME", "\"${System.properties['user.name']}\""
-        buildConfigField "String", "JAVA_VERSION", "\"${System.properties['java.version']}\""
+//        buildConfigField "String", "JAVA_VERSION", "\"${System.properties['java.version']}\""
 //        buildConfigField "String", "KOTLIN_VERSION", "\"${kotlin_version}\""
 //        buildConfigField "String", "FLUTTER_VERSION", "\"${flutter_version}\""
     }
 
+    // https://developer.android.com/build/build-variants
     buildTypes {
         debug {
 
@@ -65,6 +69,7 @@ android {
         }
     }
 
+    // https://developer.android.com/build/jdks
     compileOptions {
         // 项目 java 编译版本
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -75,10 +80,11 @@ android {
         jvmTarget = '1.8'
     }
     kotlin {
-        // gradle kotlin 编译版本
+        // gradle 构建 的 编译版本
 //        jvmToolchain(8)
         jvmToolchain(17) // default
     }
+
     buildFeatures {
         viewBinding true
     }
@@ -95,6 +101,7 @@ android {
 */
 }
 
+// https://developer.android.com/build/dependencies
 dependencies {
     configurations.configureEach {
         resolutionStrategy {
@@ -119,9 +126,9 @@ dependencies {
     // Android
     // KTX https://developer.android.com/kotlin/ktx
     implementation platform("org.jetbrains.kotlin:kotlin-bom:${kotlin_version}")
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.9.0' // 1.10.0 需要 compileSdk 34
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.core:core-ktx:1.10.1' // 1.12.0 需要 compileSdk 34
     def lifecycleVersion = "2.6.2"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}"
@@ -176,9 +183,11 @@ dependencies {
     implementation 'org.litepal.guolindev:core:3.2.3'
     // 图片
     // https://github.com/bumptech/glide
+    // https://bumptech.github.io/glide/doc/download-setup.html#kotlin---ksp
     def glideVersion = "4.15.1"
     implementation "com.github.bumptech.glide:glide:${glideVersion}"
-    kapt "com.github.bumptech.glide:compiler:${glideVersion}"
+//    kapt "com.github.bumptech.glide:compiler:${glideVersion}"
+    ksp "com.github.bumptech.glide:ksp:${glideVersion}"
     implementation "com.github.bumptech.glide:okhttp3-integration:${glideVersion}"
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
     // 权限

@@ -3,7 +3,7 @@ package com.example.wan.android.utils.ext
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
-import com.example.wan.android.config.GlideApp
+import com.bumptech.glide.Glide
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 fun ImageView.load(
@@ -11,7 +11,10 @@ fun ImageView.load(
     cornerRadius: Int = 0,
     @DrawableRes placeholderRes: Int = 0
 ) {
-    GlideApp.with(this)
+    // 升级为 ksp 后不再使用 GlideApp, 而是直接使用 Glide, 配置依然有效
+    // https://bumptech.github.io/glide/doc/download-setup.html#kotlin---ksp
+    // https://bumptech.github.io/glide/doc/generatedapi.html#this-page-and-the-generated-api-are-deprecated
+    Glide.with(this)
         .load(any)
         .centerCrop()
         .transform(RoundedCornersTransformation(cornerRadius, 0))
@@ -24,7 +27,7 @@ fun ImageView.loadRes(
     cornerRadius: Int = 0,
     @DrawableRes placeholderRes: Int = 0
 ) {
-    GlideApp.with(this)
+    Glide.with(this)
         .load(res)
         .centerCrop()
         .transform(RoundedCornersTransformation(cornerRadius, 0))
@@ -33,7 +36,7 @@ fun ImageView.loadRes(
 }
 
 fun ImageView.loadCircle(res: Any?, @DrawableRes placeholderRes: Int = 0) {
-    GlideApp.with(this)
+    Glide.with(this)
         .load(res)
         .centerCrop()
         .circleCrop()

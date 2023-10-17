@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
@@ -14,9 +15,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.adapter.FragmentStateAdapter.FragmentTransactionCallback.OnPostEventListener
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
@@ -47,7 +45,6 @@ import com.example.wan.android.utils.postEvent
 import com.example.wan.android.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.google.android.material.tabs.TabLayoutMediator
 import splitties.activities.start
 import splitties.views.onClick
 
@@ -186,45 +183,21 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         }
     }
 
+    private var currentIndex = 0
+    private var currentFragment: Fragment = fragments[currentIndex]
+
     private fun initView() {
         initDrawerLayout()
 
-        val viewpager = binding.viewpager
-        val tabLayout = binding.tabLayout
-
-//        ViewPager(this).adapter = MainLazyAdapter(this, fragments)
-        viewpager.adapter = MainAdapter(this, fragments).apply {
-            // registerFragmentTransactionCallback 是 ViewPager2 v1.1 的 API
-            registerFragmentTransactionCallback(object :
-                FragmentStateAdapter.FragmentTransactionCallback() {
-                override fun onFragmentMaxLifecyclePreUpdated(
-                    fragment: Fragment,
-                    maxLifecycleState: Lifecycle.State
-                ): OnPostEventListener {
-                    return if (maxLifecycleState == Lifecycle.State.RESUMED) {
-                        LogUtils.e("${fragment.javaClass.simpleName} maxLifecycleState=${maxLifecycleState}")
-                        OnPostEventListener {
-                            // do nothing
-                        }
-                    } else {
-                        super.onFragmentMaxLifecyclePreUpdated(fragment, maxLifecycleState)
-                    }
-                }
-
-                override fun onFragmentPreAdded(fragment: Fragment): OnPostEventListener {
-                    return super.onFragmentPreAdded(fragment)
-                }
-            })
-        }
-//        val pagerAdapter = MainLazyAdapter(this, fragments)
-        viewpager.currentItem = 0
-        viewpager.offscreenPageLimit = 2
-
-        viewpager.isUserInputEnabled = false
+        currentIndex = 0
+        supportFragmentManager.beginTransaction().apply {
+            currentFragment = fragments[currentIndex]
+            add(binding.frameLayout.id, currentFragment, "${currentFragment.tag}")
+        }.commitNow()
 
         val animatorCache = mutableMapOf<Int, Animator?>()
 
-        tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
+        binding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val position = tab.position
                 tab.customView?.let {
@@ -232,6 +205,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
                     it.findViewById<TextView>(R.id.tab_text)
                         .setTextColor(Color.parseColor("#d4237a"))
                 }
+                changeFragmentIndex(position)
                 onPageChanged(position)
             }
 
@@ -259,7 +233,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
                         .apply {
                             duration = DELAY_TIME
                             addUpdateListener { animation: ValueAnimator ->
-                                if (position != viewpager.currentItem) {
+                                if (position != currentIndex) {
                                     animation.cancel()
                                     imageView.post {
                                         imageView.rotation = 0f
@@ -274,7 +248,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
                                 override fun onAnimationEnd(animation: Animator) {
                                     // 刷新动画后还原icon
-                                    if (position != viewpager.currentItem) {
+                                    if (position != currentIndex) {
                                         imageView.loadRes(tabIcons[position])
                                     } else {
                                         imageView.loadRes(tabSelectedIcons[position])
@@ -293,26 +267,39 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
             }
         })
 
-        TabLayoutMediator(tabLayout, viewpager) { tab, position ->
-            tab.customView = ViewTabLayoutBinding.inflate(layoutInflater).apply {
-                tabText.text = titles[position]
-                tabIcon.loadRes(tabIcons[position])
-            }.root
-        }.attach()
+        repeat(fragments.size) { position ->
+            binding.tabLayout.addTab(binding.tabLayout.newTab().also { tab ->
+                tab.customView = ViewTabLayoutBinding.inflate(layoutInflater).apply {
+                    tabText.text = titles[position]
+                    tabIcon.loadRes(tabIcons[position])
+                }.root
+            })
+        }
 
     }
 
-    /**
-     * 调用此方法 可以更改选中的 tab
-     */
-    fun changeIndex(index: Int) {
-        binding.viewpager.setCurrentItem(index)
+    fun changeFragmentIndex(pageIndex: Int) {
+        if (currentIndex == pageIndex) {
+            return
+        }
+        currentIndex = pageIndex
+        supportFragmentManager.beginTransaction().apply {
+            hide(currentFragment)
+            currentFragment = fragments[currentIndex]
+            if (currentFragment.isAdded.not()) {
+                add(binding.frameLayout.id, currentFragment, "${currentFragment.tag}")
+            }
+            show(currentFragment)
+        }.commitNow()
     }
 
     /**
      * tab 选中, 重复点击不会执行
      */
     fun onPageChanged(pageIndex: Int) {
+        if (currentIndex == pageIndex) {
+            return
+        }
         postEvent(EventBus.HOME_TAB_CHANGED, pageIndex, 500)
     }
 
@@ -323,8 +310,9 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         postEvent(EventBus.HOME_TAB_REFRESH, pageIndex)
     }
 
-    var firstClickTime = 0L
+    private var firstClickTime = 0L
 
+    @SuppressLint("MissingSuperCall")
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onBackPressed() {
         val secondClickTime = System.currentTimeMillis()
@@ -332,7 +320,6 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
             toast("再按一次, 将返回主屏幕")
             firstClickTime = secondClickTime
         } else {
-//            AppUtils.exitApp()
             ActivityUtils.startHomeActivity()
         }
     }

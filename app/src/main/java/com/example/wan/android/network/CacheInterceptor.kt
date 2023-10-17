@@ -4,7 +4,6 @@ import android.util.Log
 import com.blankj.utilcode.util.NetworkUtils
 import okhttp3.CacheControl
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 

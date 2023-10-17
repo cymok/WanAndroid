@@ -20,22 +20,21 @@ class CacheInterceptor : Interceptor {
         private const val maxAge = 60 * 60 * 24 * 0.5
 
         // 指定时间内, 即使缓存过时, 资源依然有效
-        private const val maxStale = 60 * 60 * 24 * 0.5
+        private const val maxStale = 60 * 60 * 24 * 7
     }
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        var request: Request = chain.request()
+        var request = chain.request()
         return if (NetworkUtils.isAvailable()) {
 
-            val response: Response = chain.proceed(request)
+            val response = chain.proceed(request)
             val cacheControl = request.cacheControl.toString()
 
             Log.i("CacheInterceptor", maxAge.toString() + "s load cache" + cacheControl)
 
             response.newBuilder()
                 .removeHeader("Pragma")
-                .removeHeader("Cache-Control")
                 .header(
                     "Cache-Control",
                     "public, max-age=$maxAge"
@@ -48,10 +47,10 @@ class CacheInterceptor : Interceptor {
             request = request.newBuilder()
                 .cacheControl(CacheControl.FORCE_CACHE)
                 .build()
-            val response: Response = chain.proceed(request)
+
+            val response = chain.proceed(request)
             response.newBuilder()
                 .removeHeader("Pragma")
-                .removeHeader("Cache-Control")
                 .header(
                     "Cache-Control",
                     "public, only-if-cached, max-stale=$maxStale"

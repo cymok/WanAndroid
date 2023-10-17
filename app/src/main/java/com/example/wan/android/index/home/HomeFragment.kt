@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.paging.LoadState
+import androidx.paging.liveData
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.BarUtils
-import com.blankj.utilcode.util.LogUtils
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
 import com.example.wan.android.data.Banner
@@ -19,6 +19,8 @@ import com.example.wan.android.databinding.FragmentHomeBinding
 import com.example.wan.android.index.common.ArticleWebActivity
 import com.example.wan.android.index.home.paging.HomePagingAdapter
 import com.example.wan.android.utils.getViewModel
+import com.example.wan.android.utils.loge
+import com.example.wan.android.utils.logi
 import com.example.wan.android.utils.newIntent
 import com.example.wan.android.utils.observeEvent
 import com.example.wan.android.utils.registerResultOK
@@ -66,7 +68,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
         viewModel.banner.observe(viewLifecycleOwner) {
             adapter.setBanner(it)
         }
-        viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
+        viewModel.getArticlesPager().liveData.observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
             binding.refresh.isRefreshing = false
         }
@@ -81,9 +83,25 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
         recyclerView.adapter = adapter
 
         adapter.addLoadStateListener {
-            when (it.refresh) {
-                is LoadState.Loading -> {
 
+            // 预加载
+            when (it.prepend) {
+                LoadState.Loading -> {
+                    logi("预加载中...")
+                }
+
+                is LoadState.NotLoading -> {
+
+                }
+
+                is LoadState.Error -> {
+                    loge(it)
+                }
+            }
+            // 首次加载或刷新
+            when (it.refresh) {
+                LoadState.Loading -> {
+                    logi("加载中...")
                 }
 
                 is LoadState.NotLoading -> {
@@ -92,11 +110,21 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
                 is LoadState.Error -> {
                     binding.refresh.isRefreshing = false
-                    LogUtils.e(it.toString())
+                    loge(it)
+                }
+            }
+            // 加载更多
+            when (it.append) {
+                LoadState.Loading -> {
+                    logi("分页加载中...")
                 }
 
-                else -> {
+                is LoadState.NotLoading -> {
 
+                }
+
+                is LoadState.Error -> {
+                    loge(it)
                 }
             }
         }

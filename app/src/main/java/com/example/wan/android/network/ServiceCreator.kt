@@ -22,11 +22,13 @@ object ServiceCreator {
 
     private const val BASE_URL = "https://www.wanandroid.com/"
 
+    private val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.INSTANCE))
+
     private val okHttpClient = OkHttpClient.Builder()
-        .cookieJar(PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.INSTANCE)))
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .writeTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(15, TimeUnit.SECONDS)
+        .cookieJar(cookieJar)
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
         .cache(Cache(File(AppConst.okhttpCachePath), AppConst.OKHTTP_CACHE_SIZE))
         .addNetworkInterceptor(CacheInterceptor())
         .retryOnConnectionFailure(true) // 默认重试一次，若需要重试N次，则要实现拦截器。
@@ -43,6 +45,10 @@ object ServiceCreator {
             .disableHtmlEscaping() // 禁止 Html 转义
             .create()))
         .build()
+
+    fun clearCookie() {
+        cookieJar.clear()
+    }
 
     fun clearCache() {
         okHttpClient.cache?.evictAll()

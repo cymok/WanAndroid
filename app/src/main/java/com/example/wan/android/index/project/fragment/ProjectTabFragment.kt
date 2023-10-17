@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.paging.LoadState
+import androidx.paging.liveData
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
@@ -52,7 +53,7 @@ class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectT
     }
 
     override fun lazyLoad() {
-        viewModel.getArticlesWithPager(id = item?.id)
+        viewModel.getArticlesPager(id = item?.id).liveData
             .observe(viewLifecycleOwner) {
                 adapter.submitData(lifecycle, it)
                 binding.refresh.isRefreshing = false

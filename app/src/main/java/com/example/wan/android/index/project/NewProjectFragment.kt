@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.paging.LoadState
+import androidx.paging.liveData
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
@@ -36,7 +37,7 @@ class NewProjectFragment : VVMBaseFragment<NewProjectViewModel, FragmentArticleL
     }
 
     private fun observe() {
-        viewModel.getArticlesWithPager().observe(viewLifecycleOwner) {
+        viewModel.getArticlesPager().liveData.observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
             binding.refresh.isRefreshing = false
         }

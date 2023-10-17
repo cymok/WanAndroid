@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wan.android.constant.AppConst
+import com.example.wan.android.network.ServiceCreator
 import com.example.wan.android.network.api.ApiException
 import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.toast
@@ -46,6 +47,7 @@ abstract class BaseViewModel : ViewModel(),
     }
 
     protected fun onLogout() {
+        ServiceCreator.clearCookie() // cookie 清除
         UserUtils.clear()
     }
 

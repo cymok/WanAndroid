@@ -1,11 +1,8 @@
 package com.example.wan.android.index.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.example.wan.android.data.DataX
 import com.example.wan.android.index.common.ArticleListDataSource
 import com.example.wan.android.index.common.LikeViewModel
@@ -22,21 +19,23 @@ class HomeViewModel : LikeViewModel() {
         emit(result)
     }
 
-    fun getArticlesWithPager(): LiveData<PagingData<DataX>> {
-        val pager = Pager(PagingConfig(pageSize = 10)) {
-            ArticleListDataSource(firstPage = 0) { key ->
-                // 网络请求
-                val result = async { WanRepository.getHomeList(page = key) }
-                // 首页加上置顶文章
-                if (key == 0) {
-                    val homeTopList = async { WanRepository.getHomeTopList() }
-                    result.await().datas.addAll(0, homeTopList.await())
+    fun getArticlesPager(): Pager<Int, DataX> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                ArticleListDataSource(firstPage = 0) { key ->
+                    // 网络请求
+                    val result = async { WanRepository.getHomeList(page = key) }
+                    // 首页加上置顶文章
+                    if (key == 0) {
+                        val homeTopList = async { WanRepository.getHomeTopList() }
+                        result.await().datas.addAll(0, homeTopList.await())
+                    }
+                    stopLoading()
+                    result.await()
                 }
-                stopLoading()
-                result.await()
-            }
-        }
-        return pager.liveData
+            },
+        )
     }
 
 }

@@ -23,7 +23,9 @@ class LoggingInterceptor : Interceptor {
         val t2 = System.nanoTime()
         val msgResponse = "response for ${response.request.url} in ${(t2 - t1) / 1e6} ms\n" +
 //                "${response.headers.toStringCustom().trim()}\n" +
-                getResponseInfo(response)
+//                getResponseInfo(response)
+                // 太长的内容 在新版 Android Studio 的 Logcat 显示得很恶心
+                getResponseInfo(response).substring(0, 180)
         Log.e(TAG, msgResponse)
 
         return response

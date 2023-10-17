@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 typealias MyAppUtils = com.example.wan.android.utils.AppUtils
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
 
     companion object {

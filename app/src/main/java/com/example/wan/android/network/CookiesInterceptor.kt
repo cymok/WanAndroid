@@ -2,10 +2,11 @@ package com.example.wan.android.network
 
 import android.util.Log
 import com.blankj.utilcode.util.SPUtils
+import com.example.wan.android.utils.ext.toStringCustom
 import okhttp3.Interceptor
 import okhttp3.Response
 
-@Deprecated("新版加密了 已经不能直接读取到值了 用 [CookieJar]")
+@Deprecated("用 CookieJar")
 class CookiesInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
@@ -13,7 +14,7 @@ class CookiesInterceptor : Interceptor {
         val request = chain.request()
         val requestWithCookies = request.newBuilder().apply {
             val cookies = SPUtils.getInstance("Set-Cookie").getStringSet("cookies")
-            Log.e("cookies", "request cookies.size = ${cookies.size} \njson = ${request.headers}")
+            Log.e("cookies", "request cookies.size = ${cookies.size} \njson = ${request.headers.toStringCustom()}")
             cookies.forEach {
                 header("Cookie", it)
             }
@@ -26,7 +27,7 @@ class CookiesInterceptor : Interceptor {
             response.headers("Set-Cookie").forEach {
                 cookies.add(it)
             }
-            Log.e("cookies", "response cookies.size = ${cookies.size} \njson = ${response.headers}")
+            Log.e("cookies", "response cookies.size = ${cookies.size} \njson = ${response.headers.toStringCustom()}")
             SPUtils.getInstance("Set-Cookie").put("cookies", cookies)
         }
 

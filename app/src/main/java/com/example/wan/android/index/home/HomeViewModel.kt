@@ -27,8 +27,10 @@ class HomeViewModel : LikeViewModel() {
 
     fun fetchBanner() {
         launch {
+//            startLoading()
             val result = WanRepository.getBanner()
             banner.postValue(result)
+            stopLoading()
         }
     }
 

@@ -32,7 +32,7 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 
 - [x] 可拖拽悬浮按钮 可自动贴边
 
-- [] TODO 本地缓存, Room
+- [] TODO 页面过度 空白页 WebView错误页 等
 
 - 其它 工具类 便捷库
 
@@ -47,9 +47,3 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
   - ViewBinding 扩展, [ViewBindingPropertyDelegate](https://github.com/androidbroadcast/ViewBindingPropertyDelegate)
 
   - RecyclerView ItemDecoration [SpacingItemDecoration](https://github.com/grzegorzojdana/SpacingItemDecoration)
-
-## 已知问题
-
-- [] Paging + 无网状态, 报错
-
-- []

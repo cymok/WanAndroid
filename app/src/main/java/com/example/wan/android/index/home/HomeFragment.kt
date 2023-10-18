@@ -75,6 +75,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
             adapter.setBanner(it)
         }
         viewModel.fetchBanner()
+        showLoading()
 
         viewModel.likeStatus.observe(viewLifecycleOwner) {
             adapter.notifyLikeChanged(it)

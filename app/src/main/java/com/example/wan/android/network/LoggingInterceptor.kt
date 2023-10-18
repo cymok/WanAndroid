@@ -25,7 +25,14 @@ class LoggingInterceptor : Interceptor {
 //                "${response.headers.toStringCustom().trim()}\n" +
 //                getResponseInfo(response)
                 // 太长的内容 在新版 Android Studio 的 Logcat 显示得很恶心
-                getResponseInfo(response).substring(0, 180)
+                getResponseInfo(response).let {
+                    val maxLen = 180
+                    if (it.length > maxLen) {
+                        it.substring(0, maxLen)
+                    } else {
+                        it
+                    }
+                }
         Log.e(TAG, msgResponse)
 
         return response

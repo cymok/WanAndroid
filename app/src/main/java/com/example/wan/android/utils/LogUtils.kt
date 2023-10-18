@@ -1,6 +1,8 @@
 package com.example.wan.android.utils
 
 import android.util.Log
+import com.blankj.utilcode.util.LogUtils
+import java.lang.Exception
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun log(any: Any?, tag: String? = "log") {
@@ -31,9 +33,17 @@ inline fun logi(any: Any?, tag: String? = "log") {
 @Suppress("NOTHING_TO_INLINE")
 inline fun logw(any: Any?, tag: String? = "log") {
     Log.w(tag, any.toString())
+    if (any is Throwable) {
+        LogUtils.e(any)
+//        any.printStackTrace()
+    }
 }
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun loge(any: Any?, tag: String? = "log") {
     Log.e(tag, any.toString())
+    if (any is Throwable) {
+        LogUtils.e(any)
+//        any.printStackTrace()
+    }
 }

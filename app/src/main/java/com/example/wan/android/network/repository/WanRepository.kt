@@ -1,8 +1,17 @@
 package com.example.wan.android.network.repository
 
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.NetworkUtils
+import com.example.wan.android.data.Articles
+import com.example.wan.android.data.BannerItem
+import com.example.wan.android.data.DataX
+import com.example.wan.android.data.dbentity.CacheEntity
 import com.example.wan.android.network.ServiceCreator
+import com.example.wan.android.utils.log
+import com.example.wan.android.utils.toJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.litepal.LitePal
 
 /**
  * 单一数据源 给 ViewModel 提供数据
@@ -32,15 +41,57 @@ object WanRepository {
     }
 
     suspend fun getBanner() = withContext(Dispatchers.IO) {
-        apiService.getBanner().apiData()!!
+        val apiName = "bannerList"
+        if (NetworkUtils.isAvailable()) {
+            val bannerList = apiService.getBanner().apiData()!!
+            CacheEntity(json = bannerList.toJson(), apiName = apiName)
+                .apply { saveOrUpdate("apiName = ?", apiName) }
+            bannerList
+        } else {
+            // Gson().fromJson() 将 json 转回 list 或 array
+            // object : TypeToken<ArrayList<BannerItem>>() {} // List 要用 TypeToken
+            // Array<BannerItem>::class.java // Array 可以直接使用对象 class
+            val cache = LitePal.where("apiName = ?", apiName)
+                .findFirst(CacheEntity::class.java)
+            val bannerList = GsonUtils.fromJson(cache.json, Array<BannerItem>::class.java).toList()
+            log("cache = ${bannerList.toJson(format = false).substring(0, 150)}")
+            bannerList
+        }
     }
 
     suspend fun getHomeTopList() = withContext(Dispatchers.IO) {
-        apiService.getHomeTopList().apiData()!!
+        val apiName = "honeTopList"
+        if (NetworkUtils.isAvailable()) {
+            val dataXList = apiService.getHomeTopList().apiData()!!
+            CacheEntity(json = dataXList.toJson(), apiName = apiName)
+                .apply { saveOrUpdate("apiName = ?", apiName) }
+            dataXList
+        } else {
+            // Gson().fromJson() 将 json 转回 list 或 array
+            // object : TypeToken<ArrayList<BannerItem>>() {} // List 要用 TypeToken
+            // Array<BannerItem>::class.java // Array 可以直接使用对象 class
+            val cache = LitePal.where("apiName = ?", apiName)
+                .findFirst(CacheEntity::class.java)
+            val dataXList = GsonUtils.fromJson(cache.json, Array<DataX>::class.java).toList()
+            log("cache = ${dataXList.toJson(format = false).substring(0, 150)}")
+            dataXList
+        }
     }
 
     suspend fun getHomeList(page: Int) = withContext(Dispatchers.IO) {
-        apiService.getHomeList(page = page).apiData()!!
+        val apiName = "homeList"
+        if (NetworkUtils.isAvailable()) {
+            val articles = apiService.getHomeList(page = page).apiData()!!
+            CacheEntity(json = articles.toJson(), apiName = apiName, page = "$page")
+                .apply { saveOrUpdate("apiName = ? and page = ?", apiName, "$page") }
+            articles
+        } else {
+            val cache = LitePal.where("apiName = ? and page = ?", apiName, "$page")
+                .findFirst(CacheEntity::class.java)
+            val articles = GsonUtils.fromJson(cache.json, Articles::class.java)
+            log("cache = ${articles.toJson(format = false).substring(0, 150)}")
+            articles
+        }
     }
 
     suspend fun getProjectTree() = withContext(Dispatchers.IO) {
@@ -48,15 +99,54 @@ object WanRepository {
     }
 
     suspend fun getProjectList(id: Int, page: Int) = withContext(Dispatchers.IO) {
-        apiService.getProjectList(id = id, page = page).apiData()!!
+        val apiName = "projectList"
+        if (NetworkUtils.isAvailable()) {
+            val articles = apiService.getProjectList(id = id, page = page).apiData()!!
+            CacheEntity(json = articles.toJson(), apiName = apiName, page = "$page", arg1 = "$id")
+                .apply {
+                    saveOrUpdate("apiName = ? and page = ? and arg1 = ?", apiName, "$page", "$id")
+                }
+            articles
+        } else {
+            val cache =
+                LitePal.where("apiName = ? and page = ? and arg1 = ?", apiName, "$page", "$id")
+                    .findFirst(CacheEntity::class.java)
+            val articles = GsonUtils.fromJson(cache.json, Articles::class.java)
+            log("cache = ${articles.toJson(format = false).substring(0, 150)}")
+            articles
+        }
     }
 
     suspend fun getNewProjectList(page: Int) = withContext(Dispatchers.IO) {
-        apiService.getNewProjectList(page = page).apiData()!!
+        val apiName = "newProjectList"
+        if (NetworkUtils.isAvailable()) {
+            val articles = apiService.getNewProjectList(page = page).apiData()!!
+            CacheEntity(json = articles.toJson(), apiName = apiName, page = "$page")
+                .apply { saveOrUpdate("apiName = ? and page = ?", apiName, "$page") }
+            articles
+        } else {
+            val cache = LitePal.where("apiName = ? and page = ?", apiName, "$page")
+                .findFirst(CacheEntity::class.java)
+            val articles = GsonUtils.fromJson(cache.json, Articles::class.java)
+            log("cache = ${articles.toJson(format = false).substring(0, 150)}")
+            articles
+        }
     }
 
     suspend fun getSquareList(page: Int) = withContext(Dispatchers.IO) {
-        squareService.getSquareList(page = page).apiData()!!
+        val apiName = "squareList"
+        if (NetworkUtils.isAvailable()) {
+            val articles = squareService.getSquareList(page = page).apiData()!!
+            CacheEntity(json = articles.toJson(), apiName = apiName, page = "$page")
+                .apply { saveOrUpdate("apiName = ? and page = ?", apiName, "$page") }
+            articles
+        } else {
+            val cache = LitePal.where("apiName = ? and page = ?", apiName, "$page")
+                .findFirst(CacheEntity::class.java)
+            val articles = GsonUtils.fromJson(cache.json, Articles::class.java)
+            log("cache = ${articles.toJson(format = false).substring(0, 150)}")
+            articles
+        }
     }
 
     suspend fun getWxArticleTree() = withContext(Dispatchers.IO) {
@@ -64,7 +154,22 @@ object WanRepository {
     }
 
     suspend fun getWxArticleList(id: Int, page: Int) = withContext(Dispatchers.IO) {
-        apiService.getWxArticleList(id = id, page = page).apiData()!!
+        val apiName = "wxArticleList"
+        if (NetworkUtils.isAvailable()) {
+            val articles = apiService.getWxArticleList(id = id, page = page).apiData()!!
+            CacheEntity(json = articles.toJson(), apiName = apiName, page = "$page", arg1 = "$id")
+                .apply {
+                    saveOrUpdate("apiName = ? and page = ? and arg1 = ?", apiName, "$page", "$id")
+                }
+            articles
+        } else {
+            val cache =
+                LitePal.where("apiName = ? and page = ? and arg1 = ?", apiName, "$page", "$id")
+                    .findFirst(CacheEntity::class.java)
+            val articles = GsonUtils.fromJson(cache.json, Articles::class.java)
+            log("cache = ${articles.toJson(format = false).substring(0, 150)}")
+            articles
+        }
     }
 
     suspend fun likeArticle(id: Int) = withContext(Dispatchers.IO) {
@@ -81,7 +186,21 @@ object WanRepository {
     }
 
     suspend fun getLikeList(page: Int) = withContext(Dispatchers.IO) {
-        likeService.getLikeList(page).apiData()!!
+        val apiName = "likeList"
+        if (NetworkUtils.isAvailable()) {
+            val articles = likeService.getLikeList(page).apiData()!!
+            CacheEntity(json = articles.toJson(), apiName = apiName, page = "$page")
+                .apply {
+                    saveOrUpdate("apiName = ? and page = ?", apiName, "$page")
+                }
+            articles
+        } else {
+            val cache = LitePal.where("apiName = ? and page = ?", apiName, "$page")
+                .findFirst(CacheEntity::class.java)
+            val articles = GsonUtils.fromJson(cache.json, Articles::class.java)
+            log("cache = ${articles.toJson(format = false).substring(0, 150)}")
+            articles
+        }
     }
 
     suspend fun search(page: Int, key: String) = withContext(Dispatchers.IO) {
@@ -89,7 +208,21 @@ object WanRepository {
     }
 
     suspend fun getQAList(page: Int) = withContext(Dispatchers.IO) {
-        apiService.getQAList(page = page).apiData()!!
+        val apiName = "qaList"
+        if (NetworkUtils.isAvailable()) {
+            val articles = apiService.getQAList(page = page).apiData()!!
+            CacheEntity(json = articles.toJson(), apiName = apiName, page = "$page")
+                .apply {
+                    saveOrUpdate("apiName = ? and page = ?", apiName, "$page")
+                }
+            articles
+        } else {
+            val cache = LitePal.where("apiName = ? and page = ?", apiName, "$page")
+                .findFirst(CacheEntity::class.java)
+            val articles = GsonUtils.fromJson(cache.json, Articles::class.java)
+            log("cache = ${articles.toJson(format = false).substring(0, 150)}")
+            articles
+        }
     }
 
     suspend fun getQACommentList(id: Int) = withContext(Dispatchers.IO) {

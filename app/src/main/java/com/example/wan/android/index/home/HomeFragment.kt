@@ -12,7 +12,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.BarUtils
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
-import com.example.wan.android.data.Banner
 import com.example.wan.android.data.LikeData
 import com.example.wan.android.data.WebData
 import com.example.wan.android.databinding.FragmentHomeBinding
@@ -32,7 +31,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override val viewModel: HomeViewModel get() = getViewModel()
     override val binding: FragmentHomeBinding by viewBinding(CreateMethod.INFLATE)
 
-    private val adapter = HomePagingAdapter(this, Banner())
+    private val adapter = HomePagingAdapter(this, listOf())
 
     companion object {
         fun getInstance(isPaddingTop: Boolean) =
@@ -48,6 +47,13 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
         initImmersion()
         initView()
         observe()
+    }
+
+    override fun lazyLoad() {
+        viewModel.getArticlesPager().liveData.observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+            binding.refresh.isRefreshing = false
+        }
     }
 
     override fun onResume() {
@@ -68,10 +74,8 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
         viewModel.banner.observe(viewLifecycleOwner) {
             adapter.setBanner(it)
         }
-        viewModel.getArticlesPager().liveData.observe(viewLifecycleOwner) {
-            adapter.submitData(lifecycle, it)
-            binding.refresh.isRefreshing = false
-        }
+        viewModel.fetchBanner()
+
         viewModel.likeStatus.observe(viewLifecycleOwner) {
             adapter.notifyLikeChanged(it)
         }
@@ -179,6 +183,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
 
         binding.refresh.setOnRefreshListener {
+            viewModel.fetchBanner()
             adapter.refresh()
         }
     }

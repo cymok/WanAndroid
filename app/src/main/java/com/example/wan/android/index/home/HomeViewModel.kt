@@ -1,8 +1,9 @@
 package com.example.wan.android.index.home
 
-import androidx.lifecycle.liveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.example.wan.android.data.BannerItem
 import com.example.wan.android.data.DataX
 import com.example.wan.android.index.common.ArticleListDataSource
 import com.example.wan.android.index.common.LikeViewModel
@@ -11,12 +12,24 @@ import com.example.wan.android.network.repository.WanRepository
 class HomeViewModel : LikeViewModel() {
 
     // `liveData {}` 用于页面一开始就需要获取数据的情况,
-    // 这是 Coroutine, 特殊页面异常要 catch, 例如需要登录后调用的接口
-    // 不 catch 的话 崩了也不知道啥情况 没有 log
-    val banner = liveData {
-        startLoading()
-        val result = WanRepository.getBanner()
-        emit(result)
+    // 这是 Coroutine, 不 catch 的话 崩了也不知道啥情况, 控制台没有 log, 可输出到文件 或 bugly 等
+//    val banner = liveData {
+////        startLoading()
+//        try {
+//            val result = WanRepository.getBanner()
+//            emit(result)
+//        } catch (e: Exception) {
+//            loge(e)
+//        }
+//    }
+
+    val banner = MutableLiveData<List<BannerItem>>()
+
+    fun fetchBanner() {
+        launch {
+            val result = WanRepository.getBanner()
+            banner.postValue(result)
+        }
     }
 
     fun getArticlesPager(): Pager<Int, DataX> {

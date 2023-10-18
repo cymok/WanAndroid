@@ -13,10 +13,6 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.adapter.FragmentStateAdapter.FragmentTransactionCallback.OnPostEventListener
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
@@ -193,29 +189,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         val tabLayout = binding.tabLayout
 
 //        ViewPager(this).adapter = MainLazyAdapter(this, fragments)
-        viewpager.adapter = MainAdapter(this, fragments).apply {
-            // registerFragmentTransactionCallback 是 ViewPager2 v1.1 的 API
-            registerFragmentTransactionCallback(object :
-                FragmentStateAdapter.FragmentTransactionCallback() {
-                override fun onFragmentMaxLifecyclePreUpdated(
-                    fragment: Fragment,
-                    maxLifecycleState: Lifecycle.State
-                ): OnPostEventListener {
-                    return if (maxLifecycleState == Lifecycle.State.RESUMED) {
-                        LogUtils.e("${fragment.javaClass.simpleName} maxLifecycleState=${maxLifecycleState}")
-                        OnPostEventListener {
-                            // do nothing
-                        }
-                    } else {
-                        super.onFragmentMaxLifecyclePreUpdated(fragment, maxLifecycleState)
-                    }
-                }
-
-                override fun onFragmentPreAdded(fragment: Fragment): OnPostEventListener {
-                    return super.onFragmentPreAdded(fragment)
-                }
-            })
-        }
+        viewpager.adapter = MainAdapter(this, fragments)
 //        val pagerAdapter = MainLazyAdapter(this, fragments)
         viewpager.currentItem = 0
         viewpager.offscreenPageLimit = 2

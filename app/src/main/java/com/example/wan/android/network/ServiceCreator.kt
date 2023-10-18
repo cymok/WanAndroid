@@ -22,16 +22,18 @@ object ServiceCreator {
 
     private const val BASE_URL = "https://www.wanandroid.com/"
 
-    private val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.INSTANCE))
+    private val cookieJar =
+        PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.INSTANCE))
 
     private val okHttpClient = OkHttpClient.Builder()
         .cookieJar(cookieJar)
         .connectTimeout(10, TimeUnit.SECONDS)
         .writeTimeout(10, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true) // 默认重试一次，若需要重试N次，则要实现拦截器。
         .cache(Cache(File(AppConst.okhttpCachePath), AppConst.OKHTTP_CACHE_SIZE))
         .addNetworkInterceptor(CacheInterceptor())
-        .retryOnConnectionFailure(true) // 默认重试一次，若需要重试N次，则要实现拦截器。
+        .addInterceptor(ForceCacheInterceptor())
 //        .addInterceptor(HeaderInterceptor())
 //        .addInterceptor(CookiesInterceptor())
         .addInterceptor(LoggingInterceptor())
@@ -41,9 +43,13 @@ object ServiceCreator {
         .baseUrl(BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder()
-            .disableHtmlEscaping() // 禁止 Html 转义
-            .create()))
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder()
+                    .disableHtmlEscaping() // 禁止 Html 转义
+                    .create()
+            )
+        )
         .build()
 
     fun clearCookie() {
@@ -58,10 +64,10 @@ object ServiceCreator {
 
     private inline fun <reified T> Retrofit.create(): T = this.create(T::class.java)
 
-//    val wanApiService = retrofit.create(WanService::class.java)
-    val wanApiService = retrofit.create<WanService>()
-    val userApiService = retrofit.create<UserService>()
-    val squareApiService = retrofit.create<SquareService>()
-    val likeApiService = retrofit.create<LikeService>()
+    //    val wanApiService = retrofit.create(WanService::class.java)
+    val wanApiService by lazy { retrofit.create<WanService>() }
+    val userApiService by lazy { retrofit.create<UserService>() }
+    val squareApiService by lazy { retrofit.create<SquareService>() }
+    val likeApiService by lazy { retrofit.create<LikeService>() }
 
 }

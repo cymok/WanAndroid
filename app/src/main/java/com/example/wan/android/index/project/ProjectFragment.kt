@@ -13,10 +13,12 @@ import com.example.wan.android.databinding.FragmentProjectBinding
 import com.example.wan.android.index.common.VpFragmentAdapter
 import com.example.wan.android.index.project.fragment.ProjectTabFragment
 import com.example.wan.android.utils.TextUtils.htmlDecode
+import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.observeEvent
 import com.google.android.material.tabs.TabLayoutMediator
 import splitties.bundle.put
+import splitties.views.onClick
 import splitties.views.topPadding
 
 class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding>() {
@@ -56,6 +58,11 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
     @SuppressLint("NotifyDataSetChanged")
     private fun observe() {
         viewModel.articlesTree.observe(viewLifecycleOwner) {
+            binding.viewEmpty.visible(it == null)
+            if (it == null) {
+                return@observe
+            }
+
             val finalList = mutableListOf<ArticlesTreeItem?>().apply {
                 add(null) // 最新项目
                 addAll(it)
@@ -75,12 +82,23 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
             }.attach()
 
         }
+        viewModel.fetchArticlesTree()
+
+        binding.viewEmpty.onClick{
+            viewModel.fetchArticlesTree()
+        }
     }
 
     override fun observeBus() {
         observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
 
         }
+//        observeEvent<Int>(EventBus.HOME_TAB_REFRESH) {
+//            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
+//                viewModel.fetchArticlesTree()
+//            }
+//        }
+        // 这里不应该刷新, 应该提供空白页点击刷新
     }
 
 }

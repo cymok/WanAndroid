@@ -12,7 +12,7 @@ data class Articles(
     val pageCount: Int,
     val size: Int,
     val total: Int
-):Parcelable
+) : Parcelable
 
 @Parcelize
 data class DataX(
@@ -46,16 +46,16 @@ data class DataX(
     val shareUser: String,
     val superChapterId: Int,
     val superChapterName: String,
-    val tags: List<Tag>?,
+    val tags: ArrayList<Tag>?,
     val title: String,
     val type: Int,
     val userId: Int,
     val visible: Int,
     val zan: Int
-):Parcelable
+) : Parcelable
 
 @Parcelize
 data class Tag(
     val name: String,
     val url: String
-):Parcelable
+) : Parcelable

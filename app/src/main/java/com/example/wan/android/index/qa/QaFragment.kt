@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.paging.LoadState
+import androidx.paging.liveData
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.BarUtils
@@ -15,11 +16,11 @@ import com.example.wan.android.data.LikeData
 import com.example.wan.android.data.WebData
 import com.example.wan.android.databinding.FragmentQaBinding
 import com.example.wan.android.index.common.ArticleListPagingAdapter
+import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
 import com.example.wan.android.utils.observeEvent
 import com.example.wan.android.utils.registerResultOK
-import com.example.wan.android.utils.ext.visible
 import splitties.bundle.put
 import splitties.views.topPadding
 
@@ -46,6 +47,14 @@ class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
         observe()
     }
 
+    override fun lazyLoad() {
+        viewModel.getArticlesPager().liveData
+            .observe(viewLifecycleOwner) {
+                adapter.submitData(lifecycle, it)
+                binding.refresh.isRefreshing = false
+            }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -61,10 +70,6 @@ class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
     }
 
     private fun observe() {
-        viewModel.getQaList().observe(viewLifecycleOwner) {
-            adapter.submitData(lifecycle, it)
-            binding.refresh.isRefreshing = false
-        }
         viewModel.likeStatus.observe(viewLifecycleOwner) {
             adapter.notifyLikeChanged(it)
         }

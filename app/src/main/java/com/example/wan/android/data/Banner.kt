@@ -1,7 +1,5 @@
 package com.example.wan.android.data
 
-class Banner : ArrayList<BannerItem>()
-
 data class BannerItem(
     val desc: String,
     val id: Int,

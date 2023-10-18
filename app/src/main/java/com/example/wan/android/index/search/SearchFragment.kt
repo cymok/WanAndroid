@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.paging.LoadState
+import androidx.paging.liveData
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
@@ -65,10 +66,11 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
 
     private fun search(key: String) {
         this.key = key
-        viewModel.search(key).observe(viewLifecycleOwner) {
-            adapter.submitData(lifecycle, it)
-            binding.refresh.isRefreshing = false
-        }
+        viewModel.getArticlesPager(key).liveData
+            .observe(viewLifecycleOwner) {
+                adapter.submitData(lifecycle, it)
+                binding.refresh.isRefreshing = false
+            }
     }
 
     private fun observe() {

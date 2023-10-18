@@ -47,6 +47,13 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
         observe()
     }
 
+    override fun lazyLoad() {
+        viewModel.getArticlesPager().liveData.observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+            binding.refresh.isRefreshing = false
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -62,10 +69,6 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
     }
 
     private fun observe() {
-        viewModel.getArticlesPager().liveData.observe(viewLifecycleOwner) {
-            adapter.submitData(lifecycle, it)
-            binding.refresh.isRefreshing = false
-        }
         viewModel.likeStatus.observe(viewLifecycleOwner) {
             adapter.notifyLikeChanged(it)
         }

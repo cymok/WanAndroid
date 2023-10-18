@@ -1,7 +1,6 @@
 package com.example.wan.android.network.api
 
 import com.example.wan.android.data.Articles
-import com.example.wan.android.data.Banner
 import okhttp3.ResponseBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -63,7 +62,7 @@ interface LikeService {
 
     // 收藏网站列表
     @GET("/lg/collect/usertools/json")
-    suspend fun getSiteList(): ApiResult<Banner>
+    suspend fun getSiteList(): ApiResult<ResponseBody>
 
     // 收藏网址
     @FormUrlEncoded
@@ -71,7 +70,7 @@ interface LikeService {
     suspend fun likeSite(
         @Field("name") name: Int,
         @Field("link") link: Int,
-    ): ApiResult<Banner>
+    ): ApiResult<ResponseBody>
 
     // 编辑收藏网站
     @FormUrlEncoded
@@ -80,13 +79,13 @@ interface LikeService {
         @Field("id") id: Int,
         @Field("name") name: Int,
         @Field("link") link: Int,
-    ): ApiResult<Banner>
+    ): ApiResult<ResponseBody>
 
     // 删除收藏网站
     @FormUrlEncoded
     @POST("/lg/collect/deletetool/json")
     suspend fun deleteSite(
         @Field("id") name: Int,
-    ): ApiResult<Banner>
+    ): ApiResult<ResponseBody>
 
 }

@@ -8,7 +8,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.wan.android.R
-import com.example.wan.android.data.Banner
 import com.example.wan.android.data.BannerItem
 import com.example.wan.android.data.DataX
 import com.example.wan.android.data.LikeData
@@ -25,7 +24,7 @@ import com.lxj.xpopup.XPopup
 import com.youth.banner.indicator.CircleIndicator
 import splitties.views.onClick
 
-class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Banner) :
+class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: List<BannerItem>) :
     PagingDataAdapter<DataX, ViewHolder>(object : DiffUtil.ItemCallback<DataX>() {
         override fun areItemsTheSame(oldItem: DataX, newItem: DataX): Boolean {
             return oldItem.id == newItem.id
@@ -38,7 +37,7 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: Bann
 
     private val homeBannerAdapter = HomeBannerAdapter(bannerData)
 
-    fun setBanner(banner: Banner) {
+    fun setBanner(banner: List<BannerItem>) {
         bannerData = banner
         homeBannerAdapter.setDatas(banner)
     }

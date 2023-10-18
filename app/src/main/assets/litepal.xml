@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="YourDatabaseName" />
+    <version value="2" />
+
+    <!-- 在这里定义数据表映射类 -->
+
+    <mapping class="com.example.wan.android.data.dbentity.CacheEntity" />
+
+</litepal>

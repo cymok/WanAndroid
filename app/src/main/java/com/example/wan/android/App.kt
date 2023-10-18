@@ -12,6 +12,7 @@ import com.example.wan.android.utils.getViewModel
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import org.litepal.LitePal
 import java.text.SimpleDateFormat
 
 class App : MultiDexApplication() {
@@ -44,6 +45,11 @@ class App : MultiDexApplication() {
         initNightModel()
         initSmartRefreshLayout()
         CrashUtils.init(AppConst.crashPath)
+        initLitePal()
+    }
+
+    private fun initLitePal() {
+        LitePal.initialize(this)
     }
 
     @SuppressLint("SimpleDateFormat")

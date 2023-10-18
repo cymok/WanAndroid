@@ -2,7 +2,7 @@ package com.example.wan.android.network.api
 
 import com.example.wan.android.data.Articles
 import com.example.wan.android.data.ArticlesTree
-import com.example.wan.android.data.Banner
+import com.example.wan.android.data.BannerItem
 import com.example.wan.android.data.CommentList
 import com.example.wan.android.data.DataX
 import retrofit2.http.Field
@@ -89,7 +89,7 @@ interface WanService {
 
     // banner
     @GET("/banner/json")
-    suspend fun getBanner(): ApiResult<Banner>
+    suspend fun getBanner(): ApiResult<List<BannerItem>>
 
     // 置顶文章
     @GET("/article/top/json")

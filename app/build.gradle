@@ -221,10 +221,8 @@ dependencies {
     // RecyclerView ItemDecoration
     // https://github.com/grzegorzojdana/SpacingItemDecoration
     implementation 'com.github.grzegorzojdana:SpacingItemDecoration:1.1.0'
-/*
     // https://github.com/square/leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
-*/
     // 通过委托 自动处理 `Fragment.onDestroyView()` 时的 `viewBinding = null` 防止内存泄漏
     // https://github.com/androidbroadcast/ViewBindingPropertyDelegate
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-full:1.5.9'

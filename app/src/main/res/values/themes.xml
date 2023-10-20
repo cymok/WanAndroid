@@ -19,6 +19,13 @@
     <style name="AppTheme.ActionBar" parent="AppTheme">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
+        <!-- 可以修改 ActionBar 的 文字颜色 但同时会修改其它背景颜色 -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- 可以修改 ActionBar Menu 的 文字颜色, textColor 优先级大于 textColorPrimary 但同时会修改其它背景颜色 -->
+        <item name="android:textColor">@color/primaryText</item>
+        <!-- 可以修改 ActionBar 颜色, 但同时会修改其它背景颜色 例如弹窗 -->
+        <!--<item name="android:background">@color/background</item>-->
+
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

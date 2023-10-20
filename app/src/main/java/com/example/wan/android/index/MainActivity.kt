@@ -290,7 +290,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
      * 调用此方法 可以更改选中的 tab
      */
     fun changeIndex(index: Int) {
-        binding.viewpager.setCurrentItem(index)
+        binding.viewpager.currentItem = index
     }
 
     /**
@@ -307,7 +307,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         postEvent(EventBus.HOME_TAB_REFRESH, pageIndex)
     }
 
-    var firstClickTime = 0L
+    private var firstClickTime = 0L
 
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onBackPressed() {

@@ -110,6 +110,9 @@ class SquareFragment : VVMBaseFragment<SquareViewModel, FragmentSquareBinding>()
                 it?.getParcelableExtra("result")
             }
             result?.let { data ->
+                if (adapter.itemCount == 0) {
+                    return@let
+                }
                 adapter.notifyLikeChanged(
                     LikeData(
                         id = data.id,

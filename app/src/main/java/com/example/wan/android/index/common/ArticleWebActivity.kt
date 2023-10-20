@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
@@ -33,18 +32,6 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
     override val binding by lazy { ActivityWebBinding.inflate(layoutInflater) }
 
     override val viewModel: ArticleWebViewModel get() = getViewModel()
-
-    override fun viewModelObserve() {
-        super.viewModelObserve()
-        viewModel.like.observe(this) {
-            if (it) {
-                menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like_selected)
-            } else {
-                menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like)
-            }
-            webData.like = it
-        }
-    }
 
     override fun onDestroy() {
         // 解决 WebView 内存泄漏 2/2
@@ -126,16 +113,34 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
 
     override fun initStatusBarColor() = R.color.status_bar
 
-    lateinit var menu: Menu
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("menu", true)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if (savedInstanceState.getBoolean("menu", false)) {
+            invalidateMenu() // activity 重新创建 重绘菜单
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        this.menu = menu
         menuInflater.inflate(R.menu.menu_article_web_activity, menu)
 
         if (webData.like) {
             menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like_selected)
         } else {
             menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like)
+        }
+
+        viewModel.like.observe(this) {
+            if (it) {
+                menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like_selected)
+            } else {
+                menu.findItem(R.id.menu_item_like).setIcon(R.drawable.icon_like)
+            }
+            webData.like = it
         }
 
         return true

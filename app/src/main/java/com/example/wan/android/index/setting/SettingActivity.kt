@@ -26,6 +26,7 @@ import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.ext.alert
 import com.example.wan.android.utils.ext.cancel
 import com.example.wan.android.utils.ext.ok
+import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getUri
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.toast
@@ -131,10 +132,17 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
             lifecycleScope.launch(Dispatchers.IO) {
                 val zipFilePath =
                     PathUtils.getCachePathExternalFirst() + File.separator + "crash.zip"
-                ZipUtils.zipFile(
-                    AppConst.crashPath,
-                    zipFilePath
-                )
+                try {
+                    ZipUtils.zipFile(
+                        AppConst.crashPath,
+                        zipFilePath
+                    )
+                } catch (e: Exception) {
+                    // Caused by: java.io.FileNotFoundException: /storage/emulated/0/Android/data/com.example.wan.android/files/crash: open failed: ENOENT (No such file or directory)
+                    // 没有报错文件
+                    toast("应用似乎正在稳定运行")
+                    return@launch
+                }
                 launch(Dispatchers.Main) {
                     val email = getString(R.string.email)
                     // ACTION_SENDTO 无附件
@@ -193,6 +201,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 }
             }.show()
         }
+        binding.llLogout.visible(UserUtils.isLogin)
     }
 
     private fun initViewLightModel() {

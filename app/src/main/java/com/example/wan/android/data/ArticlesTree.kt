@@ -1,6 +1,7 @@
 package com.example.wan.android.data
 
 import android.os.Parcelable
+import com.example.wan.android.utils.TextUtils.htmlDecode
 import kotlinx.parcelize.Parcelize
 
 class ArticlesTree : ArrayList<ArticlesTreeItem>()
@@ -16,10 +17,13 @@ data class ArticlesTreeItem(
     val id: Int,
     val lisense: String,
     val lisenseLink: String,
+    @Deprecated("使用 nameDecoded 获取")
     val name: String,
     val order: Int,
     val parentChapterId: Int,
     val type: Int,
     val userControlSetTop: Boolean,
     val visible: Int
-):Parcelable
+) : Parcelable {
+    val nameDecoded: String get() = name.htmlDecode()
+}

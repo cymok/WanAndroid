@@ -10,6 +10,9 @@ import com.blankj.utilcode.util.ScreenUtils
 
 object FloatViewHelper {
 
+    /**
+     * 注意 addView 内存泄漏
+     */
     fun showInWindow(window: Window, view: View, loc: Point? = null, sizeDp: Int? = null) {
         if (view.isAttachedToWindow) {
             return

@@ -125,16 +125,9 @@ interface WanService {
     suspend fun getWxArticleTree(): ApiResult<ArticlesTree>
 
     // 获取公众号列表
+    // 查看某个公众号历史数据
     @GET("/wxarticle/list/{id}/{page}/json")
     suspend fun getWxArticleList(
-        @Path("id") id: Int,
-        @Path("page") page: Int = 1,
-        @Query("page_size") pageSize: Int = 10,
-    ): ApiResult<Articles>
-
-    // 查看某个公众号历史数据
-    @GET("/wxarticle/list/{id}/{page}}/json")
-    suspend fun getWhoWxArticleList(
         @Path("id") id: Int,
         @Path("page") page: Int = 1,
         @Query("page_size") pageSize: Int = 10,

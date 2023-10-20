@@ -11,9 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="2dp" />
 
-    <WebView
-        android:id="@+id/web_view"
+    <FrameLayout
+        android:id="@+id/layoutWebViewContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <!-- 使用 APP 的 Context 动态创建 WebView -->
+    </FrameLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -13,6 +13,8 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
@@ -155,6 +157,12 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         }
     }
 
+    private val floatViewReleaseObserver = LifecycleEventObserver { _, event ->
+        if (event == Lifecycle.Event.ON_DESTROY) {
+            window.windowManager.removeView(floatView)
+        }
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
@@ -167,6 +175,8 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
                         (ScreenUtils.getScreenHeight() * (3 / 4f) - (sizeDp / 2f).dp2px).toInt()
                     ), sizeDp = sizeDp
                 )
+                // 解决 特殊情况导致 activity 销毁重新创建时导致的 内存泄漏
+                lifecycle.addObserver(floatViewReleaseObserver)
                 DraggableViewHelper.intrude(floatView)
                 floatView.onClick {
 //                    binding.root.run {

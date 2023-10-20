@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
@@ -17,8 +18,8 @@ import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivityWebBinding
-import com.example.wan.android.utils.toastLong
 import com.example.wan.android.utils.ext.visible
+import com.example.wan.android.utils.toastLong
 
 class WebActivity : VBaseActivity<ActivityWebBinding>() {
 
@@ -43,12 +44,27 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
     private val webUrl by lazy { intent.getStringExtra("url")!! }
     private val webTitle by lazy { intent.getStringExtra("title") }
 
+    override fun onDestroy() {
+        // 解决 WebView 内存泄漏 2/2
+        webView.stopLoading()
+        webView.destroy()
+        binding.layoutWebViewContainer.removeAllViews()
+        super.onDestroy()
+    }
+
+    private val webView by lazy {
+        // 解决 WebView 内存泄漏 1/2
+        WebView(App.INSTANCE).also {
+            binding.layoutWebViewContainer.addView(it)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.title = Html.fromHtml(webTitle ?: "")
 
-        binding.webView.run {
+        webView.run {
             settings.run {
                 javaScriptEnabled = true
 //                javaScriptCanOpenWindowsAutomatically = true
@@ -107,7 +123,7 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_refresh -> {
-                binding.webView.reload()
+                webView.reload()
             }
 
             R.id.menu_item_copy -> {

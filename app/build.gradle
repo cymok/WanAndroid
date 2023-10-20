@@ -129,17 +129,17 @@ dependencies {
 //    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 //    implementation files('libs/module_lint_aar-debug.aar')
     // Test
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation "junit:junit:4.13.2"
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
 
     implementation "androidx.multidex:multidex:2.0.1"
 
     // Android
     // KTX https://developer.android.com/kotlin/ktx
     implementation platform("org.jetbrains.kotlin:kotlin-bom:${kotlin_version}")
-    implementation 'com.google.android.material:material:1.10.0'  // 33 -> 1.9.0
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation "com.google.android.material:material:1.10.0" // 33 -> 1.9.0
+    implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.core:core-ktx:1.12.0" // 33 -> 1.10.1
     implementation "androidx.core:core-splashscreen:1.0.1"
     def lifecycleVersion = "2.6.2"
@@ -152,22 +152,23 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-service:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${lifecycleVersion}"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation "androidx.viewpager2:viewpager2:1.1.0-beta02" // 1.1 新特性 registerFragmentTransactionCallback
+    implementation "androidx.viewpager2:viewpager2:1.1.0-beta02"
+    // 1.1 新特性 registerFragmentTransactionCallback
     def navigationVersion = "2.7.4" // 33 -> 2.6.0
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     implementation "androidx.palette:palette-ktx:1.0.0"
-
+    implementation "androidx.sqlite:sqlite-ktx:2.3.1"
+    // https://developer.android.com/jetpack/androidx/releases/room
     def roomVersion = "2.5.2"
     implementation("androidx.room:room-runtime:${roomVersion}")
     implementation("androidx.room:room-ktx:${roomVersion}")
-    kapt("androidx.room:room-compiler:${roomVersion}")
+//    kapt("androidx.room:room-compiler:${roomVersion}")
+    ksp ("androidx.room:room-compiler:${roomVersion}")
     testImplementation("androidx.room:room-testing:${roomVersion}")
-
-    implementation "androidx.sqlite:sqlite-ktx:2.3.1"
     implementation "androidx.work:work-runtime-ktx:2.8.1"
     implementation "androidx.paging:paging-runtime-ktx:3.2.1"
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     // 快乐库 - 扩展
     // https://github.com/LouisCAD/Splitties
     def splittiesVersion = "3.0.0"
@@ -179,26 +180,26 @@ dependencies {
     implementation "com.louiscad.splitties:splitties-fun-pack-android-material-components-with-views-dsl:${splittiesVersion}"
     // 快乐库 - 工具
     // https://github.com/Blankj/AndroidUtilCode
-    implementation 'com.blankj:utilcodex:1.31.1'
+    implementation "com.blankj:utilcodex:1.31.1"
     // 沉浸状态栏
     // https://github.com/gyf-dev/ImmersionBar
-    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
-    implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
+    implementation "com.geyifeng.immersionbar:immersionbar:3.2.2"
+    implementation "com.geyifeng.immersionbar:immersionbar-ktx:3.2.2"
     // gson
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation "com.google.code.gson:gson:2.10.1"
     // 网络
     // https://github.com/square/okhttp
-    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation "com.squareup.okhttp3:okhttp:4.11.0"
     // https://github.com/square/retrofit
     def retrofitVersion = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
     // https://github.com/franmontiel/PersistentCookieJar
-    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    implementation "com.github.franmontiel:PersistentCookieJar:v1.0.1"
     // 数据库
     // https://github.com/guolindev/LitePal
-    implementation 'org.litepal.guolindev:core:3.2.3'
+    implementation "org.litepal.guolindev:core:3.2.3"
     // 图片
     // https://github.com/bumptech/glide
     // https://bumptech.github.io/glide/doc/download-setup.html#kotlin---ksp
@@ -208,43 +209,43 @@ dependencies {
     ksp "com.github.bumptech.glide:ksp:${glideVersion}"
     implementation "com.github.bumptech.glide:okhttp3-integration:${glideVersion}"
     // https://github.com/wasabeef/glide-transformations
-    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+    implementation "jp.wasabeef:glide-transformations:4.3.0"
     // 权限
     // https://github.com/guolindev/PermissionX
-    implementation 'com.guolindev.permissionx:permissionx:1.7.1'
+    implementation "com.guolindev.permissionx:permissionx:1.7.1"
     // 消息
     // https://github.com/JeremyLiao/LiveEventBus
-    implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
+    implementation "io.github.jeremyliao:live-event-bus-x:1.8.0"
     // 快乐库 - UI
     // https://github.com/RuffianZhong/RWidgetHelper
-    implementation 'com.github.RuffianZhong:RWidgetHelper:androidx.v0.0.14'
+    implementation "com.github.RuffianZhong:RWidgetHelper:androidx.v0.0.14"
     // RecyclerView ItemDecoration
     // https://github.com/grzegorzojdana/SpacingItemDecoration
-    implementation 'com.github.grzegorzojdana:SpacingItemDecoration:1.1.0'
+    implementation "com.github.grzegorzojdana:SpacingItemDecoration:1.1.0"
     // https://github.com/square/leakcanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.12"
     // 通过委托 自动处理 `Fragment.onDestroyView()` 时的 `viewBinding = null` 防止内存泄漏
     // https://github.com/androidbroadcast/ViewBindingPropertyDelegate
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-full:1.5.9'
-//    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9'
+    implementation "com.github.kirich1409:viewbindingpropertydelegate-full:1.5.9"
+//    implementation "com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9"
 
     // https://github.com/youth5201314/banner
-    implementation 'io.github.youth5201314:banner:2.2.2'
+    implementation "io.github.youth5201314:banner:2.2.2"
 
     // 弹窗
     // https://github.com/li-xiaojun/XPopup
-    implementation('com.github.li-xiaojun:XPopup:2.9.19') {
+    implementation("com.github.li-xiaojun:XPopup:2.9.19") {
         exclude group: "com.davemorrissey.labs", module: "subsampling-scale-image-view-androidx"
     }
 
     // 刷新
     // https://github.com/scwang90/SmartRefreshLayout
-    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
-    implementation 'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
-    implementation 'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
-    implementation 'io.github.scwang90:refresh-header-falsify:2.0.6'     //虚拟刷新头
-    implementation 'io.github.scwang90:refresh-header-material:2.0.6'    //谷歌刷新头
-    implementation 'io.github.scwang90:refresh-header-two-level:2.0.6'   //二级刷新头
+    implementation "io.github.scwang90:refresh-layout-kernel:2.0.6"      //核心必须依赖
+    implementation "io.github.scwang90:refresh-header-classics:2.0.6"    //经典刷新头
+    implementation "io.github.scwang90:refresh-footer-classics:2.0.6"    //经典加载
+    implementation "io.github.scwang90:refresh-header-falsify:2.0.6"     //虚拟刷新头
+    implementation "io.github.scwang90:refresh-header-material:2.0.6"    //谷歌刷新头
+    implementation "io.github.scwang90:refresh-header-two-level:2.0.6"   //二级刷新头
 
     // 流动布局 标签
     // https://github.com/hongyangAndroid/FlowLayout

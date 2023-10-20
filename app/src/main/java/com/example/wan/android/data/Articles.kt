@@ -1,6 +1,7 @@
 package com.example.wan.android.data
 
 import android.os.Parcelable
+import com.example.wan.android.utils.TextUtils.htmlDecode
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -22,6 +23,7 @@ data class DataX(
     val author: String,
     val canEdit: Boolean,
     val chapterId: Int,
+    @Deprecated("使用 chapterNameDecoded 获取")
     val chapterName: String,
     var collect: Boolean,
     val courseId: Int,
@@ -52,7 +54,9 @@ data class DataX(
     val userId: Int,
     val visible: Int,
     val zan: Int
-) : Parcelable
+) : Parcelable {
+    val chapterNameDecoded get() = chapterName.htmlDecode()
+}
 
 @Parcelize
 data class Tag(

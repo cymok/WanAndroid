@@ -34,7 +34,7 @@ inline fun logi(any: Any?, tag: String? = "log") {
 inline fun logw(any: Any?, tag: String? = "log") {
     Log.w(tag, any.toString())
     if (any is Throwable) {
-        LogUtils.e(any)
+        LogUtils.eTag(tag, any)
 //        any.printStackTrace()
     }
 }
@@ -43,7 +43,7 @@ inline fun logw(any: Any?, tag: String? = "log") {
 inline fun loge(any: Any?, tag: String? = "log") {
     Log.e(tag, any.toString())
     if (any is Throwable) {
-        LogUtils.e(any)
+        LogUtils.eTag(tag, any)
 //        any.printStackTrace()
     }
 }

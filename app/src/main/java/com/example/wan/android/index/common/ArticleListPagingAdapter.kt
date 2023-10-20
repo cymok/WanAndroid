@@ -29,7 +29,7 @@ class ArticleListPagingAdapter :
         }
     }) {
 
-    var likeClickListener: ((LikeData) -> Unit)? = null
+    private var likeClickListener: ((LikeData) -> Unit)? = null
 
     fun onLikeClick(listener: (LikeData) -> Unit) {
         likeClickListener = listener
@@ -41,7 +41,7 @@ class ArticleListPagingAdapter :
         notifyItemChanged(likeData.position)
     }
 
-    var itemClickListener: ((Int, DataX) -> Unit)? = null
+    private var itemClickListener: ((Int, DataX) -> Unit)? = null
 
     fun onItemClick(listener: (Int, DataX) -> Unit) {
         itemClickListener = listener
@@ -69,7 +69,7 @@ class ArticleListPagingAdapter :
 
                 tvClassification.text = listOf(
                     item.superChapterName,
-                    item.chapterName,
+                    item.chapterNameDecoded,
                 ).filter {
                     // 解析为 null 了
                     @Suppress("UselessCallOnNotNull")

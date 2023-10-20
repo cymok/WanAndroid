@@ -13,27 +13,28 @@ class ArticleTagAdapter(listTag: List<Tag>) : TagAdapter<Tag>(listTag) {
     override fun getView(parent: FlowLayout, position: Int, t: Tag): View {
         return ViewTagBinding.inflate(parent.layoutInflater, parent, false).root.apply {
             text = t.name
-            when (t.name) {
+            val bgRes = when (t.name) {
                 "本站发布" -> {
-                    setBackgroundResource(R.drawable.selector_tag_bg_green)
+                    R.drawable.selector_tag_bg_green
                 }
 
                 "问答" -> {
-                    setBackgroundResource(R.drawable.selector_tag_bg_red)
+                    R.drawable.selector_tag_bg_red
                 }
 
                 "项目" -> {
-                    setBackgroundResource(R.drawable.selector_tag_bg_blue)
+                    R.drawable.selector_tag_bg_blue
                 }
 
                 "公众号" -> {
-                    setBackgroundResource(R.drawable.selector_tag_bg_yellow)
+                    R.drawable.selector_tag_bg_yellow
                 }
 
                 else -> {
-                    setBackgroundResource(R.drawable.selector_tag_bg_green)
+                    R.drawable.selector_tag_bg_green
                 }
             }
+            setBackgroundResource(bgRes)
         }
     }
 

@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.splashscreen.SplashScreenViewProvider
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
 import com.example.wan.android.App
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivitySplashBinding
 import com.example.wan.android.index.MainActivity
+import com.example.wan.android.network.repository.WanRepository
 import com.example.wan.android.utils.ext.alert
 import com.example.wan.android.utils.ext.cancel
 import com.example.wan.android.utils.ext.ok
@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import splitties.activities.start
 import splitties.views.onClick
-import java.util.concurrent.atomic.AtomicBoolean
 
 typealias MyAppUtils = com.example.wan.android.utils.AppUtils
 
@@ -35,6 +34,7 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
 
     companion object {
         const val COUNTDOWN_TIME = 1
+        const val SPLASH_TIME = 1000 * 1L
     }
 
     override val binding by lazy {
@@ -52,6 +52,13 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
         setSplashScreen(splashScreen)
     }
 
+    private fun preRequest() {
+        // todo 网络请求 第一次需要较长时间（一般要 1+ 秒） 为了进入 MainActivity 后能快速加载完成 在这里尝试提前随便请求一个接口
+        lifecycleScope.launch {
+            WanRepository.getBanner()
+        }
+    }
+
     private fun setSplashScreen(splashScreen: SplashScreen) {
         var isShowSplash = true
 
@@ -62,7 +69,7 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
 
         lifecycleScope.launch {
             // SplashScreen 展示时长
-            delay(1000) // SplashScreen 仅用于过渡启动, 这里设置 0, 后续展示 AD 或倒计时使用自己的页面
+            delay(SPLASH_TIME) // SplashScreen 仅用于过渡启动, 这里设置 0, 后续展示 AD 或倒计时使用自己的页面
             // SplashScreen 展示完毕
             isShowSplash = false
         }
@@ -73,6 +80,7 @@ class SplashActivity : VBaseActivity<ActivitySplashBinding>() {
 
             initPrivacyDialog {
                 initSDKWithPrivacy {
+                    preRequest()
                     initView {
                         start<MainActivity> {}
                         finish()

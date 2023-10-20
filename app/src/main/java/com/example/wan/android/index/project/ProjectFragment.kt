@@ -76,7 +76,7 @@ class ProjectFragment : VVMBaseFragment<ProjectViewModel, FragmentProjectBinding
             binding.viewpager.offscreenPageLimit = 2
 
             // TabLayout
-            val nameList = finalList.map { it?.name?.htmlDecode() ?: "最新项目" }
+            val nameList = finalList.map { it?.nameDecoded ?: "最新项目" }
             TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
                 tab.text = nameList[position]
             }.attach()

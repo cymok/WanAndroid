@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
@@ -15,14 +16,15 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ClipboardUtils
+import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.data.WebData
 import com.example.wan.android.databinding.ActivityQaWebBinding
+import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.toast
 import com.example.wan.android.utils.toastLong
-import com.example.wan.android.utils.ext.visible
 import com.lxj.xpopup.XPopup
 import splitties.views.imageResource
 import splitties.views.onClick
@@ -34,6 +36,21 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
     override val binding by lazy { ActivityQaWebBinding.inflate(layoutInflater) }
 
     override val viewModel: QaWebViewModel get() = getViewModel()
+
+    override fun onDestroy() {
+        // 解决 WebView 内存泄漏 2/2
+        webView.stopLoading()
+        webView.destroy()
+        binding.layoutWebViewContainer.removeAllViews()
+        super.onDestroy()
+    }
+
+    private val webView by lazy {
+        // 解决 WebView 内存泄漏 1/2
+        WebView(App.INSTANCE).also {
+            binding.layoutWebViewContainer.addView(it)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +102,7 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
             }
         }
 
-        binding.webView.run {
+        webView.run {
             settings.run {
                 javaScriptEnabled = true
 //                javaScriptCanOpenWindowsAutomatically = true
@@ -162,7 +179,7 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item_refresh -> {
-                binding.webView.reload()
+                webView.reload()
             }
 
             R.id.menu_item_copy -> {

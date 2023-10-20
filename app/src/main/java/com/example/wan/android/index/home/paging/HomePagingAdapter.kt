@@ -106,7 +106,7 @@ class HomePagingAdapter(val fragment: HomeFragment, private var bannerData: List
 
                     tvClassification.text = listOf(
                         item.superChapterName,
-                        item.chapterName,
+                        item.chapterNameDecoded,
                     ).filter {
                         // 解析为 null 了
                         @Suppress("UselessCallOnNotNull")

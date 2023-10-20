@@ -9,6 +9,7 @@ import androidx.paging.liveData
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
 import com.example.wan.android.data.ArticlesTreeItem
@@ -21,6 +22,7 @@ import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
 import com.example.wan.android.utils.observeEvent
 import com.example.wan.android.utils.registerResultOK
+import splitties.views.onClick
 
 class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubscribeTabBinding>() {
 
@@ -67,6 +69,12 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
     }
 
     private fun initView() {
+
+        binding.layoutSearch.onClick {
+            // todo 跳转到另一个独立页面去搜索
+            ToastUtils.showShort("公众号搜索")
+        }
+
         val recyclerView = binding.rv
         recyclerView.adapter = adapter
 

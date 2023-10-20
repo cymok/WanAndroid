@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wx_background"
@@ -300,7 +301,9 @@
         android:background="@drawable/selector_item_press"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"

@@ -71,7 +71,7 @@ class SubscribeFragment : VVMBaseFragment<SubscribeViewModel, FragmentSubscribeB
             binding.viewpager.offscreenPageLimit = 2
 
             // TabLayout
-            val nameList = it.map { it.name.htmlDecode() }
+            val nameList = it.map { it.nameDecoded }
             TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
                 tab.text = nameList[position]
             }.attach()

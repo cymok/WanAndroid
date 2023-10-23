@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
+import android.transition.TransitionInflater
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
@@ -202,6 +203,17 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
             }.show()
         }
         binding.llLogout.visible(UserUtils.isLogin)
+
+        // 过度动画 共享元素 test
+        binding.llLogout.transitionName = "shared_element"
+
+    }
+
+    override fun onEnterAnimationComplete() {
+        super.onEnterAnimationComplete()
+        // 过度动画 共享元素 test
+        window.sharedElementEnterTransition =
+            TransitionInflater.from(activity).inflateTransition(android.R.transition.move)
     }
 
     private fun initViewLightModel() {

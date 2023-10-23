@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -152,7 +153,17 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
             }
 
             llSettings.onClick {
-                settingLauncher.launch(Intent(activity, SettingActivity::class.java))
+                if (UserUtils.isLogin) {
+                    // 过渡动画 共享元素 test
+                    val option = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        requireActivity(),
+                        layoutInfo,
+                        "shared_element"
+                    )
+                    settingLauncher.launch(Intent(activity, SettingActivity::class.java), option)
+                } else {
+                    settingLauncher.launch(Intent(activity, SettingActivity::class.java))
+                }
             }
         }
     }

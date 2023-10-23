@@ -3,7 +3,6 @@ package com.example.wan.android.index.subscribe
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.BarUtils
@@ -12,7 +11,6 @@ import com.example.wan.android.constant.EventBus
 import com.example.wan.android.databinding.FragmentSubscribeBinding
 import com.example.wan.android.index.common.VpFragmentAdapter
 import com.example.wan.android.index.subscribe.fragment.SubscribeTabFragment
-import com.example.wan.android.utils.TextUtils.htmlDecode
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.observeEvent

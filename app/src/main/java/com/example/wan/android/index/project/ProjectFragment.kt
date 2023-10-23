@@ -12,7 +12,6 @@ import com.example.wan.android.data.ArticlesTreeItem
 import com.example.wan.android.databinding.FragmentProjectBinding
 import com.example.wan.android.index.common.VpFragmentAdapter
 import com.example.wan.android.index.project.fragment.ProjectTabFragment
-import com.example.wan.android.utils.TextUtils.htmlDecode
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.observeEvent

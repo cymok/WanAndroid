@@ -53,6 +53,7 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
                         setPadding(16.dp2px, 16.dp2px, 16.dp2px, 16.dp2px)
                         val text = getInfo()
                         this.text = text
+                        // https://www.jetbrains.com/lp/mono/
                         this.setTypeface("fonts/JetBrainsMono-Light.ttf")
                     })
                 })

@@ -9,9 +9,11 @@ buildscript {
 
 plugins {
     // apt 与 gradle 对应版本, apt 与 as 对应版本
-    // https://developer.android.com/studio/releases/gradle-plugin?hl=zh-cn
-    id 'com.android.application' version '8.1.2' apply false
-    id 'com.android.library' version '8.1.2' apply false
+    // https://developer.android.com/build/releases/gradle-plugin?hl=zh-cn
+    // 8.1.x 兼容 AS G
+    // Giraffe | 2022.3.1	3.2-8.1
+    id 'com.android.application' version '8.1.4' apply false
+    id 'com.android.library' version '8.1.4' apply false
     id 'org.jetbrains.kotlin.android' version "${kotlin_version}" apply false
     // https://github.com/google/ksp/releases
     id 'com.google.devtools.ksp' version "1.9.10-1.0.13" apply false

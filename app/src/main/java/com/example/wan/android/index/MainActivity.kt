@@ -83,8 +83,6 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
     override val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    private val floatView by lazy { AppCompatImageView(this) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.mainCreateTime = System.currentTimeMillis()
@@ -156,6 +154,8 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
             }
         }
     }
+
+    private val floatView by lazy { AppCompatImageView(App.INSTANCE) }
 
     private val floatViewReleaseObserver = LifecycleEventObserver { _, event ->
         if (event == Lifecycle.Event.ON_DESTROY) {

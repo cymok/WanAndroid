@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
@@ -309,6 +310,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
     private var firstClickTime = 0L
 
+    @SuppressLint("MissingSuperCall")
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onBackPressed() {
         val secondClickTime = System.currentTimeMillis()

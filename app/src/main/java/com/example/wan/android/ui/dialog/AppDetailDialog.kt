@@ -51,10 +51,10 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
                         )
                         gravity = Gravity.START
                         setPadding(16.dp2px, 16.dp2px, 16.dp2px, 16.dp2px)
-                        val text = getInfo()
-                        this.text = text
+                        text = getInfo()
                         // https://www.jetbrains.com/lp/mono/
-                        this.setTypeface("fonts/JetBrainsMono-Light.ttf")
+                        // https://github.com/JetBrains/JetBrainsMono
+                        setTypeface("fonts/JetBrainsMono-Light.ttf")
                     })
                 })
             })

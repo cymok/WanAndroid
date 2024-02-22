@@ -30,6 +30,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+//        resConfigs "zh"
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
@@ -142,7 +143,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.core:core-ktx:1.12.0" // 33 -> 1.10.1
     implementation "androidx.core:core-splashscreen:1.0.1"
-    def lifecycleVersion = "2.6.2"
+    def lifecycleVersion = "2.7.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}"
@@ -154,7 +155,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation "androidx.viewpager2:viewpager2:1.1.0-beta02"
     // 1.1 新特性 registerFragmentTransactionCallback
-    def navigationVersion = "2.7.6" // 33 -> 2.6.0
+    def navigationVersion = "2.7.7" // 33 -> 2.6.0
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     implementation "androidx.palette:palette-ktx:1.0.0"

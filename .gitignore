@@ -13,5 +13,8 @@ local.properties
 /*/app/
 /*/release/
 
+/config_sign.gradle
+/android.jks
+
 lint-baseline.xml
 full-r8-config.txt

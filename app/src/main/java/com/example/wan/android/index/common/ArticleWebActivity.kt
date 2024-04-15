@@ -1,7 +1,6 @@
 package com.example.wan.android.index.common
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -12,7 +11,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ClipboardUtils
 import com.example.wan.android.App
 import com.example.wan.android.R
@@ -21,6 +19,7 @@ import com.example.wan.android.data.WebData
 import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
+import com.example.wan.android.utils.startBrowser
 import com.example.wan.android.utils.toast
 import com.example.wan.android.utils.toastLong
 import com.lxj.xpopup.XPopup
@@ -169,7 +168,7 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
             }
 
             R.id.menu_item_share -> {
-                ActivityUtils.startActivity(Intent().apply {
+                startActivity(Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, webData.url)
                     putExtra(Intent.EXTRA_TITLE, webData.title)
@@ -178,10 +177,7 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
             }
 
             R.id.menu_item_browser -> {
-                ActivityUtils.startActivity(Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    data = Uri.parse(webData.url)
-                })
+                startBrowser(webData.url)
             }
 
             else -> {

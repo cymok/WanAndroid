@@ -13,7 +13,6 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
 import com.blankj.utilcode.util.SPUtils
-import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.ZipUtils
 import com.bumptech.glide.Glide
 import com.example.wan.android.R
@@ -126,7 +125,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(Intent.createChooser(intent, "选择邮件APP"))
             } else {
-                ToastUtils.showShort("您未安装邮件APP")
+                toast("您未安装邮件APP")
             }
         }
         binding.llLog.onClick {
@@ -172,7 +171,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                             }
                         }.show()
                     } else {
-                        ToastUtils.showShort("您未安装邮件APP")
+                        toast("您未安装邮件APP")
                     }
                 }
             }
@@ -184,7 +183,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
         }
         binding.llVersion.onClick {
             onMultiClick({ i ->
-                ToastUtils.showShort("快速再按 $i 次 查看更多")
+                toast("快速再按 $i 次 查看更多")
             }) {
                 AppDetailDialog(
                     context = activity,

@@ -18,6 +18,8 @@ import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.utils.ext.visible
+import com.example.wan.android.utils.startBrowser
+import com.example.wan.android.utils.toast
 import com.example.wan.android.utils.toastLong
 
 class WebActivity : VBaseActivity<ActivityWebBinding>() {
@@ -131,7 +133,7 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
 
             R.id.menu_item_share -> {
-                ActivityUtils.startActivity(Intent().apply {
+                startActivity(Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, webUrl)
                     putExtra(Intent.EXTRA_TITLE, webTitle)
@@ -140,10 +142,7 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
 
             R.id.menu_item_browser -> {
-                ActivityUtils.startActivity(Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    data = Uri.parse(webUrl)
-                })
+                startBrowser(webUrl)
             }
 
             else -> {

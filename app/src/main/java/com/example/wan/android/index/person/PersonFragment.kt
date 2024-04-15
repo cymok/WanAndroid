@@ -10,7 +10,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.blankj.utilcode.util.ToastUtils
 import com.example.wan.android.R
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
@@ -24,6 +23,7 @@ import com.example.wan.android.utils.dp2px
 import com.example.wan.android.utils.ext.load
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.observeEvent
+import com.example.wan.android.utils.toast
 import splitties.fragments.start
 import splitties.views.onClick
 
@@ -126,7 +126,7 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
                 if (UserUtils.isLogin.not()) {
                     loginLauncher.launch(Intent(activity, LoginActivity::class.java))
                 } else {
-                    ToastUtils.showShort("开发中")
+                    toast("开发中")
                 }
             }
 
@@ -141,14 +141,14 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
                 if (UserUtils.isLogin.not()) {
                     loginLauncher.launch(Intent(activity, LoginActivity::class.java))
                 } else {
-                    ToastUtils.showShort("开发中")
+                    toast("开发中")
                 }
             }
             llSite.onClick {
                 if (UserUtils.isLogin.not()) {
                     loginLauncher.launch(Intent(activity, LoginActivity::class.java))
                 } else {
-                    ToastUtils.showShort("开发中")
+                    toast("开发中")
                 }
             }
 

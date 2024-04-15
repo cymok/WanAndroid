@@ -9,10 +9,45 @@ plugins {
 
 apply from: "../config_source.gradle"
 
-def cmdGitCommitId = 'git rev-parse --short HEAD'
-def gitCommitId = cmdGitCommitId.execute().text.trim()
-
 def time = new Date()
+
+//def cmdGitCommitId = 'git rev-parse --short HEAD'
+//def gitCommitId = cmdGitCommitId.execute().text.trim()
+
+static def gitCommitId() {
+    try {
+        def process = 'git rev-parse --short HEAD'.execute()
+        process.waitFor()
+        return process.text.trim()
+    } catch (ignored) {
+        return "nogitcommitid"
+    }
+}
+
+static def gitCommitCount() {
+    try {
+        // 返回当前分支的提交数量
+        def process = 'git rev-list --count HEAD'.execute()
+        process.waitFor()
+        return process.text.toInteger()
+    } catch (ignored) {
+        return 1
+    }
+}
+
+static def gitLastTag() {
+    try {
+        // 若当前节点有 tag，将直接返回 tagName。
+        // 若 tag 在当前分支前 2 个节点，将返回 tagName-2-g<hash> 的字符串，其中 <hash> 是当前 HEAD 的短哈希值。
+        // 若当前分支没有标签，返回当前 HEAD 的短哈希值。
+        def process = 'git describe --tags --always'.execute()
+        process.waitFor()
+        // 通过 `- "v"` 来移除可能存在的前缀 "v"
+        return process.text.trim() - "v"
+    } catch (ignored) {
+        return "1.0.0"
+    }
+}
 
 android {
     namespace 'com.example.wan.android'
@@ -23,8 +58,10 @@ android {
         applicationId "com.example.wan.android"
         minSdk 21
         targetSdk 34
-        versionCode 1
-        versionName "0.1"
+//        versionCode 1
+        versionName "0.0.1"
+        versionCode gitCommitCount()
+//        versionName gitLastTag()
 
         multiDexEnabled true
 
@@ -35,7 +72,7 @@ android {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
 
-        buildConfigField "String", "COMMIT_ID", "\"${gitCommitId}\""
+        buildConfigField "String", "COMMIT_ID", "\"${gitCommitId()}\""
         buildConfigField "String", "BUILD_TIME", "\"${time.time}\""
         buildConfigField "String", "OS_ARCH", "\"${System.properties['os.arch']}\""
         // On Java 11 (11.0.15) and Java 17 (17.0.3), System.getProperty("os.name") returns Windows 11, but "os.version" still reports 10.0
@@ -49,24 +86,37 @@ android {
 //        buildConfigField "String", "FLUTTER_VERSION", "\"${flutter_version}\""
     }
 
+//    ndkVersion '21.4.7075529'
+
+    signingConfigs {
+        config {
+            storeFile file(rootProject.ext.sign.filePath)
+            storePassword rootProject.ext.sign.storePassword
+            keyAlias rootProject.ext.sign.keyAlias
+            keyPassword rootProject.ext.sign.keyPassword
+        }
+    }
+
     // https://developer.android.com/build/build-variants
     buildTypes {
         debug {
-
+            signingConfig signingConfigs.config
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
 
         android.applicationVariants.all { variant ->
             variant.outputs.all {
                 outputFileName = ("${model.name}" +
-                        "_${variant.versionName}" +
+                        "_v${variant.versionName}" +
                         "_${variant.versionCode}" +
                         "_${variant.buildType.name}" +
 //                        "_${variant.productFlavors[0].name}" +
-                        "_${gitCommitId}" +
+                        "_${gitCommitId()}" +
+                        "_${time.time}" +
                         ".apk")/*.replace("_release", "")*/
             }
         }

@@ -132,16 +132,16 @@ android {
 
     // https://developer.android.com/build/jdks
     compileOptions {
-        // 项目 java 编译版本
+        // 代码 的 java 编译版本
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        // 项目 kotlin 编译版本
+        // 代码 的 kotlin 编译版本
         jvmTarget = '1.8'
     }
     kotlin {
-        // gradle 构建 的 编译版本
+        // gradle 的 java 和 kotlin 编译版本
 //        jvmToolchain(8)
         jvmToolchain(17) // default
     }

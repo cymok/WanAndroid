@@ -181,8 +181,8 @@ dependencies {
 //    implementation files('libs/module_lint_aar-debug.aar')
     // Test
     testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.5"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
 
     implementation "androidx.multidex:multidex:2.0.1"
 
@@ -190,10 +190,10 @@ dependencies {
     // KTX https://developer.android.com/kotlin/ktx
     implementation platform("org.jetbrains.kotlin:kotlin-bom:${kotlin_version}")
     implementation "com.google.android.material:material:1.12.0" // 33 -> 1.9.0
-    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.appcompat:appcompat:1.7.0"
     implementation "androidx.core:core-ktx:1.13.1" // 33 -> 1.10.1
     implementation "androidx.core:core-splashscreen:1.0.1"
-    def lifecycleVersion = "2.7.0"
+    def lifecycleVersion = "2.8.4"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}"
@@ -203,7 +203,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-service:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${lifecycleVersion}"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation "androidx.viewpager2:viewpager2:1.1.0-rc01"
+    implementation "androidx.viewpager2:viewpager2:1.1.0"
     // 1.1 新特性 registerFragmentTransactionCallback
     def navigationVersion = "2.7.7" // 33 -> 2.6.0
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
@@ -217,8 +217,8 @@ dependencies {
 //    kapt("androidx.room:room-compiler:${roomVersion}")
     ksp ("androidx.room:room-compiler:${roomVersion}")
     testImplementation("androidx.room:room-testing:${roomVersion}")
-    implementation "androidx.work:work-runtime-ktx:2.9.0"
-    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
+    implementation "androidx.work:work-runtime-ktx:2.9.1"
+    implementation "androidx.paging:paging-runtime-ktx:3.3.2"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     // 快乐库 - 扩展
     // https://github.com/LouisCAD/Splitties

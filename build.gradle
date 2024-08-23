@@ -14,7 +14,8 @@ plugins {
     // AGP 与 Gradle 对应版本, AGP 与 Android Studio 对应版本
     // AGP https://developer.android.com/build/releases/gradle-plugin
     // AGP 8.1.x 兼容 AS G
-    // Giraffe | 2022.3.1	3.2-8.1
+    // Giraffe | 2022.3.1 --> AGP 3.2-8.1
+    // Koala | 2022.3.1   --> AGP 3.2-8.5
     id 'com.android.application' version '8.1.4' apply false
     id 'com.android.library' version '8.1.4' apply false
 

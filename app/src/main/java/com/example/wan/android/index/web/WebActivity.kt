@@ -1,7 +1,6 @@
 package com.example.wan.android.index.web
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Html
 import android.view.Menu
@@ -19,7 +18,6 @@ import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.startBrowser
-import com.example.wan.android.utils.toast
 import com.example.wan.android.utils.toastLong
 
 class WebActivity : VBaseActivity<ActivityWebBinding>() {
@@ -95,16 +93,26 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
                 }
 
                 override fun onReceivedTitle(view: WebView?, title: String?) {
-                    supportActionBar?.title = Html.fromHtml(webTitle ?: title ?: "")
+                    supportActionBar?.title = Html.fromHtml(/*webTitle ?: */title ?: "")
                 }
             }
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?
+                    view: WebView,
+                    request: WebResourceRequest
                 ): Boolean {
-                    view?.loadUrl(request?.url.toString()) // 防止自动跳转到浏览器
-                    return true
+                    when (request.url?.scheme) {
+                        "http", "https" -> {
+                            // 页面跳转 使用 webView 打开 防止自动跳转到浏览器
+                            view.loadUrl(request.url.toString())
+                            return true
+                        }
+
+                        else -> {
+                            startBrowser(request.url.toString())
+                            return true
+                        }
+                    }
                 }
             }
             loadUrl(webUrl)

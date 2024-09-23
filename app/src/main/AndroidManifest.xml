@@ -39,8 +39,8 @@
 
         <activity
             android:name=".index.splash.SplashActivity"
-            android:theme="@style/SplashScreen"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -56,6 +56,22 @@
             android:name=".index.setting.SettingActivity"
             android:exported="false"
             android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".index.web.SchemeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 还可以匹配 host path pathPrefix pathPattern -->
+                <data android:scheme="wanandroid" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="market" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".index.web.WebActivity"
             android:exported="false"

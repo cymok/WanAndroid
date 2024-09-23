@@ -2,7 +2,6 @@ package com.example.wan.android.index.qa
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -131,16 +130,26 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
                 }
 
                 override fun onReceivedTitle(view: WebView?, title: String?) {
-                    supportActionBar?.title = Html.fromHtml(webData.title ?: title ?: "文章")
+                    supportActionBar?.title = Html.fromHtml(/*webData.title ?: */title ?: "文章")
                 }
             }
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?
+                    view: WebView,
+                    request: WebResourceRequest
                 ): Boolean {
-                    view?.loadUrl(request?.url.toString()) // 防止自动跳转到浏览器
-                    return true
+                    when (request.url?.scheme) {
+                        "http", "https" -> {
+                            // 页面跳转 使用 webView 打开 防止自动跳转到浏览器
+                            view.loadUrl(request.url.toString())
+                            return true
+                        }
+
+                        else -> {
+                            startBrowser(request.url.toString())
+                            return true
+                        }
+                    }
                 }
             }
             loadUrl(webData.url)

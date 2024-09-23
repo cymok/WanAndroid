@@ -94,16 +94,26 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
                 }
 
                 override fun onReceivedTitle(view: WebView?, title: String?) {
-                    supportActionBar?.title = Html.fromHtml(webData.title ?: title ?: "文章")
+                    supportActionBar?.title = Html.fromHtml(/*webData.title ?: */title ?: "文章")
                 }
             }
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?
+                    view: WebView,
+                    request: WebResourceRequest
                 ): Boolean {
-                    view?.loadUrl(request?.url.toString()) // 防止自动跳转到浏览器
-                    return true
+                    when (request.url?.scheme) {
+                        "http", "https" -> {
+                            // 页面跳转 使用 webView 打开 防止自动跳转到浏览器
+                            view.loadUrl(request.url.toString())
+                            return true
+                        }
+
+                        else -> {
+                            startBrowser(request.url.toString())
+                            return true
+                        }
+                    }
                 }
             }
             loadUrl(webData.url)

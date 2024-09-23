@@ -1,7 +1,7 @@
 // https://developer.android.com/build
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'com.android.application' // agp
+    id 'org.jetbrains.kotlin.android' // kotlin
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'com.google.devtools.ksp'
@@ -18,7 +18,8 @@ static def gitCommitId() {
     try {
         def process = 'git rev-parse --short HEAD'.execute()
         process.waitFor()
-        return process.text.trim()
+        def commitId = process.text.trim()
+        return commitId
     } catch (ignored) {
         return "nogitcommitid"
     }
@@ -29,7 +30,8 @@ static def gitCommitCount() {
         // 返回当前分支的提交数量
         def process = 'git rev-list --count HEAD'.execute()
         process.waitFor()
-        return process.text.toInteger()
+        def commitCount = process.text.toInteger()
+        return commitCount
     } catch (ignored) {
         return 1
     }
@@ -42,8 +44,9 @@ static def gitLastTag() {
         // 若当前分支没有标签，返回当前 HEAD 的短哈希值。
         def process = 'git describe --tags --always'.execute()
         process.waitFor()
+        def tag = process.text.trim()
         // 通过 `- "v"` 来移除可能存在的前缀 "v"
-        return process.text.trim() - "v"
+        return tag - "v"
     } catch (ignored) {
         return "1.0.0"
     }
@@ -141,7 +144,7 @@ android {
         jvmTarget = '1.8'
     }
     kotlin {
-        // gradle 的 java 和 kotlin 编译版本
+        // gradle 项目构建的 java 和 kotlin 编译版本
 //        jvmToolchain(8)
         jvmToolchain(17) // default
     }
@@ -193,7 +196,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.7.0"
     implementation "androidx.core:core-ktx:1.13.1" // 33 -> 1.10.1
     implementation "androidx.core:core-splashscreen:1.0.1"
-    def lifecycleVersion = "2.8.4"
+    implementation 'androidx.activity:activity-ktx:1.9.2'
+    def lifecycleVersion = "2.8.6"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}"
@@ -205,7 +209,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation "androidx.viewpager2:viewpager2:1.1.0"
     // 1.1 新特性 registerFragmentTransactionCallback
-    def navigationVersion = "2.7.7" // 33 -> 2.6.0
+    def navigationVersion = "2.8.1" // 33 -> 2.6.0
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     implementation "androidx.palette:palette-ktx:1.0.0"
@@ -240,9 +244,9 @@ dependencies {
     implementation "com.google.code.gson:gson:2.10.1"
     // 网络
     // https://github.com/square/okhttp
-    implementation "com.squareup.okhttp3:okhttp:4.11.0"
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
     // https://github.com/square/retrofit
-    def retrofitVersion = "2.9.0"
+    def retrofitVersion = "2.11.0"
     implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
@@ -263,7 +267,7 @@ dependencies {
     implementation "jp.wasabeef:glide-transformations:4.3.0"
     // 权限
     // https://github.com/guolindev/PermissionX
-    implementation "com.guolindev.permissionx:permissionx:1.7.1"
+    implementation "com.guolindev.permissionx:permissionx:1.8.1"
     // 消息
     // https://github.com/JeremyLiao/LiveEventBus
     implementation "io.github.jeremyliao:live-event-bus-x:1.8.0"

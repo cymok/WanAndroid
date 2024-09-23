@@ -12,7 +12,8 @@ class ProjectActivity : VBaseActivity<ActivityArticleListBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            supportActionBar?.title = "项目"
+//            supportActionBar?.title = "项目"
+            titleView.text = "项目"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,

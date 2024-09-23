@@ -35,6 +35,15 @@ class LoggingInterceptor : Interceptor {
                 }
         Log.e(TAG, msgResponse)
 
+        // 判断数据来源
+        val isFromCache = response.cacheResponse != null
+        val isFromNetwork = response.networkResponse != null
+        if (isFromCache) {
+            Log.i("LoggingInterceptor", "response from cache")
+        } else if (isFromNetwork) {
+            Log.i("LoggingInterceptor", "response from network")
+        }
+
         return response
     }
 

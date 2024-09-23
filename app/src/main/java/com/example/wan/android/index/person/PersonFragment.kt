@@ -169,6 +169,12 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
     }
 
     override fun observeBus() {
+        // 页面返回时
+        observeEvent<Any>(EventBus.PERSON_PAGE_BACK) {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
+                initData()
+            }
+        }
         // tab 切换时
         observeEvent<Int>(EventBus.HOME_TAB_CHANGED) {
             if (lifecycle.currentState == Lifecycle.State.RESUMED) {

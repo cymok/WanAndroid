@@ -13,7 +13,8 @@ class HomeActivity : VBaseActivity<ActivityArticleListBinding>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
 
-            supportActionBar?.title = "推荐"
+//            supportActionBar?.title = "推荐"
+            titleView.text = "推荐"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,

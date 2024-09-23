@@ -26,7 +26,7 @@ import com.lxj.xpopup.XPopup
 
 class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBinding>() {
 
-    lateinit var webData: WebData
+    private lateinit var webData: WebData
 
     override val binding by lazy { ActivityWebBinding.inflate(layoutInflater) }
 
@@ -62,7 +62,8 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
         }
         this.webData = data
 
-        supportActionBar?.title = Html.fromHtml(webData.title ?: "文章")
+//        supportActionBar?.title = Html.fromHtml(webData.title ?: "文章")
+        titleView.text = Html.fromHtml(webData.title ?: "文章")
 
         webView.run {
             settings.run {
@@ -76,11 +77,17 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
                 builtInZoomControls = true; // 设置内置的缩放控件。若为false=不可缩放
                 displayZoomControls = false; // 隐藏原生的缩放控件
 
-                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK // 缓存模式
+                /*
+                - **`LOAD_DEFAULT`**：默认的缓存使用模式。
+                - **`LOAD_CACHE_ELSE_NETWORK`**：如果缓存可用，则使用缓存；否则从网络加载。
+                - **`LOAD_NO_CACHE`**：不使用缓存，每次都从网络加载。
+                - **`LOAD_CACHE_ONLY`**：只使用缓存，不从网络加载。
+                */
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
 
 //                allowFileAccess = true // 可以访问文件
-                domStorageEnabled = true // 开启 DOM storage 例如 微信文章 需要
-//                databaseEnabled = true // 开启 database
+                domStorageEnabled = true // 开启 DOM 存储 例如 微信文章 需要
+                databaseEnabled = true // 开启 database 数据库存储
 //                loadsImagesAutomatically = true // 自动加载图片
                 defaultTextEncodingName = "UTF-8" // 设置编码格式
 
@@ -94,7 +101,7 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
                 }
 
                 override fun onReceivedTitle(view: WebView?, title: String?) {
-                    supportActionBar?.title = Html.fromHtml(/*webData.title ?: */title ?: "文章")
+                    titleView.text = Html.fromHtml(/*webData.title ?: */title ?: "文章")
                 }
             }
             webViewClient = object : WebViewClient() {
@@ -102,6 +109,7 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
                     view: WebView,
                     request: WebResourceRequest
                 ): Boolean {
+                    // Return `true` to cancel the current load
                     when (request.url?.scheme) {
                         "http", "https" -> {
                             // 页面跳转 使用 webView 打开 防止自动跳转到浏览器
@@ -156,8 +164,25 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val url = webView.url ?: webData.url
+        val title = webView.title ?: webData.title
+
         when (item.itemId) {
             R.id.menu_item_like -> {
+                // todo:
+                // web 页面跳转到新的 url 页面后 原始页面数据无法更新。目前跳转后只能获取到新的 url，需要从接口层面解决
+                if (webView.url != webData.url) {
+                    XPopup.Builder(this)
+                        .asConfirm(
+                            "操作受限",
+                            "因接口问题的限制，目前仅能对页面跳转前的原始文章《${webData.title}》进行收藏/取消"
+                        ) {
+
+                        }.show()
+                    return true
+                }
+
                 if (webData.like) {
                     XPopup.Builder(this)
                         .asConfirm("移除收藏", "《${webData.title}》") {
@@ -173,21 +198,21 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
             }
 
             R.id.menu_item_copy -> {
-                ClipboardUtils.copyText(webData.url)
-                toastLong("复制成功:\n${webData.url}")
+                ClipboardUtils.copyText(url)
+                toastLong("复制成功:\n${url}")
             }
 
             R.id.menu_item_share -> {
                 startActivity(Intent().apply {
                     action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, webData.url)
-                    putExtra(Intent.EXTRA_TITLE, webData.title)
+                    putExtra(Intent.EXTRA_TEXT, url)
+                    putExtra(Intent.EXTRA_TITLE, title)
                     type = "text/plain"
                 })
             }
 
             R.id.menu_item_browser -> {
-                startBrowser(webView.url ?: webData.url)
+                startBrowser(url)
             }
 
             else -> {
@@ -198,10 +223,15 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
     }
 
     override fun onBackPressed() {
-        setResult(RESULT_OK, Intent().apply {
-            putExtra("result", webData)
-        })
-        finish()
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            setResult(RESULT_OK, Intent().apply {
+                putExtra("result", webData)
+            })
+            finish()
+            super.onBackPressed()
+        }
     }
 
 }

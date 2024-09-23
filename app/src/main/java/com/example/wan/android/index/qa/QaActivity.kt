@@ -13,7 +13,8 @@ class QaActivity : VBaseActivity<ActivityArticleListBinding>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
 
-            supportActionBar?.title = "问答"
+//            supportActionBar?.title = "问答"
+            titleView.text = "问答"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,

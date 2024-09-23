@@ -13,7 +13,8 @@ class SquareActivity : VBaseActivity<ActivityArticleListBinding>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
 
-            supportActionBar?.title = "广场"
+//            supportActionBar?.title = "广场"
+            titleView.text = "广场"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,

@@ -10,12 +10,25 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.blankj.utilcode.util.SPUtils
 import com.example.wan.android.R
 import com.example.wan.android.base.dialog.LoadingDialog
+import com.example.wan.android.databinding.CustomActionbarTitleBinding
 import com.example.wan.android.utils.ext.hideSoftInput
+import com.example.wan.android.utils.toast
 import com.gyf.immersionbar.ktx.immersionBar
+import splitties.views.onClick
 
 abstract class BaseActivity(@LayoutRes layoutId: Int = 0) : AppCompatActivity(layoutId) {
 
     protected val loadingDialog by lazy { LoadingDialog(this) }
+
+    // 自定义的 ActionBarTitleView
+    protected val titleView by lazy {
+        CustomActionbarTitleBinding.inflate(layoutInflater).actionBarTitle.apply {
+            onClick {
+                toast(this.text.toString())
+            }
+            isSelected = true // 开启跑马灯
+        }
+    }
 
     val isInMultiWindow: Boolean
         get() {
@@ -38,6 +51,12 @@ abstract class BaseActivity(@LayoutRes layoutId: Int = 0) : AppCompatActivity(la
         }
 
         observeBus()
+
+        supportActionBar?.run {
+            setDisplayShowTitleEnabled(false)
+            setDisplayShowCustomEnabled(true)
+            customView = titleView
+        }
     }
 
     @ColorRes

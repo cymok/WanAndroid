@@ -14,6 +14,7 @@ import com.example.wan.android.utils.ext.touchSlop
 import splitties.systemservices.windowManager
 import kotlin.math.abs
 
+// 拖拽
 object DraggableViewHelper {
 
     private var downX = 0f

@@ -1,7 +1,9 @@
 package com.example.wan.android.index.setting
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
@@ -13,6 +15,7 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
 import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.ZipUtils
 import com.bumptech.glide.Glide
 import com.example.wan.android.R
@@ -22,6 +25,7 @@ import com.example.wan.android.databinding.ActivitySettingBinding
 import com.example.wan.android.index.web.WebActivity
 import com.example.wan.android.network.ServiceCreator
 import com.example.wan.android.ui.dialog.AppDetailDialog
+import com.example.wan.android.utils.AppPkg
 import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.ext.alert
 import com.example.wan.android.utils.ext.cancel
@@ -122,11 +126,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 putExtra(Intent.EXTRA_SUBJECT, "${getString(R.string.app_name)}-反馈/建议")
 //                putExtra(Intent.EXTRA_TEXT, "")
             }
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(Intent.createChooser(intent, "选择邮件APP"))
-            } else {
-                toast("您未安装邮件APP")
-            }
+            sendEmail(intent)
         }
         binding.llLog.onClick {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -167,7 +167,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                     if (intent.resolveActivity(packageManager) != null) {
                         alert("提示", "请选择一款邮件App") {
                             ok {
-                                startActivity(Intent.createChooser(intent, "选择邮件APP"))
+                                sendEmail(intent)
                             }
                         }.show()
                     } else {
@@ -206,6 +206,62 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
         // 过度动画 共享元素 test
         binding.llLogout.transitionName = "shared_element"
 
+    }
+
+    private fun sendEmail(intent: Intent) {
+        // 可得到匹配的应用列表
+        val resolveInfoList = packageManager.queryIntentActivities(
+            intent,
+            PackageManager.MATCH_DEFAULT_ONLY
+        )
+//        log(resolveInfoList.toJson())
+
+        // 使用指定的应用
+        val specifiedPackages = listOf(
+            AppPkg.Email.pkg,
+            AppPkg.Gmail.pkg,
+            AppPkg.MailRu.pkg,
+            AppPkg.Outlook.pkg,
+            AppPkg.YahooMail.pkg,
+            AppPkg.Spark.pkg,
+            AppPkg.SamsungEmail.pkg,
+            AppPkg.NetEaseMail.pkg,
+            AppPkg.NetEaseMail2.pkg,
+            AppPkg.QQMail.pkg,
+            AppPkg.AliyunMail.pkg,
+            AppPkg.SinaMail.pkg,
+            AppPkg.Mail139.pkg,
+        )
+        // 过滤 包含
+        val specifiedResolveInfoList = resolveInfoList.filter { resolveInfo ->
+            specifiedPackages.contains(resolveInfo.activityInfo.packageName)
+        }
+
+        if (specifiedResolveInfoList.isNotEmpty()) {
+            val initialIntents = specifiedResolveInfoList.map { resolveInfo ->
+                Intent(intent).apply {
+                    // 由于 Intent.createChooser 中的 initialIntents 列表中的 Intent 对象没有设置正确的 ComponentName 或 PackageName，导致系统无法找到对应的应用程序图标
+//                    setPackage(resolveInfo.activityInfo.packageName)
+                    // component 可解决上述问题
+                    component = ComponentName(
+                        resolveInfo.activityInfo.packageName,
+                        resolveInfo.activityInfo.name
+                    )
+                }
+            }.toTypedArray()
+            // 使用过滤后的列表创建全新的应用列表
+            // 需要确保 createChooser 使用有效值，故取列表的[0]
+            val intentChooser =
+                Intent.createChooser(initialIntents[0], "选择邮件APP").apply {
+                    putExtra(
+                        Intent.EXTRA_INITIAL_INTENTS,
+                        initialIntents.drop(1).toTypedArray()
+                    )
+                }
+            startActivity(intentChooser)
+        } else {
+            ToastUtils.showShort("没有可用的应用")
+        }
     }
 
     override fun onEnterAnimationComplete() {

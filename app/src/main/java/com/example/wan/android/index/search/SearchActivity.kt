@@ -13,7 +13,8 @@ class SearchActivity : VBaseActivity<ActivityArticleListBinding>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
 
-            supportActionBar?.title = "搜索"
+//            supportActionBar?.title = "搜索"
+            titleView.text = "搜索"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,

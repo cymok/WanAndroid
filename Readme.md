@@ -28,11 +28,19 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 
 - [x] 深色模式, 跟随系统 + 手动模式
 
+- [x] Splash 页面适配, 仿 bilibili, 无缝衔接
+
 - [x] 首页, 调整为一个列表, Banner + Other接口 + Paging 的列表聚合
 
 - [x] 可拖拽悬浮按钮 可自动贴边
 
-- [] TODO 页面过度 空白页 WebView错误页 等
+- [x] APP 跳转, 包含微信协议跳转, 以及自定义 Scheme, 应用商店 Scheme, 邮件 Scheme, 指定应用跳转, 并且过滤处理好相应的应用列表
+
+- [] TODO: 页面过度 空白页 WebView错误页 等
+
+- [] TODO: 集成 Compose, 将个人项目 WanCompose 整合到 WanAndroid, 目前本项目是传统 Views
+
+- [] Android 15 适配, 目前适配到 Android 14
 
 - 其它 工具类 便捷库
 
@@ -48,9 +56,3 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 
   - RecyclerView ItemDecoration [SpacingItemDecoration](https://github.com/grzegorzojdana/SpacingItemDecoration)
 
----
-
-todo:
-
-- web 页面点击标题 显示全部
-- 集成 Compose 大势所趋

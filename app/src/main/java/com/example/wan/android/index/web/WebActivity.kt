@@ -61,7 +61,8 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.title = Html.fromHtml(webTitle ?: "")
+//        supportActionBar?.title = Html.fromHtml(webTitle ?: "")
+        titleView.text = Html.fromHtml(webTitle ?: "")
 
         webView.run {
             settings.run {
@@ -75,11 +76,17 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
                 builtInZoomControls = true; // 设置内置的缩放控件。若为false=不可缩放
                 displayZoomControls = false; // 隐藏原生的缩放控件
 
-                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK // 缓存模式
+                /*
+                - **`LOAD_DEFAULT`**：默认的缓存使用模式。
+                - **`LOAD_CACHE_ELSE_NETWORK`**：如果缓存可用，则使用缓存；否则从网络加载。
+                - **`LOAD_NO_CACHE`**：不使用缓存，每次都从网络加载。
+                - **`LOAD_CACHE_ONLY`**：只使用缓存，不从网络加载。
+                */
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
 
 //                allowFileAccess = true // 可以访问文件
-                domStorageEnabled = true // 开启 DOM storage 例如 微信文章 需要
-//                databaseEnabled = true // 开启 database
+                domStorageEnabled = true // 开启 DOM 存储 例如 微信文章 需要
+                databaseEnabled = true // 开启 database 数据库存储
 //                loadsImagesAutomatically = true // 自动加载图片
                 defaultTextEncodingName = "UTF-8" // 设置编码格式
 
@@ -93,7 +100,7 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
                 }
 
                 override fun onReceivedTitle(view: WebView?, title: String?) {
-                    supportActionBar?.title = Html.fromHtml(/*webTitle ?: */title ?: "")
+                    titleView.text = Html.fromHtml(/*webTitle ?: */title ?: "")
                 }
             }
             webViewClient = object : WebViewClient() {
@@ -101,6 +108,7 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
                     view: WebView,
                     request: WebResourceRequest
                 ): Boolean {
+                    // Return `true` to cancel the current load
                     when (request.url?.scheme) {
                         "http", "https" -> {
                             // 页面跳转 使用 webView 打开 防止自动跳转到浏览器
@@ -130,27 +138,31 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val url = webView.url ?: webUrl
+        val title = webView.title ?: webTitle
+
         when (item.itemId) {
             R.id.menu_item_refresh -> {
                 webView.reload()
             }
 
             R.id.menu_item_copy -> {
-                ClipboardUtils.copyText(webUrl)
-                toastLong("复制成功:\n${webUrl}")
+                ClipboardUtils.copyText(url)
+                toastLong("复制成功:\n${url}")
             }
 
             R.id.menu_item_share -> {
                 startActivity(Intent().apply {
                     action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, webUrl)
-                    putExtra(Intent.EXTRA_TITLE, webTitle)
+                    putExtra(Intent.EXTRA_TEXT, url)
+                    putExtra(Intent.EXTRA_TITLE, title)
                     type = "text/plain"
                 })
             }
 
             R.id.menu_item_browser -> {
-                startBrowser(webView.url ?: webUrl)
+                startBrowser(url)
             }
 
             else -> {
@@ -158,6 +170,14 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
         }
         return true
+    }
+
+    override fun onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            super.onBackPressed()
+        }
     }
 
 }

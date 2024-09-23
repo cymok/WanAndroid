@@ -9,12 +9,14 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
 import com.example.wan.android.base.fragment.VVMBaseFragment
+import com.example.wan.android.constant.EventBus
 import com.example.wan.android.data.WebData
 import com.example.wan.android.databinding.FragmentArticleLikeBinding
 import com.example.wan.android.index.common.ArticleListPagingAdapter
 import com.example.wan.android.index.common.ArticleWebActivity
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
+import com.example.wan.android.utils.postEvent
 import com.example.wan.android.utils.registerResultOK
 
 class ArticleLikeFragment : VVMBaseFragment<ArticleLikeViewModel, FragmentArticleLikeBinding>() {
@@ -33,6 +35,11 @@ class ArticleLikeFragment : VVMBaseFragment<ArticleLikeViewModel, FragmentArticl
     override fun onResume() {
         super.onResume()
 
+    }
+
+    override fun onBackPress(): Boolean {
+        postEvent(EventBus.PERSON_PAGE_BACK, 0, 500)
+        return false
     }
 
     private fun observe() {

@@ -12,7 +12,8 @@ class SubscribeActivity : VBaseActivity<ActivityArticleListBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            supportActionBar?.title = "公众号"
+//            supportActionBar?.title = "公众号"
+            titleView.text = "公众号"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,

@@ -13,7 +13,8 @@ class ArticleLikeActivity : VBaseActivity<ActivityArticleListBinding>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
 
-            supportActionBar?.title = "收藏博文"
+//            supportActionBar?.title = "收藏博文"
+            titleView.text = "收藏博文"
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.root.id,

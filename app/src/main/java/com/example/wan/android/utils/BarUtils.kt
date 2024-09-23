@@ -5,6 +5,38 @@ import android.os.Build
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+fun View.setOnApplyWindowInsetsListener(
+    listener: (
+        systemBars: Insets,
+        statusBars: Insets,
+        navigationBars: Insets,
+        displayCutout: Insets,
+        systemGestures: Insets
+    ) -> Unit
+) {
+
+    ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+        // 所有bar
+        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        // 状态栏
+        val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+        // 导航栏
+        val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+        // 异性屏的特殊区域 Android 9 时引入的 Cutout API
+        val displayCutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout())
+        // 手势导航区域 Android 10 时引入的，两侧返回和底部 Home 键的区域
+        val systemGestures = insets.getInsets(WindowInsetsCompat.Type.systemGestures())
+
+        listener.invoke(systemBars, statusBars, navigationBars, displayCutout, systemGestures)
+
+        insets
+    }
+
+}
 
 // https://blog.csdn.net/qq_32664007/article/details/126279919
 

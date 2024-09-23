@@ -13,8 +13,10 @@ fun Activity.startBrowser(url: String) {
 
     when (Uri.parse(url).scheme) {
         // setPackage 设置一个包名 指定打开某个浏览器 只能设置一个
+
         "weixin" -> {
             // 适配 weixin 的 scheme，跳转到微信 APP 打开
+            // 具体位置有 微信文章里点击评论
             intent.setPackage(AppPkg.WeChat.pkg)
         }
 
@@ -30,15 +32,5 @@ fun Activity.startBrowser(url: String) {
     } else {
         toast("没有可用的浏览器应用")
     }
-
-    // MIUI 12 测试 无论如何都只能使用系统设置的默认浏览器打开
-//    val resolveInfoList = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-//    if (resolveInfoList.isNotEmpty()) {
-//        val defaultBrowserPackageName = resolveInfoList[0].activityInfo.packageName
-//        intent.setPackage(defaultBrowserPackageName)
-//        startActivity(intent)
-//    } else {
-//        toast("没有可用的浏览器应用")
-//    }
 
 }

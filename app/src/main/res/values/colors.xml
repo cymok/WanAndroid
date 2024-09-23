@@ -19,6 +19,9 @@
     <color name="primaryText">#333333</color>
     <color name="secondaryText">#8a000000</color>
 
+    <color name="primaryTextInverted">#ffffffff</color>
+    <color name="secondaryTextInverted">#b3ffffff</color>
+
     <color name="wx_foreground">#F8F8F8</color>
     <color name="wx_foreground_pressed">#DDDDDD</color>
     <color name="wx_background">#E5E5E5</color>

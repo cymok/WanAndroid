@@ -150,7 +150,7 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
 
             R.id.menu_item_browser -> {
-                startBrowser(webUrl)
+                startBrowser(webView.url ?: webUrl)
             }
 
             else -> {

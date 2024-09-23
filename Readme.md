@@ -50,7 +50,7 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 
 ---
 
-fixme:
+todo:
 
 - web 页面点击标题 显示全部
-- 
+- 集成 Compose 大势所趋

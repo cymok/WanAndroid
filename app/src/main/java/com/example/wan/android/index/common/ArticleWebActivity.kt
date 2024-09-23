@@ -187,7 +187,7 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
             }
 
             R.id.menu_item_browser -> {
-                startBrowser(webData.url)
+                startBrowser(webView.url ?: webData.url)
             }
 
             else -> {

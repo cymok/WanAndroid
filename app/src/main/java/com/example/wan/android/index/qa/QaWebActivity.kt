@@ -205,7 +205,7 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
             }
 
             R.id.menu_item_browser -> {
-                startBrowser(webData.url)
+                startBrowser(webView.url ?: webData.url)
             }
 
             else -> {

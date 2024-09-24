@@ -86,6 +86,9 @@ android {
         buildConfigField "String", "JAVA_JVM", "\"1.8\"" // 对应 compileOptions
         buildConfigField "String", "KOTLIN_JVM", "\"1.8\"" // 对应 kotlinOptions
         buildConfigField "String", "KOTLIN_VERSION", "\"${kotlin_version}\""
+        vectorDrawables {
+            useSupportLibrary true
+        }
 //        buildConfigField "String", "FLUTTER_VERSION", "\"${flutter_version}\""
     }
 
@@ -151,6 +154,20 @@ android {
 
     buildFeatures {
         viewBinding true
+        compose = true
+    }
+    composeOptions {
+        // KGP 要对应 android.composeOptions.kotlinCompilerExtensionVersion
+        // compose-kotlin https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+        // 1.3.2 -> kotlin 1.7.20
+        // 1.4.8 -> kotlin 1.8.22
+        // 1.5.14 -> kotlin 1.9.24
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 
     lint {
@@ -189,6 +206,75 @@ dependencies {
 
     implementation "androidx.multidex:multidex:2.0.1"
 
+    // Compose
+    // Compose BoM
+    // https://developer.android.com/jetpack/compose/bom
+    // https://developer.android.com/develop/ui/compose/bom/bom-mapping
+//    val composeBoMVersion = "2023.10.01"
+//    val composeBoMVersion = "2024.01.00"
+//    val composeBoMVersion = "2024.02.02"
+//    val composeBoMVersion = "2024.03.00"
+//    val composeBoMVersion = "2024.04.01"
+//    val composeBoMVersion = "2024.05.00"
+//    val composeBoMVersion = "2024.06.00"
+    def composeBoMVersion = "2024.08.00"
+    implementation(platform("androidx.compose:compose-bom:${composeBoMVersion}"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:${composeBoMVersion}"))
+    implementation("androidx.compose.runtime:runtime")
+    implementation("androidx.activity:activity-compose")
+    // Material
+    implementation("androidx.compose.material:material")
+    // Material Design 3
+    implementation("androidx.compose.material3:material3")
+    // the main APIs for the underlying toolkit systems
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-geometry")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-text")
+    // Android Studio Preview support
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    // UI Tests
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    // Optional - Included automatically by material, only add when you need
+    // the icons but not the material library (e.g. when using Material3 or a
+    // custom design system based on Foundation)
+    implementation("androidx.compose.material:material-icons-core")
+    // Optional - Add full set of material icons
+    implementation("androidx.compose.material:material-icons-extended")
+    // Optional - Add window size utils
+    implementation("androidx.compose.material3:material3-window-size-class")
+    implementation("androidx.compose.ui:ui-util")
+    implementation("androidx.compose.runtime:runtime-livedata")
+    // Optional - Integration with ViewBinding
+    implementation("androidx.compose.ui:ui-viewbinding")
+    // animation
+    implementation("androidx.compose.animation:animation")
+    implementation("androidx.compose.animation:animation-core")
+    implementation("androidx.compose.animation:animation-graphics")
+    // Optional - Integration with RxJava
+    implementation("androidx.compose.runtime:runtime-rxjava2")
+    // Accompanist: Compose 的实验性 APIs
+    // https://github.com/google/accompanist
+    // compose drawable painter
+    // https://github.com/google/accompanist/tree/main/drawablepainter
+    implementation("com.google.accompanist:accompanist-drawablepainter:0.32.0")
+
+    // paging
+    implementation("androidx.paging:paging-compose:3.3.2") // compose
+
+    // Compose 图片视频加载
+    // https://github.com/coil-kt/coil
+    implementation(platform("io.coil-kt:coil-bom:2.4.0"))
+    implementation("io.coil-kt:coil-compose")
+    implementation("io.coil-kt:coil-gif")
+    implementation("io.coil-kt:coil-video")
+
+    // 图库
+    // https://github.com/leavesCZY/Matisse
+    implementation("io.github.leavesczy:matisse:1.1.4")
+
     // Android
     // KTX https://developer.android.com/kotlin/ktx
     implementation platform("org.jetbrains.kotlin:kotlin-bom:${kotlin_version}")
@@ -208,10 +294,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${lifecycleVersion}"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation "androidx.viewpager2:viewpager2:1.1.0"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycleVersion}") // compose
     // 1.1 新特性 registerFragmentTransactionCallback
     def navigationVersion = "2.8.1" // 33 -> 2.6.0
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
+    implementation("androidx.navigation:navigation-compose:${navigationVersion}") // compose
     implementation "androidx.palette:palette-ktx:1.0.0"
     implementation "androidx.sqlite:sqlite-ktx:2.4.0"
     // https://developer.android.com/jetpack/androidx/releases/room
@@ -263,6 +351,7 @@ dependencies {
 //    kapt "com.github.bumptech.glide:compiler:${glideVersion}"
     ksp "com.github.bumptech.glide:ksp:${glideVersion}"
     implementation "com.github.bumptech.glide:okhttp3-integration:${glideVersion}"
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01") // compose
     // https://github.com/wasabeef/glide-transformations
     implementation "jp.wasabeef:glide-transformations:4.3.0"
     // 权限

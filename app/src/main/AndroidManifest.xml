@@ -38,6 +38,16 @@
         tools:targetApi="33">
 
         <activity
+            android:name=".compose.ComposeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".compose.AccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".compose.XhsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".index.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashScreen">

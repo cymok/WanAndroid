@@ -5,8 +5,10 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDexApplication
+import coil.Coil
 import com.blankj.utilcode.util.CrashUtils
 import com.blankj.utilcode.util.SPUtils
+import com.example.wan.android.config.CoilConfig
 import com.example.wan.android.constant.AppConst
 import com.example.wan.android.utils.getViewModel
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -44,8 +46,13 @@ class App : MultiDexApplication() {
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleEventObserver())
         initNightModel()
         initSmartRefreshLayout()
-        CrashUtils.init(AppConst.crashPath)
         initLitePal()
+        initCoil() // compose
+        CrashUtils.init(AppConst.crashPath)
+    }
+
+    private fun initCoil() {
+        Coil.setImageLoader(CoilConfig.getImageLoader(this))
     }
 
     private fun initLitePal() {

@@ -9,6 +9,7 @@ object AppConst {
     val okhttpCachePath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "okhttp" }
     const val OKHTTP_CACHE_SIZE: Long = 1024 * 1024 * 64 // 64 MB
     val glidePath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "glide" }
+    val coilPath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "coil" }
     const val IMAGE_CACHE_SIZE: Long = 1024 * 1024 * 256 // 256 MB
 
     const val refresh = 1

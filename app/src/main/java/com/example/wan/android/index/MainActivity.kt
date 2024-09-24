@@ -22,6 +22,7 @@ import com.blankj.utilcode.util.ScreenUtils
 import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
+import com.example.wan.android.compose.ComposeActivity
 import com.example.wan.android.constant.EventBus
 import com.example.wan.android.databinding.ActivityMainBinding
 import com.example.wan.android.databinding.ViewTabLayoutBinding
@@ -168,11 +169,33 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private val floatView by lazy { AppCompatImageView(App.INSTANCE) }
+    private val floatView by lazy {
+        AppCompatImageView(App.INSTANCE).apply {
+            loadCircle(R.drawable.icon_conan_selected)
+            onClick {
+                start<SearchActivity> {}
+            }
+        }
+    }
 
-    private val floatViewReleaseObserver = LifecycleEventObserver { _, event ->
+    private val floatViewDisposableObserver = LifecycleEventObserver { _, event ->
         if (event == Lifecycle.Event.ON_DESTROY) {
             window.windowManager.removeView(floatView)
+        }
+    }
+
+    private val testView by lazy {
+        AppCompatImageView(App.INSTANCE).apply {
+            loadCircle(R.drawable.icon_conan_selected)
+            onClick {
+                start<ComposeActivity> {}
+            }
+        }
+    }
+
+    private val testViewDisposableObserver = LifecycleEventObserver { _, event ->
+        if (event == Lifecycle.Event.ON_DESTROY) {
+            window.windowManager.removeView(testView)
         }
     }
 
@@ -180,7 +203,6 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             if (floatView.isAttachedToWindow.not()) {
-                floatView.loadCircle(R.drawable.icon_conan_selected)
                 val sizeDp = 75
                 FloatViewHelper.showInWindow(
                     window, floatView, loc = Point(
@@ -188,19 +210,20 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
                         (ScreenUtils.getScreenHeight() * (3 / 4f) - (sizeDp / 2f).dp2px).toInt()
                     ), sizeDp = sizeDp
                 )
-                // 解决 特殊情况导致 activity 销毁重新创建时导致的 内存泄漏
-                lifecycle.addObserver(floatViewReleaseObserver)
                 DraggableViewHelper.intrude(floatView)
-                floatView.onClick {
-//                    binding.root.run {
-//                        if (isOpen) {
-//                            close()
-//                        } else {
-//                            open()
-//                        }
-//                    }
-                    start<SearchActivity> {}
-                }
+                // 解决 特殊情况导致 activity 销毁重新创建时导致的 内存泄漏
+                lifecycle.addObserver(floatViewDisposableObserver)
+            }
+            if (testView.isAttachedToWindow.not()) {
+                val sizeDp = 75
+                FloatViewHelper.showInWindow(
+                    window, testView, loc = Point(
+                        (0),
+                        (ScreenUtils.getScreenHeight() * (1 / 4f) - (sizeDp / 2f).dp2px).toInt()
+                    ), sizeDp = sizeDp
+                )
+                DraggableViewHelper.intrude(testView)
+                lifecycle.addObserver(testViewDisposableObserver)
             }
         }
     }

@@ -36,6 +36,8 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 
 - [x] APP 跳转, 包含微信协议跳转, 以及自定义 Scheme, 应用商店 Scheme, 邮件 Scheme, 指定应用跳转, 并且过滤处理好相应的应用列表
 
+- [x] 自定义管理空间页面, 参考 Chrome, 具体路径: 应用详情 -> 清除数据 -> 管理空间 -> 自定义页面
+
 - [] TODO: 页面过度 空白页 WebView错误页 等
 
 - [] TODO: 集成 Compose, 将个人项目 WanCompose 整合到 WanAndroid, 目前本项目是传统 Views

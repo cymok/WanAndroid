@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import com.blankj.utilcode.util.ActivityUtils
 import com.example.wan.android.R
 import com.example.wan.android.compose.ui.theme.WanAndroidTheme
+import com.example.wan.android.index.setting.ManageSpaceActivity
+import com.example.wan.android.utils.px2dp
 import com.example.wan.android.utils.toast
 
 class ComposeActivity : ComponentActivity() {
@@ -79,7 +81,7 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
                     .background(colorResource(R.color.wx_background))
                     .padding(16.dp)
             )
-            Spacer(modifier = Modifier.size(1.dp))
+            Spacer(modifier = Modifier.size(1.px2dp()))
         }
         item {
             // AccountActivity
@@ -99,7 +101,7 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
                     color = colorResource(id = R.color.primaryText)
                 )
             }
-            Spacer(modifier = Modifier.size(1.dp))
+            Spacer(modifier = Modifier.size(1.px2dp()))
             // XhsActivity
             Box(
                 contentAlignment = Alignment.Center,
@@ -117,7 +119,25 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
                     color = colorResource(id = R.color.primaryText),
                 )
             }
-            Spacer(modifier = Modifier.size(1.dp))
+            Spacer(modifier = Modifier.size(1.px2dp()))
+            //
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(id = R.color.wx_foreground))
+                    .clickable {
+                        ActivityUtils.startActivity(ManageSpaceActivity::class.java)
+                    }
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "ManageSpaceActivity",
+                    fontSize = 18.sp,
+                    color = colorResource(id = R.color.primaryText),
+                )
+            }
+            Spacer(modifier = Modifier.size(1.px2dp()))
         }
         stickyHeader {
             Text(
@@ -130,7 +150,7 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
                     .background(colorResource(R.color.wx_foreground_pressed))
                     .padding(16.dp)
             )
-            Spacer(modifier = Modifier.size(1.dp))
+            Spacer(modifier = Modifier.size(1.px2dp()))
         }
         items(100) { index ->
             Text(
@@ -149,7 +169,7 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
             )
             Spacer(
                 modifier = Modifier
-                    .height(1.dp)
+                    .height(1.px2dp()) // 正确设置 1px
                     .fillMaxWidth()
                     .background(color = colorResource(R.color.wx_foreground))
             )

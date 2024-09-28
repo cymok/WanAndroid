@@ -1,4 +1,5 @@
 // https://developer.android.com/build
+// https://plugins.gradle.org/
 plugins {
     id 'com.android.application' // agp
     id 'org.jetbrains.kotlin.android' // kotlin
@@ -183,6 +184,7 @@ android {
 }
 
 // https://developer.android.com/build/dependencies
+// https://mvnrepository.com/
 dependencies {
     configurations.configureEach {
         resolutionStrategy {
@@ -302,6 +304,11 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:${navigationVersion}") // compose
     implementation "androidx.palette:palette-ktx:1.0.0"
     implementation "androidx.sqlite:sqlite-ktx:2.4.0"
+    // https://developer.android.com/jetpack/androidx/releases/datastore
+    implementation("androidx.datastore:datastore:1.1.1") // datastore
+    implementation("androidx.datastore:datastore-preferences:1.1.1") // preferences datastore
+    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-javalite
+    implementation("com.google.protobuf:protobuf-javalite:4.28.2") // proto datastore
     // https://developer.android.com/jetpack/androidx/releases/room
     def roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:${roomVersion}")

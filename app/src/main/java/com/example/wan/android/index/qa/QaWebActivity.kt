@@ -12,18 +12,23 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.ClipboardUtils
 import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.data.WebData
 import com.example.wan.android.databinding.ActivityQaWebBinding
+import com.example.wan.android.index.web.WebPageRepository
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
+import com.example.wan.android.utils.logd
 import com.example.wan.android.utils.startBrowser
 import com.example.wan.android.utils.toast
 import com.example.wan.android.utils.toastLong
 import com.lxj.xpopup.XPopup
+import kotlinx.coroutines.launch
 import splitties.views.imageResource
 import splitties.views.onClick
 
@@ -101,6 +106,8 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
             }
         }
 
+        val repository = WebPageRepository(dataStore = (application as App).dataStore)
+
         webView.run {
             settings.run {
                 javaScriptEnabled = true
@@ -129,15 +136,21 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
 
             }
             webChromeClient = object : WebChromeClient() {
-                override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                override fun onProgressChanged(view: WebView, newProgress: Int) {
                     binding.progress.run {
                         progress = newProgress
                         visible(newProgress < 100)
                     }
                 }
 
-                override fun onReceivedTitle(view: WebView?, title: String?) {
+                override fun onReceivedTitle(view: WebView, title: String?) {
                     titleView.text = Html.fromHtml(/*webData.title ?: */title ?: "文章")
+
+                    logd("onReceivedTitle: url = ${view.url}, title = $title")
+                    lifecycleScope.launch {
+                        repository.updateWebPage(view.url!!, title ?: "No Title")
+                    }
+
                 }
             }
             webViewClient = object : WebViewClient() {
@@ -162,6 +175,20 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
             }
             loadUrl(webData.url)
         }
+
+        onBackPressedDispatcher.addCallback {
+            if (webView.canGoBack()) {
+                webView.goBack()
+            } else {
+                setResult(RESULT_OK, Intent().apply {
+                    putExtra("result", webData)
+                })
+                finish()
+                isEnabled = false // 禁用当前的回调
+                onBackPressed() // 调用默认的返回操作
+            }
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -225,18 +252,6 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
             }
         }
         return true
-    }
-
-    override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
-        } else {
-            setResult(RESULT_OK, Intent().apply {
-                putExtra("result", webData)
-            })
-            finish()
-            super.onBackPressed()
-        }
     }
 
 }

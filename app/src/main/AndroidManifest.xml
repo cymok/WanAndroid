@@ -47,6 +47,9 @@
         <activity
             android:name=".compose.XhsActivity"
             android:exported="false" />
+        <activity
+            android:name=".index.person.HistoryActivity"
+            android:exported="false" />
 
         <activity android:name=".index.setting.ManageSpaceActivity"
             android:exported="true"/>

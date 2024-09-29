@@ -2,7 +2,6 @@ package com.example.wan.android.utils
 
 import android.util.Log
 import com.blankj.utilcode.util.LogUtils
-import java.lang.Exception
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun log(any: Any?, tag: String? = "log") {

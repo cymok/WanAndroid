@@ -38,11 +38,13 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 
 - [x] 自定义管理空间页面, 参考 Chrome, 具体路径: 应用详情 -> 清除数据 -> 管理空间 -> 自定义页面
 
-- [] TODO: 页面过度 空白页 WebView错误页 等
+- [x] TODO: 集成 Compose, 将个人项目 WanCompose 整合到 WanAndroid, 目前已整合依赖和基础页面
 
-- [] TODO: 集成 Compose, 将个人项目 WanCompose 整合到 WanAndroid, 目前本项目是传统 Views
+- [] TODO: 查看/删除 本地浏览历史, 开发中
 
 - [] Android 15 适配, 目前适配到 Android 14
+
+- [] TODO: 页面过度 空白页 WebView错误页 等
 
 - 其它 工具类 便捷库
 

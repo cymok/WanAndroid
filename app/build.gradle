@@ -56,12 +56,12 @@ static def gitLastTag() {
 android {
     namespace 'com.example.wan.android'
 //    testNamespace  'com.example.wan.android.test'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.example.wan.android"
         minSdk 21
-        targetSdk 34
+        targetSdk 35
 //        versionCode 1
         versionName "0.0.1"
         versionCode gitCommitCount()
@@ -165,9 +165,11 @@ android {
         // 1.5.14 -> kotlin 1.9.24
         kotlinCompilerExtensionVersion = "1.5.14"
     }
-    packaging {
+    packagingOptions { // 这个块定义了打包相关的配置
+        // 指定在构建 APK 或 AAR 时要排除的文件或路径
+        // `AL2.0` 和 `LGPL2.1` 通常是许可证文件，可能在某些情况下不需要打包进最终的 APK 或 AAR 中
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
 
@@ -307,14 +309,12 @@ dependencies {
     // https://developer.android.com/jetpack/androidx/releases/datastore
     implementation("androidx.datastore:datastore:1.1.1") // datastore
     implementation("androidx.datastore:datastore-preferences:1.1.1") // preferences datastore
-    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-javalite
-    implementation("com.google.protobuf:protobuf-javalite:4.28.2") // proto datastore
     // https://developer.android.com/jetpack/androidx/releases/room
     def roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:${roomVersion}")
     implementation("androidx.room:room-ktx:${roomVersion}")
 //    kapt("androidx.room:room-compiler:${roomVersion}")
-    ksp ("androidx.room:room-compiler:${roomVersion}")
+    ksp("androidx.room:room-compiler:${roomVersion}")
     testImplementation("androidx.room:room-testing:${roomVersion}")
     implementation "androidx.work:work-runtime-ktx:2.9.1"
     implementation "androidx.paging:paging-runtime-ktx:3.3.2"

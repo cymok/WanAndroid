@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.example.wan.android.base.dialog.LoadingDialog
@@ -27,13 +28,13 @@ abstract class BaseFragment(@LayoutRes layoutID: Int = 0) : Fragment(layoutID) {
                         val consumed = onBackPress()
                         if (consumed.not()) {
                             // 不消费掉事件，activity 将继续响应
-                            isEnabled = false
-                            requireActivity().onBackPressed()
+                            isEnabled = false // 禁用当前的回调
+                            requireActivity().onBackPressed() // 调用默认的返回操作
                         }
                     } else {
                         // 不拦截
-                        isEnabled = false
-                        requireActivity().onBackPressed()
+                        isEnabled = false // 禁用当前的回调
+                        requireActivity().onBackPressed() // 调用默认的返回操作
                     }
                 }
             })

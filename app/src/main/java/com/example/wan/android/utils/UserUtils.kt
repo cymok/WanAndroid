@@ -9,7 +9,7 @@ object UserUtils {
     private const val ENCRYPT_KEY = "UserInfo"
 
     fun saveSupperUserInfo(supperUserInfo: SupperUserInfo) {
-        val json = supperUserInfo.toJson()
+        val json = supperUserInfo.toJson() ?: ""
         val encryption = json.encrypt(ENCRYPT_KEY)
         spUtils.put("SupperUserInfo", encryption)
     }

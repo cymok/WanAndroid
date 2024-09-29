@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.blankj.utilcode.util.ActivityUtils
 import com.example.wan.android.R
 import com.example.wan.android.compose.ui.theme.WanAndroidTheme
+import com.example.wan.android.index.person.HistoryActivity
 import com.example.wan.android.index.setting.ManageSpaceActivity
 import com.example.wan.android.utils.px2dp
 import com.example.wan.android.utils.toast
@@ -96,7 +97,7 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "AccountActivity",
+                    text = "AccountActivity 我的",
                     fontSize = 18.sp,
                     color = colorResource(id = R.color.primaryText)
                 )
@@ -114,13 +115,13 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "XhsActivity",
+                    text = "XhsActivity 小红书",
                     fontSize = 18.sp,
                     color = colorResource(id = R.color.primaryText),
                 )
             }
             Spacer(modifier = Modifier.size(1.px2dp()))
-            //
+            // ManageSpaceActivity
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -132,7 +133,25 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "ManageSpaceActivity",
+                    text = "ManageSpaceActivity 管理空间",
+                    fontSize = 18.sp,
+                    color = colorResource(id = R.color.primaryText),
+                )
+            }
+            Spacer(modifier = Modifier.size(1.px2dp()))
+            // HistoryActivity
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(id = R.color.wx_foreground))
+                    .clickable {
+                        ActivityUtils.startActivity(HistoryActivity::class.java)
+                    }
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "HistoryActivity 浏览历史",
                     fontSize = 18.sp,
                     color = colorResource(id = R.color.primaryText),
                 )

@@ -41,7 +41,7 @@ class SchemeActivity : VBaseActivity<ActivitySchemeBinding>() {
 
             when (scheme) {
                 "http", "https" -> {
-                    startBrowser(url)
+                    WebActivity.start(url)
                 }
 
                 "wanandroid" -> {

@@ -3,6 +3,7 @@ package com.example.wan.android
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDexApplication
 import coil.Coil
@@ -14,6 +15,9 @@ import com.example.wan.android.utils.getViewModel
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.litepal.LitePal
 import java.text.SimpleDateFormat
 
@@ -33,6 +37,9 @@ class App : MultiDexApplication() {
     }
 
     val appViewModel: AppViewModel by lazy { getViewModel() }
+    val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+
+    val dataStore by preferencesDataStore(name = "preferences_datastore")
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)

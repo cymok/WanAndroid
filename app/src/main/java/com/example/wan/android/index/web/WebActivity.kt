@@ -10,6 +10,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.addCallback
+import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ClipboardUtils
 import com.example.wan.android.App
@@ -17,8 +19,10 @@ import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.utils.ext.visible
+import com.example.wan.android.utils.logd
 import com.example.wan.android.utils.startBrowser
 import com.example.wan.android.utils.toastLong
+import kotlinx.coroutines.launch
 
 class WebActivity : VBaseActivity<ActivityWebBinding>() {
 
@@ -64,6 +68,8 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
 //        supportActionBar?.title = Html.fromHtml(webTitle ?: "")
         titleView.text = Html.fromHtml(webTitle ?: "")
 
+        val repository = WebPageRepository(dataStore = (application as App).dataStore)
+
         webView.run {
             settings.run {
                 javaScriptEnabled = true
@@ -92,15 +98,21 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
 
             }
             webChromeClient = object : WebChromeClient() {
-                override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                override fun onProgressChanged(view: WebView, newProgress: Int) {
                     binding.progress.run {
                         progress = newProgress
                         visible(newProgress < 100)
                     }
                 }
 
-                override fun onReceivedTitle(view: WebView?, title: String?) {
+                override fun onReceivedTitle(view: WebView, title: String?) {
                     titleView.text = Html.fromHtml(/*webTitle ?: */title ?: "")
+
+                    logd("onReceivedTitle: url = ${view.url}, title = $title")
+                    lifecycleScope.launch {
+                        repository.updateWebPage(view.url!!, title ?: "No Title")
+                    }
+
                 }
             }
             webViewClient = object : WebViewClient() {
@@ -125,6 +137,16 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
             loadUrl(webUrl)
         }
+
+        onBackPressedDispatcher.addCallback {
+            if (webView.canGoBack()) {
+                webView.goBack()
+            } else {
+                isEnabled = false // 禁用当前的回调
+                onBackPressed() // 调用默认的返回操作
+            }
+        }
+
     }
 
     override fun initStatusBarColor() = R.color.status_bar
@@ -170,14 +192,6 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
         }
         return true
-    }
-
-    override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
-        } else {
-            super.onBackPressed()
-        }
     }
 
 }

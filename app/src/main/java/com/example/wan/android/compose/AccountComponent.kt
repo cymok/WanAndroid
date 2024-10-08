@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.sp
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.example.wan.android.R
-import com.example.wan.android.compose.composable.ImageFromDrawableRes
-import com.example.wan.android.compose.composable.ImageFromRes
+import com.example.wan.android.composable.ImageFromDrawableRes
+import com.example.wan.android.composable.ImageFromRes
 import com.example.wan.android.compose.ui.theme.WanAndroidTheme
 import com.example.wan.android.index.person.PersonViewModel
 import com.example.wan.android.index.setting.SettingActivity

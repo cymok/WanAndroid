@@ -152,11 +152,7 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
                 }
             }
             llHistory.onClick {
-                if (UserUtils.isLogin.not()) {
-                    loginLauncher.launch(Intent(activity, LoginActivity::class.java))
-                } else {
-                    start<HistoryActivity> {}
-                }
+                start<HistoryActivity> {}
             }
 
             llSettings.onClick {

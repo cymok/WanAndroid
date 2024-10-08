@@ -84,7 +84,7 @@ object ServiceCreator {
 
     private inline fun <reified T> Retrofit.create(): T = this.create(T::class.java)
 
-    //    val wanApiService = retrofit.create(WanService::class.java)
+//    val wanApiService = retrofit.create(WanService::class.java)
     val wanApiService by lazy { retrofit.create<WanService>() }
     val userApiService by lazy { retrofit.create<UserService>() }
     val squareApiService by lazy { retrofit.create<SquareService>() }

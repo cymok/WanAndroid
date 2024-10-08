@@ -22,10 +22,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,14 +39,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.example.wan.android.App
@@ -56,16 +63,56 @@ import com.example.wan.android.utils.px2dp
 import kotlinx.coroutines.launch
 
 class HistoryActivity : ComponentActivity() {
+
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             WanAndroidTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HistoryPage(
-                        modifier = Modifier.padding(innerPadding)
-//                        modifier = Modifier.padding(Modifier.systemBarsPadding()) // Modifier.systemBarsPadding() 与 Scaffold 的 innerPadding 效果一样
-                    )
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    /*
+                    topBar = {
+                        // 获取 Compose 主题的颜色
+                        val composeColor = MaterialTheme.colorScheme.primary
+                        //
+                        val viewsColor =
+                            TopAppBar(
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .height(80.dp),
+                                title = {
+                                    Box(contentAlignment = Alignment.CenterStart) {
+                                        Text(
+                                            text = stringResource(R.string.app_name),
+                                            maxLines = 1,
+                                            fontSize = 18.sp,
+                                            textAlign = TextAlign.Center,
+//                                            color = Color.White, // Text 的颜色 会覆盖 titleContentColor
+                                        )
+                                    }
+                                },
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    // 获取 Views 主题的颜色: Color(ContextCompat.getColor(context, R.color.primary))
+                                    containerColor = Color(ContextCompat.getColor(context, R.color.primary)), // 设置背景颜色
+                                    titleContentColor = Color.White, // 设置标题颜色
+                                ),
+                            )
+                    },
+                    */
+                ) { innerPadding ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(colorResource(R.color.icon_color_fore))
+//                            .background(colorResource(R.color.background))
+                            // 在background后再padding，可以填充状态栏颜色
+                            .padding(innerPadding)
+//                            .padding(Modifier.systemBarsPadding()) // Modifier.systemBarsPadding() 与 Scaffold 的 innerPadding 效果一样
+                    ) {
+                        HistoryPage()
+                    }
                 }
             }
         }
@@ -73,7 +120,7 @@ class HistoryActivity : ComponentActivity() {
 }
 
 @Composable
-fun HistoryPage(modifier: Modifier = Modifier) {
+fun HistoryPage() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var showDialog by remember { mutableStateOf(false) }
@@ -97,7 +144,6 @@ fun HistoryPage(modifier: Modifier = Modifier) {
         }
     }
     HistoryList(
-        modifier = modifier,
         historyList = historyList,
         itemClick = {
             WebActivity.start(it.url, it.title)
@@ -126,7 +172,6 @@ fun HistoryPage(modifier: Modifier = Modifier) {
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun HistoryList(
-    modifier: Modifier,
     historyList: List<WebPage>,
     itemClick: (WebPage) -> Unit,
     itemLongClick: (WebPage) -> Unit
@@ -135,8 +180,6 @@ private fun HistoryList(
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(R.color.background)) // 先填充背景
-            // 将外部修饰符应用于 LazyColumn
-            .then(modifier) // 在设置边距
         ,
         // Column 让子组件水平居中对齐
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -401,7 +444,6 @@ fun HistoryActivityPreview() {
         historyList.add(webPage)
     }
     HistoryList(
-        modifier = Modifier.systemBarsPadding(),
         historyList = historyList,
         itemClick = {},
         itemLongClick = {},

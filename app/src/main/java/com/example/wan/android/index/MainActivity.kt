@@ -111,6 +111,12 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
             log("systemGestures = ${systemGestures}")
         }
 
+        // Scheme 跳转逻辑处理
+        val fromScheme = intent.getBooleanExtra("from_scheme", false)
+        val url = intent.getStringExtra("url")
+        if (fromScheme && url.isNullOrBlank().not()) {
+            WebActivity.start(url!!)
+        }
     }
 
     private fun initSDKWithPrivacy() {

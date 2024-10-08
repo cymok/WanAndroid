@@ -36,6 +36,8 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 
 - [x] APP 跳转, 包含微信协议跳转, 以及自定义 Scheme, 应用商店 Scheme, 邮件 Scheme, 指定应用跳转, 并且过滤处理好相应的应用列表
 
+- [] TODO: 自定义 http https 的 Scheme 处理列表 (当用户在系统设置了默认浏览器应用, 之后只能调起这一个 APP 跳转; 研究到微信的方案似乎是用穷举法列举出来的, 因为他的列表包含系统能识别 Scheme 之外的应用)
+
 - [x] 自定义管理空间页面, 参考 Chrome, 具体路径: 应用详情 -> 清除数据 -> 管理空间 -> 自定义页面
 
 - [x] 集成 Compose, 将个人项目 WanCompose 整合到 WanAndroid, 目前已整合依赖和基础页面, 可正常进行 Compose 页面开发

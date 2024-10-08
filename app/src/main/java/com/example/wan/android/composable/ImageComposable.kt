@@ -1,4 +1,4 @@
-package com.example.wan.android.compose.composable
+package com.example.wan.android.composable
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.AdaptiveIconDrawable

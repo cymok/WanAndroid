@@ -298,23 +298,34 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
         }
     }
 
-    private val size = 5
+    private val size = 5 // 定义需要点击的次数
     private val interval = 200
-    private var mHints: Array<Long?> = arrayOfNulls(size)
+    private var mHints: Array<Long?> = arrayOfNulls(size) // 记录最近几次点击的时间戳
 
+    // 1. 点击时间记录：
+    // 用 mHints 数组来存储最近几次点击的时间戳
+    // 通过 System.arraycopy 将数组元素向前移动一位，确保最新的点击时间放在最后一位
+    // 2. 时间间隔判断：
+    // 计算连续点击是否在有效时间间隔内，如果满足条件则调用 listener()
+    // 否则，会遍历数组，从最可能不符合的点击开始读取，并调用 continueListener，参数代表达到连点成功还需要点击的次数
     private fun onMultiClick(
         continueListener: ((Int) -> Unit)? = null,
         listener: () -> Unit
     ) {
-        System.arraycopy(mHints, 1, mHints, 0, mHints.size - 1) // 每次点击时，数组向前移动一位
-        mHints[mHints.size - 1] = SystemClock.uptimeMillis() // 为数组最后一位赋值
+        val currentTime = SystemClock.uptimeMillis()
+        // 将数组元素向前移动一位，并把最新的点击时间放在最后一位
+        System.arraycopy(mHints, 1, mHints, 0, mHints.size - 1)
+        mHints[mHints.size - 1] = currentTime
         val time = interval * size
-        if (SystemClock.uptimeMillis() - (mHints[0] ?: 0L) <= time) { // 连续点击之间有效间隔
-            mHints = arrayOfNulls(size)
-            listener()
+        // 检查是否满足连续点击条件
+        if (currentTime - (mHints[0] ?: 0L) <= time) { // 连续点击之间有效间隔
+            mHints = arrayOfNulls(size) // 重置（也许不是必要的）
+            listener() // 调用有效的点击事件
         } else {
+            // 检查每次点击的时间
             for (i in 0 until size) {
-                if (SystemClock.uptimeMillis() - (mHints[i] ?: 0L) <= time) {
+                if (currentTime - (mHints[i] ?: 0L) <= time) {
+                    // 回调 达到连点成功还需要点击的次数
                     continueListener?.invoke(i)
                     break
                 }

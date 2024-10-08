@@ -5,9 +5,11 @@ import android.os.Bundle
 import com.blankj.utilcode.util.ClipboardUtils
 import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.databinding.ActivitySchemeBinding
+import com.example.wan.android.index.MainActivity
 import com.example.wan.android.utils.startBrowser
 import com.example.wan.android.utils.toast
 import com.example.wan.android.utils.toastLong
+import splitties.activities.start
 import splitties.views.onClick
 
 class SchemeActivity : VBaseActivity<ActivitySchemeBinding>() {
@@ -41,7 +43,11 @@ class SchemeActivity : VBaseActivity<ActivitySchemeBinding>() {
 
             when (scheme) {
                 "http", "https" -> {
-                    WebActivity.start(url)
+                    start<MainActivity>{
+                        putExtra("from_scheme", true)
+                        putExtra("url", url)
+                    }
+                    finish()
                 }
 
                 "wanandroid" -> {

@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace 'com.example.aar'
-    compileSdk 33
+    compileSdk 35
 
     defaultConfig {
         minSdk 21
-        targetSdk 33
+        targetSdk 35
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -31,12 +31,12 @@ android {
 }
 
 dependencies {
-    // 调用lintjar的lintJarOutput方法，获得jar包
+    // 调用 module_lint_lib 的 lintJarOutput，获得 jar 包
     lintPublish project(path: ":module_lint_lib", configuration: "lintJarOutput")
 }
 
 /*
-// 调用lintJarImport得到jar包，拷贝到指定目录
+// 调用 lintJarImport 得到 jar 包，拷贝到指定目录
 task copyLintJar(type: Copy) {
     from(configurations.lintPublish) {
         rename {
@@ -48,8 +48,8 @@ task copyLintJar(type: Copy) {
     into 'build/intermediates/lint/'
 }
 
-// 在build过程执行copyLintJar方法
-project.afterEvaluate {
+// 在 build 过程执行 copyLintJar 方法
+afterEvaluate {
     tasks.find {
         it.name == 'prepareLintJarForPublish'
     }.each {

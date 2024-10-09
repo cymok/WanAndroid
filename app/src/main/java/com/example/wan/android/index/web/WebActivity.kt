@@ -1,6 +1,8 @@
 package com.example.wan.android.index.web
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Html
 import android.view.Menu
@@ -21,6 +23,7 @@ import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.logd
 import com.example.wan.android.utils.startBrowser
+import com.example.wan.android.utils.toJson
 import com.example.wan.android.utils.toastLong
 import kotlinx.coroutines.launch
 
@@ -184,6 +187,12 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
 
             R.id.menu_item_browser -> {
+
+                val list = getHttpHttpsApps(this)
+                logd(list.toJson(), "http_app")
+                val list2 = getAllHttpApps(this)
+                logd(list2.toJson(), "http_app")
+
                 startBrowser(url)
             }
 
@@ -192,6 +201,55 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
         }
         return true
+    }
+
+    private fun getHttpHttpsApps(context: Context): List<String> {
+        val httpIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://"))
+        val httpsIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://"))
+
+        val packageManager = context.packageManager
+
+        val httpApps = packageManager.queryIntentActivities(httpIntent, 0)
+        val httpsApps = packageManager.queryIntentActivities(httpsIntent, 0)
+
+        val appPackageNames = mutableSetOf<String>()
+
+        // 添加 http 应用包名
+        for (resolveInfo in httpApps) {
+            appPackageNames.add(resolveInfo.activityInfo.packageName)
+        }
+
+        // 添加 https 应用包名
+        for (resolveInfo in httpsApps) {
+            appPackageNames.add(resolveInfo.activityInfo.packageName)
+        }
+
+        return appPackageNames.toList()
+    }
+
+    fun getAllHttpApps(context: Context): List<String> {
+        val httpIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://"))
+        val httpApps = context.packageManager.queryIntentActivities(httpIntent, 0)
+
+        val appPackageNames = mutableSetOf<String>()
+        for (resolveInfo in httpApps) {
+            appPackageNames.add(resolveInfo.activityInfo.packageName)
+        }
+
+        return appPackageNames.toList()
+    }
+
+    fun getInstalledApps(context: Context): List<String> {
+        val packageManager = context.packageManager
+        val packages = packageManager.getInstalledApplications(0)
+        val appNames = mutableListOf<String>()
+
+        for (app in packages) {
+            val appName = packageManager.getApplicationLabel(app).toString()
+            appNames.add(appName)
+        }
+
+        return appNames
     }
 
 }

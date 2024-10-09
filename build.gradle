@@ -14,14 +14,20 @@ plugins {
     // AGP 与 Gradle 对应版本, AGP 与 Android Studio 对应版本
     // AGP https://developer.android.com/build/releases/gradle-plugin
     // AGP 8.1.x 兼容 AS G
-    // Giraffe | 2022.3.1 --> AGP 3.2-8.1
-    // Koala | 2022.3.1   --> AGP 3.2-8.5
-    id 'com.android.application' version '8.1.4' apply false
-    id 'com.android.library' version '8.1.4' apply false
+    // Giraffe | 2022.3.1               --> AGP 3.2-8.1
+    // Hedgehog | 2023.1.1              --> AGP 3.2-8.2
+    // Iguana | 2023.2.1                --> AGP 3.2-8.3
+    // Jellyfish | 2023.3.1             --> AGP 3.2-8.4
+    // Koala | 2024.1.1                 --> AGP 3.2-8.5
+    // Koala Feature Drop | 2024.1.2    --> AGP 3.2-8.6
+    // Ladybug | 2024.2.1               --> AGP 3.2-8.7
+    id 'com.android.application' version '8.6.1' apply false
+    id 'com.android.library' version '8.6.1' apply false
 
     // KGP https://kotlinlang.org/docs/gradle-configure-project.html
     id 'org.jetbrains.kotlin.android' version "${kotlin_version}" apply false
 
     // KSP https://github.com/google/ksp/releases
     id 'com.google.devtools.ksp' version "1.9.24-1.0.20" apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.9.24' apply false
 }

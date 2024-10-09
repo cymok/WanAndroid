@@ -1,11 +1,13 @@
 package com.example.wan.android.utils.ext
 
+import android.annotation.SuppressLint
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import com.bumptech.glide.Glide
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
+@SuppressLint("GlideUsage")
 fun ImageView.load(
     any: Any?,
     cornerRadius: Int = 0,
@@ -22,6 +24,7 @@ fun ImageView.load(
         .into(this)
 }
 
+@SuppressLint("GlideUsage")
 fun ImageView.loadRes(
     @RawRes @DrawableRes res: Int,
     cornerRadius: Int = 0,
@@ -35,6 +38,7 @@ fun ImageView.loadRes(
         .into(this)
 }
 
+@SuppressLint("GlideUsage")
 fun ImageView.loadCircle(res: Any?, @DrawableRes placeholderRes: Int = 0) {
     Glide.with(this)
         .load(res)

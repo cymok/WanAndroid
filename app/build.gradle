@@ -154,6 +154,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         viewBinding true
         compose = true
     }
@@ -201,8 +202,18 @@ dependencies {
     // Module
 //    implementation project(":module_common")
     // Lib
-//    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    // libs 下所有的 jar aar
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'], exclude: [
+//            'module_lint_aar-debug.aar' // 排除 lint 文件, 另外使用 lintChecks 引用
+    ])
+    // 指定文件
 //    implementation files('libs/module_lint_aar-debug.aar')
+//    lintChecks files('libs/module_lint_aar-debug.aar')
+//    implementation files('libs/module_lint_lib.jar')
+    // Lint 专用
+    //noinspection DependencyNotationArgument
+    lintChecks project(':module_lint_lib')
+
     // Test
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.2.1"
@@ -300,7 +311,7 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.1.0"
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycleVersion}") // compose
     // 1.1 新特性 registerFragmentTransactionCallback
-    def navigationVersion = "2.8.1" // 33 -> 2.6.0
+    def navigationVersion = "2.8.2" // 33 -> 2.6.0
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     implementation("androidx.navigation:navigation-compose:${navigationVersion}") // compose

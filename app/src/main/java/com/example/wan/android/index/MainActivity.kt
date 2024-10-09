@@ -8,9 +8,11 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -19,6 +21,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
+import com.bumptech.glide.Glide
 import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
@@ -87,6 +90,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
     override val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
+    @SuppressLint("UseCustomToast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.mainCreateTime = System.currentTimeMillis()
@@ -101,6 +105,11 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         setContentView(binding.root)
         initSDKWithPrivacy()
         initView()
+
+        // test
+        Glide.with(this)
+        Log.d("TAG", "onCreate: test")
+        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show()
 
         // test
         binding.tabLayout.setOnApplyWindowInsetsListener { systemBars, statusBars, navigationBars, displayCutout, systemGestures ->

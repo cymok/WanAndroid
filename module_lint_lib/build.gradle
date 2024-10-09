@@ -14,7 +14,7 @@ kotlin {
     jvmToolchain(8)
 }
 
-// 定义lintJarOutput方法，在lintaar中被调用
+// 定义 lintJarOutput，在 module_lint_aar 中被调用
 configurations {
     lintJarOutput
 }
@@ -22,15 +22,20 @@ configurations {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "com.android.tools.lint:lint-api:26.6.3"
-    implementation "com.android.tools.lint:lint-checks:26.6.3"
+    // https://mvnrepository.com/artifact/com.android.tools.lint/lint-api
+    implementation "com.android.tools.lint:lint-api:27.2.2"
+    implementation "com.android.tools.lint:lint-checks:27.2.2"
+//    implementation "com.android.tools.lint:lint-api:31.7.0"
+//    implementation "com.android.tools.lint:lint-checks:31.7.0"
 
+    // 将 jar 文件添加到 lintJarOutput
     lintJarOutput files(jar)
 }
 
-// Lint-Registry是lint的注册类
 jar {
     manifest {
+        // `Lint-Registry` 是 lint 的注册类
+        // 注册 IssueRegistry 的实现类
         attributes('Lint-Registry': 'com.example.lint.MyIssueRegistry')
     }
 }

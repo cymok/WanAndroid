@@ -2,9 +2,14 @@ pluginManagement {
     repositories {
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/public' } // central仓和jcenter仓的聚合仓
-        google()
+        google({
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        })
         mavenCentral()
-
         gradlePluginPortal()
     }
 }

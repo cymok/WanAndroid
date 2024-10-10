@@ -37,7 +37,7 @@ class App : MultiDexApplication() {
     }
 
     val appViewModel: AppViewModel by lazy { getViewModel() }
-    val applicationScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    val appScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
     val dataStore by preferencesDataStore(name = "preferences_datastore")
 

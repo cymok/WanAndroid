@@ -1,6 +1,6 @@
 package com.example.wan.android.network.api
 
-import com.example.wan.android.data.Articles
+import com.example.wan.android.data.model.Articles
 import okhttp3.ResponseBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

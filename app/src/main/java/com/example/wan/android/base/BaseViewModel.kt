@@ -4,12 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wan.android.constant.AppConst
-import com.example.wan.android.network.ServiceCreator
+import com.example.wan.android.network.RetrofitClient
 import com.example.wan.android.network.api.ApiException
 import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.toast
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -20,10 +21,8 @@ import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-
-typealias Block<T> = suspend (CoroutineScope) -> T
-typealias Error = suspend (Exception) -> Unit
-typealias Cancel = suspend (Exception) -> Unit
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel : ViewModel(),
     // 直接将 this 赋予 MainScope
@@ -47,45 +46,49 @@ abstract class BaseViewModel : ViewModel(),
     }
 
     protected fun onLogout() {
-        ServiceCreator.clearCookie() // cookie 清除
+        RetrofitClient.clearCookie() // cookie 清除
         UserUtils.clear()
     }
 
     /**
      * 创建并执行协程
      * @param block 协程中执行
-     * @param error 错误时执行
-     * @param cancel 取消时只需
-     * @param showErrorToast 是否弹出错误吐司
+     * @param onStart 执行前只需
+     * @param onCancel 取消时只需
+     * @param onError 错误时执行
+     * @param onEnd 结束后执行
      * @return Job
      */
     protected fun launch(
         requireLogin: Boolean = false,
         showErrorToast: Boolean = true,
         onStart: (suspend () -> Unit)? = null,
-        cancel: Cancel? = null,
-        error: Error? = null,
-        onCompleted: (suspend () -> Unit)? = null,
-        block: Block<Unit>,
+        onCancel: (suspend (Exception) -> Unit)? = null,
+        onError: (suspend (Exception) -> Unit)? = null,
+        onEnd: (suspend () -> Unit)? = null,
+        context: CoroutineContext = EmptyCoroutineContext,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        block: suspend (CoroutineScope) -> Unit,
     ): Job {
-        return viewModelScope.launch {
+        return viewModelScope.launch(context, start) {
             try {
+                onStart?.invoke()
                 block.invoke(this)
             } catch (e: Exception) {
                 when (e) {
                     is CancellationException -> {
                         stopLoading()
-                        cancel?.invoke(e)
+                        onCancel?.invoke(e)
                     }
 
                     else -> {
                         stopLoading()
                         onError(e, showErrorToast, requireLogin)
-                        error?.invoke(e)
+                        onError?.invoke(e)
                     }
                 }
             } finally {
-                onCompleted?.invoke()
+                onEnd?.invoke()
             }
         }
     }
@@ -95,7 +98,7 @@ abstract class BaseViewModel : ViewModel(),
      * @param block 协程中执行
      * @return Deferred<T>
      */
-    protected fun <T> async(block: Block<T>): Deferred<T> {
+    protected fun <T> async(block: suspend (CoroutineScope) -> T): Deferred<T> {
         return viewModelScope.async { block.invoke(this) }
     }
 

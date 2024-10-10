@@ -39,12 +39,12 @@ object AppUtils {
                 // 小
                 false
             } else {
-                // 相对
+                // 相等
                 continue
             }
         }
 
-        // 相同长度相对 比较超出长度
+        // 相同长度相等 比较超出长度
         if (list.size > list2.size) {
             for (i in list.subList(list2.size, list.size)) {
                 if (i > 0) {

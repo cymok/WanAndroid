@@ -13,7 +13,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.wan.android.R
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
-import com.example.wan.android.data.SupperUserInfo
+import com.example.wan.android.data.model.SupperUserInfo
 import com.example.wan.android.databinding.FragmentPersonBinding
 import com.example.wan.android.index.like.ArticleLikeActivity
 import com.example.wan.android.index.login.LoginActivity

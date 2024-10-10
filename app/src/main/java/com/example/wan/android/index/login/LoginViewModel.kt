@@ -3,9 +3,9 @@ package com.example.wan.android.index.login
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.example.wan.android.base.BaseViewModel
-import com.example.wan.android.data.LoginFormState
-import com.example.wan.android.data.SupperUserInfo
-import com.example.wan.android.network.repository.WanRepository
+import com.example.wan.android.data.model.LoginFormState
+import com.example.wan.android.data.model.SupperUserInfo
+import com.example.wan.android.data.repository.WanRepository
 import com.example.wan.android.utils.UserUtils
 
 class LoginViewModel : BaseViewModel() {

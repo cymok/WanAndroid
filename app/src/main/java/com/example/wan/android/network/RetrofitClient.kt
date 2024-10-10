@@ -2,10 +2,8 @@ package com.example.wan.android.network
 
 import com.example.wan.android.App
 import com.example.wan.android.constant.AppConst
-import com.example.wan.android.network.api.LikeService
-import com.example.wan.android.network.api.SquareService
-import com.example.wan.android.network.api.UserService
-import com.example.wan.android.network.api.WanService
+import com.example.wan.android.network.interceptors.CacheInterceptor
+import com.example.wan.android.network.interceptors.LoggingInterceptor
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
@@ -18,9 +16,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-object ServiceCreator {
-
-    private const val BASE_URL = "https://www.wanandroid.com/"
+object RetrofitClient {
 
     private val cookieJar =
         PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.INSTANCE))
@@ -60,7 +56,7 @@ object ServiceCreator {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(AppConst.BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(
@@ -81,13 +77,5 @@ object ServiceCreator {
     }
 
     fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
-
-    private inline fun <reified T> Retrofit.create(): T = this.create(T::class.java)
-
-//    val wanApiService = retrofit.create(WanService::class.java)
-    val wanApiService by lazy { retrofit.create<WanService>() }
-    val userApiService by lazy { retrofit.create<UserService>() }
-    val squareApiService by lazy { retrofit.create<SquareService>() }
-    val likeApiService by lazy { retrofit.create<LikeService>() }
 
 }

@@ -1,4 +1,4 @@
-package com.example.wan.android.network
+package com.example.wan.android.network.interceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response

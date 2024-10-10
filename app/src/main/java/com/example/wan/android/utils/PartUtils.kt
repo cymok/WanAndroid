@@ -54,7 +54,7 @@ fun MutableList<MultipartBody.Part>.putAll(pairs: Array<out Pair<String, String>
 }
 
 /**
- * 示例 `mutablePartListOf("key" to "value", "key2" to "value2",)`
+ * 示例 `partListOf("key" to "value", "key2" to "value2",)`
  * 但是后面还要自己再加上 file 类型的 part
  *
  * 参考自 mutableMapOf

@@ -1,6 +1,10 @@
-package com.example.wan.android.network.repository
+package com.example.wan.android.data.repository
 
-import com.example.wan.android.network.ServiceCreator
+import com.example.wan.android.network.RetrofitClient
+import com.example.wan.android.network.api.LikeService
+import com.example.wan.android.network.api.SquareService
+import com.example.wan.android.network.api.UserService
+import com.example.wan.android.network.api.WanService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -9,10 +13,10 @@ import kotlinx.coroutines.withContext
  */
 object WanRepository {
 
-    private val apiService by lazy { ServiceCreator.wanApiService }
-    private val userService by lazy { ServiceCreator.userApiService }
-    private val squareService by lazy { ServiceCreator.squareApiService }
-    private val likeService by lazy { ServiceCreator.likeApiService }
+    private val apiService by lazy { RetrofitClient.create(WanService::class.java) }
+    private val userService by lazy { RetrofitClient.create(UserService::class.java) }
+    private val squareService by lazy { RetrofitClient.create(SquareService::class.java) }
+    private val likeService by lazy { RetrofitClient.create(LikeService::class.java) }
 
     suspend fun register(username: String, password: String) = withContext(Dispatchers.IO) {
         userService.register(username, password, password).apiData()!!
@@ -68,7 +72,7 @@ object WanRepository {
     }
 
     suspend fun likeArticle(id: Int) = withContext(Dispatchers.IO) {
-        // 此接口会返回 ”“ Retrofit 解析为 null
+        // 此接口会返回 "" Retrofit 解析为 null
         likeService.likeArticle(id).apiData()
     }
 

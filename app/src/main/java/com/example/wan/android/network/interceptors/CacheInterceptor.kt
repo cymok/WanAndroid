@@ -1,4 +1,4 @@
-package com.example.wan.android.network
+package com.example.wan.android.network.interceptors
 
 import android.util.Log
 import com.blankj.utilcode.util.NetworkUtils

@@ -27,7 +27,7 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
 import com.bumptech.glide.Glide
-import com.example.wan.android.network.ServiceCreator
+import com.example.wan.android.network.RetrofitClient
 import com.example.wan.android.utils.ext.alert
 import com.example.wan.android.utils.ext.cancel
 import com.example.wan.android.utils.ext.ok
@@ -99,7 +99,7 @@ fun clearCache(context: Context, coroutineScope: CoroutineScope, onCacheCleared:
     coroutineScope.launch {
         withContext(Dispatchers.IO) {
             Glide.get(context).clearDiskCache() // glide api 清除缓存
-            ServiceCreator.clearCache() // okhttp api 清除缓存
+            RetrofitClient.clearCache() // okhttp api 清除缓存
             FileUtils.deleteAllInDir(cachePath) // 删除 APP 私有目录 的 cache 目录
         }
         delay(200) // 假装正在努力清除缓存, 清理得太快就连 loading 都看不到

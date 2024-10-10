@@ -4,8 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.example.wan.android.data.History
-import com.example.wan.android.data.WebPage
+import com.example.wan.android.data.model.History
+import com.example.wan.android.data.model.WebPage
 import com.example.wan.android.utils.fromJson
 import com.example.wan.android.utils.logd
 import com.example.wan.android.utils.loge

@@ -10,7 +10,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.LogUtils
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
-import com.example.wan.android.data.WebData
+import com.example.wan.android.data.model.WebData
 import com.example.wan.android.databinding.FragmentArticleLikeBinding
 import com.example.wan.android.index.common.ArticleListPagingAdapter
 import com.example.wan.android.index.common.ArticleWebActivity

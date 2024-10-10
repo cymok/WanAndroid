@@ -1,4 +1,4 @@
-package com.example.wan.android.data
+package com.example.wan.android.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

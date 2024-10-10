@@ -1,4 +1,4 @@
-package com.example.wan.android.data
+package com.example.wan.android.data.model
 
 data class LikeData(
     val id: Int,

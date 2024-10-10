@@ -8,9 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
 import com.example.wan.android.App
 import com.example.wan.android.base.activity.VBaseActivity
+import com.example.wan.android.data.repository.WanRepository
 import com.example.wan.android.databinding.ActivitySplashBinding
 import com.example.wan.android.index.MainActivity
-import com.example.wan.android.network.repository.WanRepository
 import com.example.wan.android.utils.ext.alert
 import com.example.wan.android.utils.ext.cancel
 import com.example.wan.android.utils.ext.ok

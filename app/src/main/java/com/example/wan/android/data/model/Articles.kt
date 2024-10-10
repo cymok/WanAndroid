@@ -1,4 +1,4 @@
-package com.example.wan.android.data
+package com.example.wan.android.data.model
 
 import android.os.Parcelable
 import com.example.wan.android.utils.TextUtils.htmlDecode

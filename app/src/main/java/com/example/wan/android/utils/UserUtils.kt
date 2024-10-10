@@ -2,7 +2,7 @@ package com.example.wan.android.utils
 
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.SPUtils
-import com.example.wan.android.data.SupperUserInfo
+import com.example.wan.android.data.model.SupperUserInfo
 
 object UserUtils {
     private val spUtils = SPUtils.getInstance("UserInfo")

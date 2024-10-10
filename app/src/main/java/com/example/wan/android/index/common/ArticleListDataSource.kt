@@ -2,8 +2,8 @@ package com.example.wan.android.index.common
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.wan.android.data.Articles
-import com.example.wan.android.data.DataX
+import com.example.wan.android.data.model.Articles
+import com.example.wan.android.data.model.DataX
 
 class ArticleListDataSource(
     private val firstPage: Int,

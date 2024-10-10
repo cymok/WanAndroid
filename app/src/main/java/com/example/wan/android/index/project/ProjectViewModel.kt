@@ -2,8 +2,8 @@ package com.example.wan.android.index.project
 
 import androidx.lifecycle.MutableLiveData
 import com.example.wan.android.base.BaseViewModel
-import com.example.wan.android.data.ArticlesTree
-import com.example.wan.android.network.repository.WanRepository
+import com.example.wan.android.data.model.ArticlesTree
+import com.example.wan.android.data.repository.WanRepository
 
 class ProjectViewModel : BaseViewModel() {
 
@@ -21,7 +21,7 @@ class ProjectViewModel : BaseViewModel() {
     val articlesTree = MutableLiveData<ArticlesTree?>()
 
     fun fetchArticlesTree() {
-        launch(error = {
+        launch(onError = {
             articlesTree.postValue(null)
         }) {
             val result = WanRepository.getProjectTree()

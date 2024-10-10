@@ -8,9 +8,9 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.wan.android.R
-import com.example.wan.android.data.BannerItem
-import com.example.wan.android.data.DataX
-import com.example.wan.android.data.LikeData
+import com.example.wan.android.data.model.BannerItem
+import com.example.wan.android.data.model.DataX
+import com.example.wan.android.data.model.LikeData
 import com.example.wan.android.databinding.RvItemArticleBinding
 import com.example.wan.android.databinding.RvItemBannerBinding
 import com.example.wan.android.index.common.ArticleTagAdapter

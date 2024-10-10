@@ -12,8 +12,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.BarUtils
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
-import com.example.wan.android.data.LikeData
-import com.example.wan.android.data.WebData
+import com.example.wan.android.data.model.LikeData
+import com.example.wan.android.data.model.WebData
 import com.example.wan.android.databinding.FragmentHomeBinding
 import com.example.wan.android.index.common.ArticleWebActivity
 import com.example.wan.android.index.home.paging.HomePagingAdapter

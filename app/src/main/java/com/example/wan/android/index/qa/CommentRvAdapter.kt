@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ColorUtils
 import com.example.wan.android.R
-import com.example.wan.android.data.Comment
+import com.example.wan.android.data.model.Comment
 import com.example.wan.android.databinding.RvItemCommentBinding
 import com.example.wan.android.utils.ext.visible
 import splitties.systemservices.layoutInflater

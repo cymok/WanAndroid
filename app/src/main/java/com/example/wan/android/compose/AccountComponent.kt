@@ -57,7 +57,7 @@ fun AccountComponent(viewModel: PersonViewModel) {
                 ) {
                     ToastUtils.showShort("未登录时跳转登录页面")
                 }
-                .padding(30.dp, 50.dp, 16.dp, 50.dp),
+                .padding(28.dp, 50.dp, 16.dp, 30.dp),
         ) {
             ImageFromDrawableRes(
                 modifier = Modifier
@@ -66,37 +66,42 @@ fun AccountComponent(viewModel: PersonViewModel) {
                 drawableRes = R.mipmap.ic_launcher,
             )
             Spacer(modifier = Modifier.width(20.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = supperUserInfo?.userInfo?.nickname ?: "未登录",
-                    fontSize = 18.sp,
-                    color = colorResource(id = R.color.primaryText)
-                )
-                Spacer(modifier = Modifier.height(15.dp))
-                Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 36.dp),
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "用户名: ${supperUserInfo?.userInfo?.username ?: "null"}",
-                        fontSize = 14.sp,
-                        color = colorResource(id = R.color.secondaryText)
+                        text = supperUserInfo?.userInfo?.nickname ?: "未登录",
+                        fontSize = 18.sp,
+                        color = colorResource(id = R.color.primaryText)
                     )
-                    Spacer(modifier = Modifier.width(15.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Row {
+                        Text(
+                            text = "用户名: ${supperUserInfo?.userInfo?.username ?: "null"}",
+                            fontSize = 14.sp,
+                            color = colorResource(id = R.color.secondaryText)
+                        )
+                        Spacer(modifier = Modifier.width(15.dp))
+                        Text(
+                            text = "id: ${supperUserInfo?.userInfo?.id ?: "-1"}",
+                            fontSize = 14.sp,
+                            color = colorResource(id = R.color.secondaryText)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
                     Text(
-                        text = "id: ${supperUserInfo?.userInfo?.id ?: "-1"}",
+                        text = "邮箱: ${supperUserInfo?.userInfo?.email ?: "null"}",
                         fontSize = 14.sp,
                         color = colorResource(id = R.color.secondaryText)
                     )
                 }
-                Spacer(modifier = Modifier.height(15.dp))
-                Text(
-                    text = "邮箱: ${supperUserInfo?.userInfo?.email ?: "null"}",
-                    fontSize = 14.sp,
-                    color = colorResource(id = R.color.secondaryText)
+                ImageFromRes(
+                    modifier = Modifier.size(25.dp),
+                    drawableRes = R.drawable.icon_arrow_right
                 )
             }
-            ImageFromRes(
-                modifier = Modifier.size(25.dp),
-                drawableRes = R.drawable.icon_arrow_right
-            )
         }
         Spacer(modifier = Modifier.height(10.dp))
         Row(

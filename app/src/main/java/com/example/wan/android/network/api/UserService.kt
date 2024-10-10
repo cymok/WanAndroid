@@ -1,7 +1,7 @@
 package com.example.wan.android.network.api
 
-import com.example.wan.android.data.SupperUserInfo
-import com.example.wan.android.data.UserInfo
+import com.example.wan.android.data.model.SupperUserInfo
+import com.example.wan.android.data.model.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

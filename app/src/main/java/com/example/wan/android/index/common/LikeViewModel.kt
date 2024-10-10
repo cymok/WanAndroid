@@ -2,8 +2,8 @@ package com.example.wan.android.index.common
 
 import androidx.lifecycle.MutableLiveData
 import com.example.wan.android.base.BaseViewModel
-import com.example.wan.android.data.LikeData
-import com.example.wan.android.network.repository.WanRepository
+import com.example.wan.android.data.model.LikeData
+import com.example.wan.android.data.repository.WanRepository
 
 open class LikeViewModel : BaseViewModel() {
 

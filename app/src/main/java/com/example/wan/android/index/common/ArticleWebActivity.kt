@@ -17,7 +17,7 @@ import com.blankj.utilcode.util.ClipboardUtils
 import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
-import com.example.wan.android.data.WebData
+import com.example.wan.android.data.model.WebData
 import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.index.web.WebPageRepository
 import com.example.wan.android.utils.ext.visible

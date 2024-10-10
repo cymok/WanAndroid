@@ -3,8 +3,8 @@ package com.example.wan.android.index.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wan.android.data.BannerItem
-import com.example.wan.android.data.LikeData
+import com.example.wan.android.data.model.BannerItem
+import com.example.wan.android.data.model.LikeData
 import com.example.wan.android.databinding.ViewBannerBinding
 import com.example.wan.android.utils.ext.load
 import com.youth.banner.adapter.BannerAdapter

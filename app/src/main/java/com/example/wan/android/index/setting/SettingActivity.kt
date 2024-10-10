@@ -23,7 +23,7 @@ import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.constant.AppConst
 import com.example.wan.android.databinding.ActivitySettingBinding
 import com.example.wan.android.index.web.WebActivity
-import com.example.wan.android.network.ServiceCreator
+import com.example.wan.android.network.RetrofitClient
 import com.example.wan.android.ui.dialog.AppDetailDialog
 import com.example.wan.android.utils.AppPkg
 import com.example.wan.android.utils.UserUtils
@@ -67,7 +67,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                         showLoading()
                         withContext(Dispatchers.IO) {
                             Glide.get(activity).clearDiskCache() // glide api 清除缓存
-                            ServiceCreator.clearCache() // okhttp api 清除缓存
+                            RetrofitClient.clearCache() // okhttp api 清除缓存
                             FileUtils.deleteAllInDir(cachePath) // 删除 APP 私有目录 的 cache 目录
                         }
                         delay(200) // 假装正在努力清除缓存, 清理得太快就连 loading 都看不到

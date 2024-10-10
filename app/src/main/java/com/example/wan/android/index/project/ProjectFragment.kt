@@ -8,7 +8,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.BarUtils
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
-import com.example.wan.android.data.ArticlesTreeItem
+import com.example.wan.android.data.model.ArticlesTreeItem
 import com.example.wan.android.databinding.FragmentProjectBinding
 import com.example.wan.android.index.common.VpFragmentAdapter
 import com.example.wan.android.index.project.fragment.ProjectTabFragment

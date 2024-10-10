@@ -5,7 +5,7 @@ import android.text.Html
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wan.android.R
-import com.example.wan.android.data.ReplyComment
+import com.example.wan.android.data.model.ReplyComment
 import com.example.wan.android.databinding.RvItemCommentReplyBinding
 import com.example.wan.android.utils.ext.gone
 import splitties.systemservices.layoutInflater

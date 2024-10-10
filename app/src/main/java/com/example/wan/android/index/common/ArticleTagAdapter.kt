@@ -2,7 +2,7 @@ package com.example.wan.android.index.common
 
 import android.view.View
 import com.example.wan.android.R
-import com.example.wan.android.data.Tag
+import com.example.wan.android.data.model.Tag
 import com.example.wan.android.databinding.ViewTagBinding
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter

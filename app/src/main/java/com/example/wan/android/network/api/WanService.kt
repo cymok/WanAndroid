@@ -1,10 +1,10 @@
 package com.example.wan.android.network.api
 
-import com.example.wan.android.data.Articles
-import com.example.wan.android.data.ArticlesTree
-import com.example.wan.android.data.BannerItem
-import com.example.wan.android.data.CommentList
-import com.example.wan.android.data.DataX
+import com.example.wan.android.data.model.Articles
+import com.example.wan.android.data.model.ArticlesTree
+import com.example.wan.android.data.model.BannerItem
+import com.example.wan.android.data.model.CommentList
+import com.example.wan.android.data.model.DataX
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -33,7 +33,7 @@ interface WanService {
         ): ApiResult<Any>
     */
 
-        // [Part] 后面支持三种类型，[RequestBody]、[MultipartBody.Part] 、任意类型
+        // [@Part] 后面支持三种类型，[RequestBody]、[MultipartBody.Part] 、任意类型
         // 除 [MultipartBody.Part] 以外，其它类型都必须带上表单字段
         // ([MultipartBody.Part] 中已经包含了表单字段的信息)
 

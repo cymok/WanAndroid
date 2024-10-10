@@ -6,6 +6,7 @@ import java.io.File
 object AppConst {
 
     val crashPath by lazy { PathUtils.getFilesPathExternalFirst() + File.separator + "crash" }
+    const val BASE_URL = "https://www.wanandroid.com/"
     val okhttpCachePath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "okhttp" }
     const val OKHTTP_CACHE_SIZE: Long = 1024 * 1024 * 64 // 64 MB
     val glidePath by lazy { PathUtils.getCachePathExternalFirst() + File.separator + "glide" }

@@ -3,11 +3,11 @@ package com.example.wan.android.index.home
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.example.wan.android.data.BannerItem
-import com.example.wan.android.data.DataX
+import com.example.wan.android.data.model.BannerItem
+import com.example.wan.android.data.model.DataX
+import com.example.wan.android.data.repository.WanRepository
 import com.example.wan.android.index.common.ArticleListDataSource
 import com.example.wan.android.index.common.LikeViewModel
-import com.example.wan.android.network.repository.WanRepository
 
 class HomeViewModel : LikeViewModel() {
 

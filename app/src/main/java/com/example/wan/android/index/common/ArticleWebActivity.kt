@@ -212,7 +212,7 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
 
                 if (webData.like) {
                     XPopup.Builder(this)
-                        .asConfirm("移除收藏", "《${webData.title}》") {
+                        .asConfirm("移除收藏", "《${Html.fromHtml(webData.title)}》") {
                             viewModel.unlikeArticle(webData.id, webData.originId, webData.isMyLike)
                         }.show()
                 } else {

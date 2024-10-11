@@ -142,9 +142,7 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
             launcher.launch(newIntent<ArticleWebActivity> {
                 putExtra(
                     "data", WebData(
-                        isMyLike = true,
                         id = dataX.id,
-                        originId = dataX.originId,
                         url = dataX.link,
                         title = dataX.title,
                         like = dataX.collect,

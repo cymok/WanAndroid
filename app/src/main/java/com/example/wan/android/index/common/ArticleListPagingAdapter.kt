@@ -104,7 +104,7 @@ class ArticleListPagingAdapter :
                 ivStar.onClick {
                     if (item.collect) {
                         XPopup.Builder(holder.binding.root.context)
-                            .asConfirm("移除收藏", "《${item.title}》") {
+                            .asConfirm("移除收藏", "《${Html.fromHtml(item.title)}》") {
                                 likeClickListener?.invoke(
                                     LikeData(
                                         id = item.id,

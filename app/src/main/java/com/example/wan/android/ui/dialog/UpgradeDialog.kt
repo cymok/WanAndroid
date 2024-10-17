@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.ScreenUtils
 import com.example.wan.android.R
 import com.example.wan.android.databinding.DialogUpgradeBinding
 import splitties.views.onClick
+import kotlin.math.roundToInt
 
 class UpgradeDialog(ctx: Context) : AlertDialog(ctx, R.style.dialog) {
 
@@ -25,7 +26,7 @@ class UpgradeDialog(ctx: Context) : AlertDialog(ctx, R.style.dialog) {
     private fun setCustomView() {
         window?.apply {
             attributes = attributes.apply {
-                width = (ScreenUtils.getScreenWidth() * 0.8f).toInt()
+                width = (ScreenUtils.getScreenWidth() * 0.8f).roundToInt()
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
                 gravity = Gravity.CENTER or Gravity.CENTER
             }

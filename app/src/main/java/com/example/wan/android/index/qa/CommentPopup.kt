@@ -9,6 +9,7 @@ import com.example.wan.android.R
 import com.example.wan.android.data.model.Comment
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
+import kotlin.math.roundToInt
 
 /**
  * @param articleId 评论内容很多 需要分页加载 在列表请求网络
@@ -17,7 +18,7 @@ import com.lxj.xpopup.util.XPopupUtils
 class CommentPopup(context: Context, val articleId: Int, val list: List<Comment>) :
     BottomPopupView(context) {
 
-    override fun getMaxHeight() = (XPopupUtils.getScreenHeight(context) * 0.7f).toInt()
+    override fun getMaxHeight() = (XPopupUtils.getScreenHeight(context) * 0.7f).roundToInt()
 
     override fun getImplLayoutId() = R.layout.popup_comment
 

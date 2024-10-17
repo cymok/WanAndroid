@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.example.wan.android.base.dialog.LoadingDialog

@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import com.example.wan.android.BuildConfig
-import com.example.wan.android.utils.dp2px
+import com.example.wan.android.utils.dp2pxInt
 import com.example.wan.android.utils.ext.setTypeface
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -31,7 +31,7 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
                 LinearLayout.LayoutParams.WRAP_CONTENT,
             )
             outLL.gravity = Gravity.CENTER
-            outLL.setPadding(10.dp2px, 0, 10.dp2px, 0)
+            outLL.setPadding(10.dp2pxInt, 0, 10.dp2pxInt, 0)
             outLL.addView(ScrollView(context).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -50,7 +50,7 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                         )
                         gravity = Gravity.START
-                        setPadding(16.dp2px, 16.dp2px, 16.dp2px, 16.dp2px)
+                        setPadding(16.dp2pxInt, 16.dp2pxInt, 16.dp2pxInt, 16.dp2pxInt)
                         text = getInfo()
                         // https://www.jetbrains.com/lp/mono/
                         // https://github.com/JetBrains/JetBrainsMono
@@ -78,7 +78,7 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                     )
                     gravity = Gravity.CENTER
-                    setPadding(16.dp2px, 16.dp2px, 16.dp2px, 16.dp2px)
+                    setPadding(16.dp2pxInt, 16.dp2pxInt, 16.dp2pxInt, 16.dp2pxInt)
                     text = "确定"
                     setOnClickListener {
                         dismiss()
@@ -105,10 +105,11 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
             [ja_jvm] ${BuildConfig.JAVA_JVM}
             [kt_jvm] ${BuildConfig.KOTLIN_JVM}
             [kt_ver] ${BuildConfig.KOTLIN_VERSION}
+            [co_ver] ${BuildConfig.COMPOSE_VERSION}
             [arch  ] ${BuildConfig.OS_ARCH}
             [host  ] ${BuildConfig.OS_NAME}
             [by    ] ${BuildConfig.USER_NAME}
-            [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(BuildConfig.BUILD_TIME.toLong())}
+            [time  ] ${SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(BuildConfig.BUILD_TIME.toLong())}
             - System -
             [abi   ] ${Build.SUPPORTED_ABIS.joinToString(", ")}
             [brand ] ${Build.BRAND}
@@ -119,7 +120,7 @@ class AppDetailDialog(context: Context?, val env: String = "", val uid: String =
             - System.Build -
             [host  ] ${Build.HOST}
             [by    ] ${Build.USER}
-            [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Build.TIME)}
+            [time  ] ${SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(Build.TIME)}
         """.trimIndent()
         // @formatter:on
     }

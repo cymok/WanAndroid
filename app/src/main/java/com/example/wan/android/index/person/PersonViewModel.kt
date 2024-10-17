@@ -13,7 +13,9 @@ class PersonViewModel : BaseViewModel() {
     fun getUserInfo() {
         launch {
             val result = WanRepository.getUserInfo()
-            UserUtils.saveSupperUserInfo(result) // 获取用户信息接口返回的数据包含 UserInfo 和其它信息, 而登录注册只返回 UserInfo
+            // 保存用户信息
+            // 获取用户信息接口返回的数据包含 UserInfo 和其它信息, 而登录注册只返回 UserInfo
+            UserUtils.saveSupperUserInfo(result)
             superUserInfo.postValue(result)
         }
     }

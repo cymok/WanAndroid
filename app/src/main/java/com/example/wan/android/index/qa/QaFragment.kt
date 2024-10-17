@@ -16,6 +16,7 @@ import com.example.wan.android.data.model.LikeData
 import com.example.wan.android.data.model.WebData
 import com.example.wan.android.databinding.FragmentQaBinding
 import com.example.wan.android.index.common.ArticleListPagingAdapter
+import com.example.wan.android.utils.ext.gone
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
@@ -30,6 +31,8 @@ class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
     override val binding: FragmentQaBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter by lazy { ArticleListPagingAdapter() }
+
+    private var isRefreshing = false
 
     companion object {
         fun getInstance(isPaddingTop: Boolean) =
@@ -82,20 +85,21 @@ class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
         adapter.addLoadStateListener {
             when (it.refresh) {
                 is LoadState.Loading -> {
-
+                    if (isRefreshing.not()) {
+                        binding.progressBar.visible()
+                    }
                 }
 
                 is LoadState.NotLoading -> {
-
+                    binding.progressBar.gone()
+                    isRefreshing = false
                 }
 
                 is LoadState.Error -> {
+                    binding.progressBar.gone()
+                    isRefreshing = false
                     binding.refresh.isRefreshing = false
                     LogUtils.e(it.toString())
-                }
-
-                else -> {
-
                 }
             }
 
@@ -147,6 +151,7 @@ class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
         }
 
         binding.refresh.setOnRefreshListener {
+            isRefreshing = true
             adapter.refresh()
         }
 
@@ -160,6 +165,7 @@ class QaFragment : VVMBaseFragment<QaViewModel, FragmentQaBinding>() {
             if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.rv.smoothScrollToPosition(0)
                 binding.rv.post {
+                    isRefreshing = true
                     binding.refresh.isRefreshing = true
                     adapter.refresh()
                 }

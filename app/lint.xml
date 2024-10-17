@@ -1,6 +1,7 @@
 <lint>
     <!-- severity="ignore" 禁用 -->
-    <issue id="ToastUsage" severity="error" />
+    <issue id="ToastUsage" severity="warning" />
+    <issue id="UtilcodeToastUsage" severity="error" />
     <issue id="LogUsage" severity="warning" />
     <issue id="GlideUsage" severity="warning" />
 </lint>

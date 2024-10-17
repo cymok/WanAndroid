@@ -17,6 +17,8 @@ import com.example.wan.android.data.model.WebData
 import com.example.wan.android.databinding.FragmentProjectTabBinding
 import com.example.wan.android.index.common.ArticleListPagingAdapter
 import com.example.wan.android.index.common.ArticleWebActivity
+import com.example.wan.android.utils.ext.gone
+import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
 import com.example.wan.android.utils.observeEvent
@@ -28,6 +30,8 @@ class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectT
     override val binding: FragmentProjectTabBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter by lazy { ArticleListPagingAdapter() }
+
+    private var isRefreshing = false
 
     private var item: ArticlesTreeItem? = null
 
@@ -73,20 +77,21 @@ class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectT
         adapter.addLoadStateListener {
             when (it.refresh) {
                 is LoadState.Loading -> {
-
+                    if (isRefreshing.not()) {
+                        binding.progressBar.visible()
+                    }
                 }
 
                 is LoadState.NotLoading -> {
-
+                    binding.progressBar.gone()
+                    isRefreshing = false
                 }
 
                 is LoadState.Error -> {
+                    binding.progressBar.gone()
+                    isRefreshing = false
                     binding.refresh.isRefreshing = false
                     LogUtils.e(it.toString())
-                }
-
-                else -> {
-
                 }
             }
         }
@@ -129,6 +134,7 @@ class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectT
         }
 
         binding.refresh.setOnRefreshListener {
+            isRefreshing = true
             adapter.refresh()
         }
     }
@@ -141,6 +147,7 @@ class ProjectTabFragment : VVMBaseFragment<ProjectTabViewModel, FragmentProjectT
             if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.rv.smoothScrollToPosition(0)
                 binding.rv.post {
+                    isRefreshing = true
                     binding.refresh.isRefreshing = true
                     adapter.refresh()
                 }

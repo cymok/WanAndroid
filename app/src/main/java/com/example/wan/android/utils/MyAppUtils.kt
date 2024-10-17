@@ -9,7 +9,7 @@ import com.example.wan.android.BuildConfig
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-object AppUtils {
+object MyAppUtils {
 
     fun isAcceptAgreement(): Boolean {
         return SPUtils.getInstance().getBoolean("ACCEPT_AGREEMENT", false)
@@ -88,10 +88,11 @@ object AppUtils {
             [ja_jvm] ${BuildConfig.JAVA_JVM}
             [kt_jvm] ${BuildConfig.KOTLIN_JVM}
             [kt_ver] ${BuildConfig.KOTLIN_VERSION}
+            [co_ver] ${BuildConfig.COMPOSE_VERSION}
             [arch  ] ${BuildConfig.OS_ARCH}
             [host  ] ${BuildConfig.OS_NAME}
             [by    ] ${BuildConfig.USER_NAME}
-            [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(BuildConfig.BUILD_TIME.toLong())}
+            [time  ] ${SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(BuildConfig.BUILD_TIME.toLong())}
             - System -
             [abi   ] ${Build.SUPPORTED_ABIS.joinToString(", ")}
             [brand ] ${Build.BRAND}
@@ -102,7 +103,7 @@ object AppUtils {
             - System.Build -
             [host  ] ${Build.HOST}
             [by    ] ${Build.USER}
-            [time  ] ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Build.TIME)}
+            [time  ] ${SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(Build.TIME)}
         """.trimIndent()
         // @formatter:on
     }

@@ -18,6 +18,7 @@ import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.ZipUtils
 import com.bumptech.glide.Glide
+import com.example.wan.android.BuildConfig
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.constant.AppConst
@@ -26,6 +27,7 @@ import com.example.wan.android.index.web.WebActivity
 import com.example.wan.android.network.RetrofitClient
 import com.example.wan.android.ui.dialog.AppDetailDialog
 import com.example.wan.android.utils.AppPkg
+import com.example.wan.android.utils.MyAppUtils
 import com.example.wan.android.utils.UserUtils
 import com.example.wan.android.utils.ext.alert
 import com.example.wan.android.utils.ext.cancel
@@ -155,12 +157,16 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                     ACTION_SEND_MULTIPLE (for multiple attachments)
                     */
                     val intent = Intent(Intent.ACTION_SEND).apply {
-                        putExtra(Intent.EXTRA_EMAIL, arrayOf(email)) // 网易邮箱 未能识别。 Gmail、Mail.ru、Outlook、厂商自带邮件APP 都能正常识别
+                        // 网易邮箱 未能识别 EXTRA_EMAIL。
+                        // Gmail、Mail.ru、Outlook、厂商自带邮件APP 都能正常识别。
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
                         putExtra(Intent.EXTRA_SUBJECT, "${getString(R.string.app_name)}-崩溃日志上报")
-                        putExtra(Intent.EXTRA_TEXT, com.example.wan.android.utils.AppUtils.getAppInfo(
-                            "null",
-                            UserUtils.getSupperUserInfo()?.userInfo?.username ?: "null"
-                        ))
+                        putExtra(
+                            Intent.EXTRA_TEXT, MyAppUtils.getAppInfo(
+                                "null",
+                                UserUtils.getSupperUserInfo()?.userInfo?.username ?: "null"
+                            )
+                        )
                         putExtra(Intent.EXTRA_STREAM, File(zipFilePath).getUri())
                         type = "application/octet-stream"
                     }
@@ -187,7 +193,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
             }) {
                 AppDetailDialog(
                     context = activity,
-                    env = "null",
+                    env = AppConst.BASE_URL,
                     uid = "${UserUtils.getSupperUserInfo()?.userInfo?.id ?: "null"}",
                 ).show()
             }

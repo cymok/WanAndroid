@@ -19,6 +19,7 @@ import com.example.wan.android.data.model.WebData
 import com.example.wan.android.databinding.FragmentSearchBinding
 import com.example.wan.android.index.common.ArticleListPagingAdapter
 import com.example.wan.android.index.common.ArticleWebActivity
+import com.example.wan.android.utils.ext.gone
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
@@ -32,6 +33,8 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
     override val binding: FragmentSearchBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter by lazy { ArticleListPagingAdapter() }
+
+    private var isRefreshing = false
 
     private var key: String = ""
     private var isInitialized = false
@@ -88,20 +91,21 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
 
             when (it.refresh) {
                 is LoadState.Loading -> {
-
+                    if (isRefreshing.not()) {
+                        binding.progressBar.visible()
+                    }
                 }
 
                 is LoadState.NotLoading -> {
-
+                    binding.progressBar.gone()
+                    isRefreshing = false
                 }
 
                 is LoadState.Error -> {
+                    binding.progressBar.gone()
+                    isRefreshing = false
                     binding.refresh.isRefreshing = false
                     LogUtils.e(it.toString())
-                }
-
-                else -> {
-
                 }
             }
 
@@ -153,6 +157,7 @@ class SearchFragment : VVMBaseFragment<SearchViewModel, FragmentSearchBinding>()
         }
 
         binding.refresh.setOnRefreshListener {
+            isRefreshing = true
             adapter.refresh()
 
             // 页面未加载时 下拉刷新结束动画

@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.wan.android.data.model.History
 import com.example.wan.android.data.model.WebPage
+import com.example.wan.android.utils.dateFormat
 import com.example.wan.android.utils.fromJson
 import com.example.wan.android.utils.logd
 import com.example.wan.android.utils.loge
@@ -20,8 +21,6 @@ class WebPageRepository(private val dataStore: DataStore<Preferences>) {
     companion object {
         val HISTORY_KEY = stringPreferencesKey("history")
     }
-
-    private val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
 
     suspend fun updateWebPage(url: String, title: String) {
         val time = dateFormat.format(Date())

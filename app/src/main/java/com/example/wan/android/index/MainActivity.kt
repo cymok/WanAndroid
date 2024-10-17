@@ -8,11 +8,9 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -21,7 +19,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
-import com.bumptech.glide.Glide
 import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
@@ -43,20 +40,19 @@ import com.example.wan.android.index.subscribe.SubscribeFragment
 import com.example.wan.android.index.web.WebActivity
 import com.example.wan.android.utils.DraggableViewHelper
 import com.example.wan.android.utils.FloatViewHelper
+import com.example.wan.android.utils.MyAppUtils
 import com.example.wan.android.utils.dp2px
+import com.example.wan.android.utils.dp2pxInt
 import com.example.wan.android.utils.ext.loadCircle
 import com.example.wan.android.utils.ext.loadRes
-import com.example.wan.android.utils.log
 import com.example.wan.android.utils.postEvent
-import com.example.wan.android.utils.setOnApplyWindowInsetsListener
 import com.example.wan.android.utils.toast
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import splitties.activities.start
 import splitties.views.onClick
-
-typealias MyAppUtils = com.example.wan.android.utils.AppUtils
+import kotlin.math.roundToInt
 
 class MainActivity : VBaseActivity<ActivityMainBinding>() {
 
@@ -105,20 +101,6 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
         setContentView(binding.root)
         initSDKWithPrivacy()
         initView()
-
-        // test
-        Glide.with(this)
-        Log.d("TAG", "onCreate: test")
-        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show()
-
-        // test
-        binding.tabLayout.setOnApplyWindowInsetsListener { systemBars, statusBars, navigationBars, displayCutout, systemGestures ->
-            log("systemBars, ${systemBars}")
-            log("statusBars = ${statusBars}")
-            log("navigationBars = ${navigationBars}")
-            log("displayCutout = ${displayCutout}")
-            log("systemGestures = ${systemGestures}")
-        }
 
         // Scheme 跳转逻辑处理
         val fromScheme = intent.getBooleanExtra("from_scheme", false)
@@ -221,8 +203,8 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
                 val sizeDp = 75
                 FloatViewHelper.showInWindow(
                     window, floatView, loc = Point(
-                        (ScreenUtils.getScreenWidth() - sizeDp.dp2px),
-                        (ScreenUtils.getScreenHeight() * (3 / 4f) - (sizeDp / 2f).dp2px).toInt()
+                        (ScreenUtils.getScreenWidth() - sizeDp.dp2pxInt),
+                        (ScreenUtils.getScreenHeight() * (3 / 4f) - (sizeDp / 2f).dp2px).roundToInt()
                     ), sizeDp = sizeDp
                 )
                 DraggableViewHelper.intrude(floatView)
@@ -234,7 +216,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
                 FloatViewHelper.showInWindow(
                     window, testView, loc = Point(
                         (0),
-                        (ScreenUtils.getScreenHeight() * (1 / 4f) - (sizeDp / 2f).dp2px).toInt()
+                        (ScreenUtils.getScreenHeight() * (1 / 4f) - (sizeDp / 2f).dp2px).roundToInt()
                     ), sizeDp = sizeDp
                 )
                 DraggableViewHelper.intrude(testView)

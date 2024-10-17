@@ -11,29 +11,30 @@ import com.intellij.psi.PsiMethod
 import org.jetbrains.uast.UCallExpression
 
 @Suppress("UnstableApiUsage")
-class GlideDetector : Detector(), Detector.UastScanner {
+class UtilcodeToastDetector : Detector(), Detector.UastScanner {
 
     override fun getApplicableMethodNames(): List<String> {
-        // 指定方法名
-        return listOf("with")
+        return listOf("showShort", "showLong")
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
-        // 找到指定方法的类
-        if (method.containingClass?.qualifiedName == "com.bumptech.glide.Glide") {
-            val message = "不建议直接使用 Glide"
+        if (method.containingClass?.qualifiedName == "com.blankj.utilcode.util.ToastUtils") {
+            val message = "别用, 有 BUG. 连续弹出会阻塞"
             context.report(ISSUE, node, context.getLocation(node), message)
         }
     }
 
     companion object {
-        val ISSUE = Issue.create(
-            id = "GlideUsage", // `lint.xml` 配置用的是这个 id
-            briefDescription = "建议使用 ImageViewExt 里面的扩展函数",
+        val ISSUE: Issue = Issue.create(
+            id = "UtilcodeToastUsage", // `lint.xml` 配置用的是这个 id
+            briefDescription = "使用 `toast()` `toastShort()` `toastLong()`",
             explanation = "使用统一的方式，便于维护",
-            category = Category.SECURITY,
-            severity = Severity.WARNING,
-            implementation = Implementation(GlideDetector::class.java, Scope.JAVA_FILE_SCOPE)
+            category = Category.CORRECTNESS,
+            severity = Severity.ERROR,
+            implementation = Implementation(
+                UtilcodeToastDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
         )
     }
 

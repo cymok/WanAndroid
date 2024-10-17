@@ -7,6 +7,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import com.blankj.utilcode.util.ScreenUtils
+import kotlin.math.roundToInt
 
 object FloatViewHelper {
 
@@ -25,11 +26,11 @@ object FloatViewHelper {
             gravity = Gravity.START or Gravity.TOP // 窗口位置
             format = PixelFormat.RGBA_8888 // 窗口透明
             // View 宽高
-            width = (sizeDp ?: 100).dp2px
-            height = (sizeDp ?: 100).dp2px
+            width = (sizeDp ?: 100).dp2pxInt
+            height = (sizeDp ?: 100).dp2pxInt
             // View xy 坐标
             x = loc?.x ?: (ScreenUtils.getScreenWidth() - width)
-            y = loc?.y ?: (ScreenUtils.getScreenHeight() * (3 / 4f) - height / 2f).toInt()
+            y = loc?.y ?: (ScreenUtils.getScreenHeight() * (3 / 4f) - height / 2f).roundToInt()
         }
         window.windowManager.addView(view, params)
     }

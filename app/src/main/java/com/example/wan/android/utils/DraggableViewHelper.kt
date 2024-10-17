@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.ScreenUtils
 import com.example.wan.android.utils.ext.touchSlop
 import splitties.systemservices.windowManager
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 // 拖拽
 object DraggableViewHelper {
@@ -44,7 +45,7 @@ object DraggableViewHelper {
                     val moveX = event.rawX - downX
                     val moveY = event.rawY - downY - BarUtils.getStatusBarHeight() // 处理状态栏的差值
 
-                    updateLocation(view, Point((moveX).toInt(), (moveY).toInt()))
+                    updateLocation(view, Point((moveX).roundToInt(), (moveY).roundToInt()))
                 }
 
                 MotionEvent.ACTION_UP -> {

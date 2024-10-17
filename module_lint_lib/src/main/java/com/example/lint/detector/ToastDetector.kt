@@ -10,6 +10,7 @@ import com.android.tools.lint.detector.api.Severity
 import com.intellij.psi.PsiMethod
 import org.jetbrains.uast.UCallExpression
 
+@Suppress("UnstableApiUsage")
 class ToastDetector : Detector(), Detector.UastScanner {
 
     override fun getApplicableMethodNames(): List<String> {
@@ -18,12 +19,8 @@ class ToastDetector : Detector(), Detector.UastScanner {
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         if (method.containingClass?.qualifiedName == "android.widget.Toast") {
-            context.report(
-                ISSUE,
-                node,
-                context.getLocation(node),
-                "使用 `toast()` `toastShort()` `toastLong()`"
-            )
+            val message = "使用 `toast()` `toastShort()` `toastLong()`"
+            context.report(ISSUE, node, context.getLocation(node), message)
         }
     }
 

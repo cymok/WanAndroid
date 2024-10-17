@@ -19,7 +19,7 @@ import com.example.wan.android.index.like.ArticleLikeActivity
 import com.example.wan.android.index.login.LoginActivity
 import com.example.wan.android.index.setting.SettingActivity
 import com.example.wan.android.utils.UserUtils
-import com.example.wan.android.utils.dp2px
+import com.example.wan.android.utils.dp2pxInt
 import com.example.wan.android.utils.ext.load
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.observeEvent
@@ -77,7 +77,7 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
             it.userInfo.let {
                 iv.load(
                     any = it.icon.ifBlank { R.mipmap.ic_launcher },
-                    cornerRadius = 10.dp2px,
+                    cornerRadius = 10.dp2pxInt,
                     placeholderRes = R.mipmap.ic_launcher,
                 )
                 tvNickname.text = it.nickname

@@ -3,6 +3,7 @@ package com.example.wan.android.index.login
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.example.wan.android.base.BaseViewModel
+import com.example.wan.android.constant.AppConst
 import com.example.wan.android.data.model.LoginFormState
 import com.example.wan.android.data.model.SupperUserInfo
 import com.example.wan.android.data.repository.WanRepository
@@ -16,8 +17,10 @@ class LoginViewModel : BaseViewModel() {
 
     fun login(username: String, password: String) {
         launch {
-            startLoading()
+            changeLoadingState(AppConst.loading)
             val result = WanRepository.login(username, password)
+            // 保存用户信息
+            // 获取用户信息接口返回的数据包含 UserInfo 和其它信息, 而登录注册只返回 UserInfo
             UserUtils.saveSupperUserInfo(
                 SupperUserInfo(
                     userInfo = result,
@@ -26,13 +29,13 @@ class LoginViewModel : BaseViewModel() {
                 )
             )
             this.result.postValue(true)
-            stopLoading()
+            changeLoadingState(AppConst.complete)
         }
     }
 
     fun register(username: String, password: String) {
         launch {
-            startLoading()
+            changeLoadingState(AppConst.loading)
             val result = WanRepository.register(username, password)
             UserUtils.saveSupperUserInfo(
                 SupperUserInfo(
@@ -42,7 +45,7 @@ class LoginViewModel : BaseViewModel() {
                 )
             )
             this.result.postValue(true)
-            stopLoading()
+            changeLoadingState(AppConst.complete)
         }
     }
 

@@ -81,9 +81,9 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
 
                 layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
                 loadWithOverviewMode = true // 缩放至屏幕的大小
-                setSupportZoom(true); // 支持缩放，默认为true。是setBuiltInZoomControls(true)的前提。
-                builtInZoomControls = true; // 设置内置的缩放控件。若为false=不可缩放
-                displayZoomControls = false; // 隐藏原生的缩放控件
+                setSupportZoom(true) // 支持缩放，默认为true。是setBuiltInZoomControls(true)的前提。
+                builtInZoomControls = true // 设置内置的缩放控件。若为false=不可缩放
+                displayZoomControls = false // 隐藏原生的缩放控件
 
                 /*
                 - **`LOAD_DEFAULT`**：默认的缓存使用模式。

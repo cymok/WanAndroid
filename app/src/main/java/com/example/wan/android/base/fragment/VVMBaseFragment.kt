@@ -21,15 +21,19 @@ abstract class VVMBaseFragment<VM : BaseViewModel, VB : ViewBinding> : VBaseFrag
         viewModelObserve()
     }
 
-    protected open fun viewModelObserve() {
-        viewModel.loadingStatus.observe(this as LifecycleOwner) {
-            when (it) {
-                AppConst.loading -> {
-                    showLoading()
-                }
+    protected open var observeLoadingStatus = false
 
-                else -> {
-                    dismissLoading()
+    protected open fun viewModelObserve() {
+        if(observeLoadingStatus){
+            viewModel.loadingStatus.observe(viewLifecycleOwner) {
+                when (it) {
+                    AppConst.loading -> {
+                        showLoading()
+                    }
+
+                    else -> {
+                        dismissLoading()
+                    }
                 }
             }
         }

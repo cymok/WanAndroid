@@ -17,6 +17,8 @@ import com.example.wan.android.data.model.WebData
 import com.example.wan.android.databinding.FragmentSubscribeTabBinding
 import com.example.wan.android.index.common.ArticleListPagingAdapter
 import com.example.wan.android.index.common.ArticleWebActivity
+import com.example.wan.android.utils.ext.gone
+import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.newIntent
 import com.example.wan.android.utils.observeEvent
@@ -30,6 +32,8 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
     override val binding: FragmentSubscribeTabBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter by lazy { ArticleListPagingAdapter() }
+
+    private var isRefreshing = false
 
     private var item: ArticlesTreeItem? = null
 
@@ -81,20 +85,21 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
         adapter.addLoadStateListener {
             when (it.refresh) {
                 is LoadState.Loading -> {
-
+                    if (isRefreshing.not()) {
+                        binding.progressBar.visible()
+                    }
                 }
 
                 is LoadState.NotLoading -> {
-
+                    binding.progressBar.gone()
+                    isRefreshing = false
                 }
 
                 is LoadState.Error -> {
+                    binding.progressBar.gone()
+                    isRefreshing = false
                     binding.refresh.isRefreshing = false
                     LogUtils.e(it.toString())
-                }
-
-                else -> {
-
                 }
             }
         }
@@ -137,6 +142,7 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
         }
 
         binding.refresh.setOnRefreshListener {
+            isRefreshing = true
             adapter.refresh()
         }
     }
@@ -149,6 +155,7 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
             if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.rv.smoothScrollToPosition(0)
                 binding.rv.post {
+                    isRefreshing = true
                     binding.refresh.isRefreshing = true
                     adapter.refresh()
                 }

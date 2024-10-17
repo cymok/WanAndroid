@@ -11,6 +11,7 @@ import com.example.wan.android.base.activity.VBaseActivity
 import com.example.wan.android.data.repository.WanRepository
 import com.example.wan.android.databinding.ActivitySplashBinding
 import com.example.wan.android.index.MainActivity
+import com.example.wan.android.utils.MyAppUtils
 import com.example.wan.android.utils.ext.alert
 import com.example.wan.android.utils.ext.cancel
 import com.example.wan.android.utils.ext.ok
@@ -26,8 +27,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import splitties.activities.start
 import splitties.views.onClick
-
-typealias MyAppUtils = com.example.wan.android.utils.AppUtils
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : VBaseActivity<ActivitySplashBinding>() {

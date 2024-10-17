@@ -41,10 +41,9 @@ interface SquareService {
 
     // 分享文章
     @POST("/lg/user_article/add/json")
-    suspend fun deleteMyShare(
+    suspend fun shareArticle(
         @Field("title") title: Int,
         @Field("link") link: Int,
     ):ApiResult<Articles>
-
 
 }

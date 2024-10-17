@@ -17,6 +17,8 @@ import com.example.wan.android.data.model.WebData
 import com.example.wan.android.databinding.FragmentHomeBinding
 import com.example.wan.android.index.common.ArticleWebActivity
 import com.example.wan.android.index.home.paging.HomePagingAdapter
+import com.example.wan.android.utils.ext.gone
+import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.getViewModel
 import com.example.wan.android.utils.loge
 import com.example.wan.android.utils.logi
@@ -32,6 +34,8 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override val binding: FragmentHomeBinding by viewBinding(CreateMethod.INFLATE)
 
     private val adapter = HomePagingAdapter(this, listOf())
+
+    private var isRefreshing = false
 
     companion object {
         fun getInstance(isPaddingTop: Boolean) =
@@ -75,7 +79,6 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
             adapter.setBanner(it)
         }
         viewModel.fetchBanner()
-        showLoading()
 
         viewModel.likeStatus.observe(viewLifecycleOwner) {
             adapter.notifyLikeChanged(it)
@@ -88,7 +91,9 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
         recyclerView.adapter = adapter
 
         adapter.addLoadStateListener {
-
+            logi("it.prepend = ${it.prepend}")
+            logi("it.refresh = ${it.refresh}")
+            logi("it.append = ${it.append}")
             // 预加载
             when (it.prepend) {
                 LoadState.Loading -> {
@@ -107,13 +112,19 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
             when (it.refresh) {
                 LoadState.Loading -> {
                     logi("加载中...")
+                    if (isRefreshing.not()) {
+                        binding.progressBar.visible()
+                    }
                 }
 
                 is LoadState.NotLoading -> {
-
+                    binding.progressBar.gone()
+                    isRefreshing = false
                 }
 
                 is LoadState.Error -> {
+                    binding.progressBar.gone()
+                    isRefreshing = false
                     binding.refresh.isRefreshing = false
                     loge(it)
                 }
@@ -188,6 +199,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         binding.refresh.setOnRefreshListener {
             viewModel.fetchBanner()
+            isRefreshing = true
             adapter.refresh()
         }
     }
@@ -200,6 +212,7 @@ class HomeFragment : VVMBaseFragment<HomeViewModel, FragmentHomeBinding>() {
             if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                 binding.rv.smoothScrollToPosition(0)
                 binding.rv.post {
+                    isRefreshing = true
                     binding.refresh.isRefreshing = true
                     adapter.refresh()
                 }

@@ -10,6 +10,8 @@ plugins {
 
 apply from: "../config_source.gradle"
 
+def composeBoMVersion = "2024.09.03"
+
 def time = new Date()
 
 //def cmdGitCommitId = 'git rev-parse --short HEAD'
@@ -87,10 +89,12 @@ android {
         buildConfigField "String", "JAVA_JVM", "\"1.8\"" // 对应 compileOptions
         buildConfigField "String", "KOTLIN_JVM", "\"1.8\"" // 对应 kotlinOptions
         buildConfigField "String", "KOTLIN_VERSION", "\"${kotlin_version}\""
+        buildConfigField "String", "COMPOSE_VERSION", "\"${composeBoMVersion}\""
+//        buildConfigField "String", "FLUTTER_VERSION", "\"${flutter_version}\""
+
         vectorDrawables {
             useSupportLibrary true
         }
-//        buildConfigField "String", "FLUTTER_VERSION", "\"${flutter_version}\""
     }
 
 //    ndkVersion '21.4.7075529'
@@ -204,15 +208,16 @@ dependencies {
     // Module
 //    implementation project(":module_common")
     // Lib
-    // libs 下所有的 jar aar
+    // `fileTree` 使用指定目录，libs 下所有的 jar aar
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'], exclude: [
 //            'module_lint_aar-debug.aar' // 排除 lint 文件, 另外使用 lintChecks 引用
     ])
-    // 指定文件
+    // `files` 使用指定文件
 //    implementation files('libs/module_lint_aar-debug.aar')
 //    lintChecks files('libs/module_lint_aar-debug.aar')
 //    implementation files('libs/module_lint_lib.jar')
-    // Lint 专用
+    // `project` 使用指定模块
+    // `lintChecks` Lint 专用
     //noinspection DependencyNotationArgument
     lintChecks project(':module_lint_lib')
 
@@ -235,7 +240,7 @@ dependencies {
 //    val composeBoMVersion = "2024.05.00"
 //    val composeBoMVersion = "2024.06.00"
 //    def composeBoMVersion = "2024.08.00"
-    def composeBoMVersion = "2024.09.03"
+//    def composeBoMVersion = "2024.09.03"
     implementation(platform("androidx.compose:compose-bom:${composeBoMVersion}"))
     androidTestImplementation(platform("androidx.compose:compose-bom:${composeBoMVersion}"))
     implementation("androidx.compose.runtime:runtime")
@@ -388,7 +393,7 @@ dependencies {
     // https://github.com/grzegorzojdana/SpacingItemDecoration
     implementation "com.github.grzegorzojdana:SpacingItemDecoration:1.1.0"
     // https://github.com/square/leakcanary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.12"
+//    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.12" // 只要我不用 leakcanary 就不会有内存泄漏
     // 通过委托 自动处理 `Fragment.onDestroyView()` 时的 `viewBinding = null` 防止内存泄漏
     // https://github.com/androidbroadcast/ViewBindingPropertyDelegate
     implementation "com.github.kirich1409:viewbindingpropertydelegate-full:1.5.9"

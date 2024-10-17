@@ -32,12 +32,8 @@ abstract class BaseViewModel : ViewModel(),
 
     val loginStatus = MutableLiveData<Boolean>()
 
-    open fun startLoading() {
-        loadingStatus.postValue(AppConst.loading)
-    }
-
-    open fun stopLoading() {
-        loadingStatus.postValue(AppConst.complete)
+    open fun changeLoadingState(state: Int) {
+        loadingStatus.postValue(state)
     }
 
     override fun onCleared() {
@@ -72,22 +68,24 @@ abstract class BaseViewModel : ViewModel(),
     ): Job {
         return viewModelScope.launch(context, start) {
             try {
+                changeLoadingState(AppConst.loading)
                 onStart?.invoke()
                 block.invoke(this)
             } catch (e: Exception) {
                 when (e) {
                     is CancellationException -> {
-                        stopLoading()
+                        changeLoadingState(AppConst.error)
                         onCancel?.invoke(e)
                     }
 
                     else -> {
-                        stopLoading()
-                        onError(e, showErrorToast, requireLogin)
+                        changeLoadingState(AppConst.error)
+                        handleError(e, showErrorToast, requireLogin)
                         onError?.invoke(e)
                     }
                 }
             } finally {
+                changeLoadingState(AppConst.complete)
                 onEnd?.invoke()
             }
         }
@@ -114,22 +112,21 @@ abstract class BaseViewModel : ViewModel(),
 
     /**
      * 统一处理错误
-     * @param e 异常
+     * @param exception 异常
      * @param showErrorToast 是否显示错误吐司
      */
-    protected fun onError(
-        e: Exception,
+    protected fun handleError(
+        exception: Exception,
         showErrorToast: Boolean = true,
         requireLogin: Boolean = false,
     ) {
-        loadingStatus.postValue(AppConst.error)
-        when (e) {
+        when (exception) {
             is ApiException -> {
-                when (e.errorCode) {
+                when (exception.errorCode) {
                     -1001 -> {
                         // 未登录
                         if (showErrorToast) {
-                            toast(e.message)
+                            toast(exception.message)
                         }
                         if (requireLogin) {
                             loginStatus.postValue(false)
@@ -139,7 +136,7 @@ abstract class BaseViewModel : ViewModel(),
                     // 其他错误
                     else -> {
                         if (showErrorToast) {
-                            toast(e.message)
+                            toast(exception.message)
                         }
                     }
                 }
@@ -148,11 +145,13 @@ abstract class BaseViewModel : ViewModel(),
             is ConnectException,
             is SocketTimeoutException,
             is UnknownHostException,
-            is HttpException ->
+            is HttpException -> {
                 if (showErrorToast) toast("网络请求失败")
+            }
 
-            else ->
-                if (showErrorToast) toast(e.message ?: return)
+            else -> {
+                if (showErrorToast) toast(exception.message ?: "未知错误")
+            }
         }
     }
 

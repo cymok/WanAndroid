@@ -1,317 +1,324 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wx_background"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_cache"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_item_press"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_cache"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="缓存清理"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+            android:background="@drawable/selector_item_press"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="缓存清理"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_cache"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="0.00KB"
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_arrow_right" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_cache"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_night_model"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="0.00KB"
-            android:textColor="@color/secondaryText"
-            android:textSize="14sp" />
+            android:background="@drawable/selector_item_press"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icon_arrow_right" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="深色模式"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_night_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="跟随系统"
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_night_model"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_item_press"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_arrow_right" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="深色模式"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_night_model"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_web_site"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="跟随系统"
-            android:textColor="@color/secondaryText"
-            android:textSize="14sp" />
+            android:background="@drawable/selector_item_press"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icon_arrow_right" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="网站"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="8dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_web_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="WanAndroid"
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_web_site"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_item_press"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_arrow_right" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="网站"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_web_site"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_report"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="WanAndroid"
-            android:textColor="@color/secondaryText"
-            android:textSize="14sp" />
+            android:background="@drawable/selector_item_press"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icon_arrow_right" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="反馈/建议"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/email"
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_report"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_item_press"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_arrow_right" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="反馈/建议"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_report"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_log"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/email"
-            android:textColor="@color/secondaryText"
-            android:textSize="14sp" />
+            android:background="@drawable/selector_item_press"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icon_arrow_right" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="崩溃日志上报"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/email"
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_log"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_item_press"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_arrow_right" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="崩溃日志上报"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_log"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_source"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/email"
-            android:textColor="@color/secondaryText"
-            android:textSize="14sp" />
+            android:background="@drawable/selector_item_press"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icon_arrow_right" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APP 源码"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text=""
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_source"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_item_press"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_arrow_right" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="APP 源码"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_source"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_version"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text=""
-            android:textColor="@color/secondaryText"
-            android:textSize="14sp" />
+            android:background="@drawable/selector_item_press"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icon_arrow_right" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关于 APP"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="Version 1.0"
+                android:textColor="@color/secondaryText"
+                android:textSize="14sp" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_version"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_item_press"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_arrow_right" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="关于 APP"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_version"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_logout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="Version 1.0"
-            android:textColor="@color/secondaryText"
-            android:textSize="14sp" />
+            android:background="@drawable/selector_item_press"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icon_arrow_right" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="退出"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="8dp" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_item_press"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="退出"
-            android:textColor="@color/primaryText"
-            android:textSize="16sp" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>

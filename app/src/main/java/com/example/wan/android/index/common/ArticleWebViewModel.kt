@@ -2,6 +2,7 @@ package com.example.wan.android.index.common
 
 import androidx.lifecycle.MutableLiveData
 import com.example.wan.android.base.BaseViewModel
+import com.example.wan.android.constant.AppConst
 import com.example.wan.android.data.repository.WanRepository
 
 open class ArticleWebViewModel : BaseViewModel() {
@@ -10,27 +11,27 @@ open class ArticleWebViewModel : BaseViewModel() {
 
     fun likeArticle(id: Int, originId: Int, isMyLike: Boolean) {
         launch {
-            startLoading()
+            changeLoadingState(AppConst.loading)
             if (isMyLike) {
                 WanRepository.likeArticle(originId)
             } else {
                 WanRepository.likeArticle(id)
             }
             like.postValue(true)
-            stopLoading()
+            changeLoadingState(AppConst.complete)
         }
     }
 
     fun unlikeArticle(id: Int, originId: Int, isMyLike: Boolean) {
         launch {
-            startLoading()
+            changeLoadingState(AppConst.loading)
             if (isMyLike) {
                 WanRepository.unlikeMyLike(id, originId)
             } else {
                 WanRepository.unlikeArticle(id)
             }
             like.postValue(false)
-            stopLoading()
+            changeLoadingState(AppConst.complete)
         }
     }
 

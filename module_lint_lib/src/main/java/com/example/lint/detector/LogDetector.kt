@@ -10,6 +10,7 @@ import com.android.tools.lint.detector.api.Severity
 import com.intellij.psi.PsiMethod
 import org.jetbrains.uast.UCallExpression
 
+@Suppress("UnstableApiUsage")
 class LogDetector : Detector(), Detector.UastScanner {
 
     override fun getApplicableMethodNames(): List<String> {
@@ -20,12 +21,8 @@ class LogDetector : Detector(), Detector.UastScanner {
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         // 找到方法的类
         if (method.containingClass?.qualifiedName == "android.util.Log") {
-            context.report(
-                ISSUE,
-                node,
-                context.getLocation(node),
-                "使用 `log()` `logd()` `loge()` `logi()` 等"
-            )
+            val message = "使用 `log()` `logd()` `loge()` `logi()` 等"
+            context.report(ISSUE, node, context.getLocation(node), message)
         }
     }
 

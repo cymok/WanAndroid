@@ -20,15 +20,19 @@ abstract class VMBaseActivity<VM : BaseViewModel>(@LayoutRes layoutId: Int = 0) 
         viewModelObserve()
     }
 
-    protected open fun viewModelObserve() {
-        viewModel.loadingStatus.observe(this) {
-            when (it) {
-                AppConst.loading -> {
-                    showLoading()
-                }
+    protected var observeLoadingStatus = false
 
-                else -> {
-                    dismissLoading()
+    protected open fun viewModelObserve() {
+        if(observeLoadingStatus){
+            viewModel.loadingStatus.observe(this) {
+                when (it) {
+                    AppConst.loading -> {
+                        showLoading()
+                    }
+
+                    else -> {
+                        dismissLoading()
+                    }
                 }
             }
         }

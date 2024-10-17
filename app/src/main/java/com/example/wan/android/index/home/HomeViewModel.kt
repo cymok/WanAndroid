@@ -27,10 +27,8 @@ class HomeViewModel : LikeViewModel() {
 
     fun fetchBanner() {
         launch {
-//            startLoading()
             val result = WanRepository.getBanner()
             banner.postValue(result)
-            stopLoading()
         }
     }
 
@@ -46,7 +44,6 @@ class HomeViewModel : LikeViewModel() {
                         val homeTopList = async { WanRepository.getHomeTopList() }
                         result.await().datas.addAll(0, homeTopList.await())
                     }
-                    stopLoading()
                     result.await()
                 }
             },

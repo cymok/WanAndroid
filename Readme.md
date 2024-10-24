@@ -1,4 +1,8 @@
-# WanAndroid 传统 Kotlin 版
+# WanAndroid, View System + Compose
+
+## 效果图
+
+略
 
 ## 项目架构
 
@@ -43,8 +47,6 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 - [x] 集成 Compose, 将个人项目 WanCompose 整合到 WanAndroid, 目前已整合依赖和基础页面, 可正常进行 Compose 页面开发
 
 - [x] 查看/删除 本地浏览历史, Compose UI, 基于 DataStore 本地数据存取
-
-- [] Android 15 适配, 目前适配到 Android 14
 
 - [] TODO: 页面过度 空白页 WebView错误页 等
 

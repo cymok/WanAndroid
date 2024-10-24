@@ -88,8 +88,8 @@ object WanRepository {
         likeService.getLikeList(page).apiData()!!
     }
 
-    suspend fun search(page: Int, key: String) = withContext(Dispatchers.IO) {
-        apiService.search(page = page, k = key).apiData()!!
+    suspend fun search(key: String, page: Int) = withContext(Dispatchers.IO) {
+        apiService.search(k = key, page = page).apiData()!!
     }
 
     suspend fun getQAList(page: Int) = withContext(Dispatchers.IO) {

@@ -137,8 +137,8 @@ interface WanService {
     @GET("/wxarticle/list/{id}/{page}/json?k=Java")
     suspend fun searchWxArticleList(
         @Path("id") id: Int,
-        @Path("page") page: Int = 1,
         @Query("k") k: Int,
+        @Path("page") page: Int = 1,
         @Query("page_size") pageSize: Int = 10,
     ): ApiResult<Articles>
 
@@ -146,9 +146,9 @@ interface WanService {
     @FormUrlEncoded
     @POST("/article/query/{page}/json")
     suspend fun search(
+        @Field("k") k: String,
         @Path("page") page: Int = 0,
         @Query("page_size") pageSize: Int = 10,
-        @Field("k") k: String,
     ): ApiResult<Articles>
 
     // 问答

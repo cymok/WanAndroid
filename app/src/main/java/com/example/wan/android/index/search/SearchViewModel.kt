@@ -14,7 +14,7 @@ class SearchViewModel : LikeViewModel() {
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
                 ArticleListDataSource(firstPage = 0) {
-                    WanRepository.search(page = it, key = key)
+                    WanRepository.search(key = key, page = it)
                 }
             },
         )

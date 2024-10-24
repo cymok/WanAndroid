@@ -71,7 +71,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
     private val tabIcons = listOf(
         R.drawable.icon_home,
         R.drawable.icon_project,
-        R.drawable.icon_squar,
+        R.drawable.icon_square,
         R.drawable.icon_subscribe,
         R.drawable.icon_person
     )
@@ -79,7 +79,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
     private val tabSelectedIcons = listOf(
         R.drawable.icon_home_selected,
         R.drawable.icon_project_selected,
-        R.drawable.icon_squar_selected,
+        R.drawable.icon_square_selected,
         R.drawable.icon_subscribe_selected,
         R.drawable.icon_person_selected
     )

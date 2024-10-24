@@ -51,7 +51,7 @@ interface UserService {
 
     // 未读消息列表
     @GET("/message/lg/unread_list/{page}/json")
-    suspend fun getUnreadMessage(
+    suspend fun getUnreadMessageList(
         @Path("page") page: Int = 1,
     ): ApiResult<ResponseBody>
 

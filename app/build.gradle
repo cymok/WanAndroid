@@ -167,10 +167,10 @@ android {
         // compose-kotlin https://developer.android.com/jetpack/androidx/releases/compose-kotlin
         // 1.3.2 -> kotlin 1.7.20
         // 1.4.8 -> kotlin 1.8.22
-        // 1.5.14 -> kotlin 1.9.24
+        // 1.5.15 -> kotlin 1.9.25
         // Compose Compiler Gradle plugin -> kotlin 2.0.0+
         // https://developer.android.com/develop/ui/compose/compiler
-        kotlinCompilerExtensionVersion = "1.5.14"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packagingOptions { // 这个块定义了打包相关的配置
         // 指定在构建 APK 或 AAR 时要排除的文件或路径
@@ -305,7 +305,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.7.0"
     implementation "androidx.core:core-ktx:1.13.1" // 33 -> 1.10.1
     implementation "androidx.core:core-splashscreen:1.0.1"
-    implementation 'androidx.activity:activity-ktx:1.9.2'
+    implementation "androidx.activity:activity-ktx:1.9.3"
     def lifecycleVersion = "2.8.6"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}"
@@ -319,7 +319,7 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.1.0"
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycleVersion}") // compose
     // 1.1 新特性 registerFragmentTransactionCallback
-    def navigationVersion = "2.8.2" // 33 -> 2.6.0
+    def navigationVersion = "2.8.3" // 33 -> 2.6.0
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     implementation("androidx.navigation:navigation-compose:${navigationVersion}") // compose

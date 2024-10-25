@@ -216,7 +216,7 @@ class MainActivity : VBaseActivity<ActivityMainBinding>() {
                 FloatViewHelper.showInWindow(
                     window, testView, loc = Point(
                         (0),
-                        (ScreenUtils.getScreenHeight() * (1 / 4f) - (sizeDp / 2f).dp2px).roundToInt()
+                        (ScreenUtils.getScreenHeight() * (3 / 4f) - (sizeDp / 2f).dp2px).roundToInt()
                     ), sizeDp = sizeDp
                 )
                 DraggableViewHelper.intrude(testView)

@@ -2,7 +2,23 @@
 
 ## 效果图
 
-略
+<div style="display: flex; justify-content: space-between;">
+    <img src="picture/pic_pj.jpg" width="32%">
+    <img src="picture/pic_qa.jpg" width="32%">
+    <img src="picture/pic_qa2.jpg" width="32%">
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+    <img src="picture/pic_dark.jpg" width="32%">
+    <img src="picture/pic_me.jpg" width="32%">
+    <img src="picture/pic_me_dark.jpg" width="32%">
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+    <img src="picture/pic_sub.jpg" width="32%">
+    <img src="picture/pic_email.jpg" width="32%">
+    <img src="picture/pic_info.jpg" width="32%">
+</div>
 
 ## 项目架构
 

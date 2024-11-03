@@ -16,7 +16,7 @@ interface SquareService {
     @GET("/user_article/list/{page}/json")
     suspend fun getSquareList(
         @Path("page") page: Int = 0,
-        @Query("page_size") pageSize: Int = 10,
+        @Query("page_size") pageSize: Int = 10, // fixme 此接口返回的条数有问题
     ): ApiResult<Articles>
 
     // 分享人对应列表数据

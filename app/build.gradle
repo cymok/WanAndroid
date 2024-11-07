@@ -10,7 +10,7 @@ plugins {
 
 apply from: "../config_source.gradle"
 
-def composeBoMVersion = "2024.09.03"
+def composeBoMVersion = "2024.10.01"
 
 def time = new Date()
 
@@ -97,7 +97,7 @@ android {
         }
     }
 
-//    ndkVersion '21.4.7075529'
+//    ndkVersion project.properties.ndkVersion
 
     signingConfigs {
         config {
@@ -159,6 +159,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+//        aidl true
         viewBinding true
         compose = true
     }
@@ -241,6 +242,7 @@ dependencies {
 //    val composeBoMVersion = "2024.06.00"
 //    def composeBoMVersion = "2024.08.00"
 //    def composeBoMVersion = "2024.09.03"
+//    def composeBoMVersion = "2024.10.01"
     implementation(platform("androidx.compose:compose-bom:${composeBoMVersion}"))
     androidTestImplementation(platform("androidx.compose:compose-bom:${composeBoMVersion}"))
     implementation("androidx.compose.runtime:runtime")
@@ -301,12 +303,12 @@ dependencies {
     // Android
     // KTX https://developer.android.com/kotlin/ktx
     implementation platform("org.jetbrains.kotlin:kotlin-bom:${kotlin_version}")
-    implementation "com.google.android.material:material:1.12.0" // 33 -> 1.9.0
+    implementation "com.google.android.material:material:1.12.0"
     implementation "androidx.appcompat:appcompat:1.7.0"
-    implementation "androidx.core:core-ktx:1.13.1" // 33 -> 1.10.1
+    implementation "androidx.core:core-ktx:1.15.0"
     implementation "androidx.core:core-splashscreen:1.0.1"
     implementation "androidx.activity:activity-ktx:1.9.3"
-    def lifecycleVersion = "2.8.6"
+    def lifecycleVersion = "2.8.7"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}"
@@ -315,11 +317,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-process:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-service:${lifecycleVersion}"
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${lifecycleVersion}"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation "androidx.constraintlayout:constraintlayout:2.2.0"
     implementation "androidx.viewpager2:viewpager2:1.1.0"
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycleVersion}") // compose
     // 1.1 新特性 registerFragmentTransactionCallback
-    def navigationVersion = "2.8.3" // 33 -> 2.6.0
+    def navigationVersion = "2.8.3"
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     implementation("androidx.navigation:navigation-compose:${navigationVersion}") // compose
@@ -335,7 +337,7 @@ dependencies {
 //    kapt("androidx.room:room-compiler:${roomVersion}")
     ksp("androidx.room:room-compiler:${roomVersion}")
     testImplementation("androidx.room:room-testing:${roomVersion}")
-    implementation "androidx.work:work-runtime-ktx:2.9.1"
+    implementation "androidx.work:work-runtime-ktx:2.10.0"
     implementation "androidx.paging:paging-runtime-ktx:3.3.2"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     // 快乐库 - 扩展
@@ -410,12 +412,13 @@ dependencies {
 
     // 刷新
     // https://github.com/scwang90/SmartRefreshLayout
-    implementation "io.github.scwang90:refresh-layout-kernel:2.0.6"      //核心必须依赖
-    implementation "io.github.scwang90:refresh-header-classics:2.0.6"    //经典刷新头
-    implementation "io.github.scwang90:refresh-footer-classics:2.0.6"    //经典加载
-    implementation "io.github.scwang90:refresh-header-falsify:2.0.6"     //虚拟刷新头
-    implementation "io.github.scwang90:refresh-header-material:2.0.6"    //谷歌刷新头
-    implementation "io.github.scwang90:refresh-header-two-level:2.0.6"   //二级刷新头
+    def refreshVersion = "2.0.6"
+    implementation "io.github.scwang90:refresh-layout-kernel:${refreshVersion}"      //核心必须依赖
+    implementation "io.github.scwang90:refresh-header-classics:${refreshVersion}"    //经典刷新头
+    implementation "io.github.scwang90:refresh-footer-classics:${refreshVersion}"    //经典加载
+    implementation "io.github.scwang90:refresh-header-falsify:${refreshVersion}"     //虚拟刷新头
+    implementation "io.github.scwang90:refresh-header-material:${refreshVersion}"    //谷歌刷新头
+    implementation "io.github.scwang90:refresh-header-two-level:${refreshVersion}"   //二级刷新头
 
     // 流动布局 标签
     // https://github.com/hongyangAndroid/FlowLayout

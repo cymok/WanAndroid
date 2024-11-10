@@ -1,27 +1,37 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-
     apply from: "config_sign.gradle"
 
     ext.kotlin_version = "1.9.25"
+
     dependencies {
 //        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
     }
 }
 
 plugins {
+    //
     // AGP 与 Gradle 对应版本, AGP 与 Android Studio 对应版本
     // AGP https://developer.android.com/build/releases/gradle-plugin
-    // Giraffe | 2022.3.1               --> AGP 3.2-8.1
-    // Hedgehog | 2023.1.1              --> AGP 3.2-8.2
-    // Iguana | 2023.2.1                --> AGP 3.2-8.3
-    // Jellyfish | 2023.3.1             --> AGP 3.2-8.4
-    // Koala | 2024.1.1                 --> AGP 3.2-8.5
-    // Koala Feature Drop | 2024.1.2    --> AGP 3.2-8.6
-    // Ladybug | 2024.2.1               --> AGP 3.2-8.7
-    id "com.android.application" version "8.1.4" apply false
-    id "com.android.library" version "8.1.4" apply false
+    // AS                               --> AGP
+    // Giraffe | 2022.3.1               --> 3.2-8.1
+    // Hedgehog | 2023.1.1              --> 3.2-8.2
+    // Iguana | 2023.2.1                --> 3.2-8.3
+    // Jellyfish | 2023.3.1             --> 3.2-8.4
+    // Koala | 2024.1.1                 --> 3.2-8.5
+    // Koala Feature Drop | 2024.1.2    --> 3.2-8.6
+    // Ladybug | 2024.2.1               --> 3.2-8.7
+    //
+    // API 与 AGP 对应版本
+    // API Level https://developer.android.com/build/releases/gradle-plugin#api-level-support
+    // API --> minimum AS   --> minimum AGP
+    // 35  --> KFD          --> 8.6.0
+    // 34  --> H            --> 8.1.1
+    // 33  --> F            --> 7.2
+    //
+    id "com.android.application" version "8.6.1" apply false
+    id "com.android.library" version "8.6.1" apply false
 
     // KGP https://kotlinlang.org/docs/gradle-configure-project.html
     // KGP 要对应 android.composeOptions.kotlinCompilerExtensionVersion

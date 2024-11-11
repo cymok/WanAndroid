@@ -7,7 +7,8 @@ import com.example.lint.detector.LogDetector
 import com.example.lint.detector.ToastDetector
 import com.example.lint.detector.UtilcodeToastDetector
 
-@Suppress("UnstableApiUsage")
+// 在 build.gradle 使用
+@Suppress("unused", "UnstableApiUsage")
 class MyIssueRegistry : IssueRegistry() {
 
     override val issues: List<Issue> = listOf(

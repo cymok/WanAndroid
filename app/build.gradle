@@ -220,7 +220,7 @@ dependencies {
     // `project` 使用指定模块
     // `lintChecks` 是 lint-checks 库的，Lint 专用
     //noinspection DependencyNotationArgument
-    lintChecks project(':module_lint_lib')
+    lintChecks project(':module_lint')
 
     // Test
     testImplementation "junit:junit:4.13.2"

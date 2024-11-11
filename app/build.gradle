@@ -218,7 +218,7 @@ dependencies {
 //    lintChecks files('libs/module_lint_aar-debug.aar')
 //    implementation files('libs/module_lint_lib.jar')
     // `project` 使用指定模块
-    // `lintChecks` Lint 专用
+    // `lintChecks` 是 lint-checks 库的，Lint 专用
     //noinspection DependencyNotationArgument
     lintChecks project(':module_lint_lib')
 

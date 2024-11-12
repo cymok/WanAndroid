@@ -73,29 +73,18 @@ android {
 
 //    ndkVersion project.properties.ndkVersion
 
-    signingConfigs {
-        config {
-            storeFile file(rootProject.ext.sign.filePath)
-            storePassword rootProject.ext.sign.storePassword
-            keyAlias rootProject.ext.sign.keyAlias
-            keyPassword rootProject.ext.sign.keyPassword
-        }
-    }
-
     // https://developer.android.com/build/build-variants
     buildTypes {
         debug {
             debuggable true
             minifyEnabled false
             shrinkResources false
-            signingConfig signingConfigs.config
         }
         release {
             debuggable false
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
 
         android.applicationVariants.all { variant ->

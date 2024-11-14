@@ -51,8 +51,9 @@
             android:name=".index.person.HistoryActivity"
             android:exported="false" />
 
-        <activity android:name=".index.setting.ManageSpaceActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".index.setting.ManageSpaceActivity"
+            android:exported="true" />
 
         <activity
             android:name=".index.splash.SplashActivity"

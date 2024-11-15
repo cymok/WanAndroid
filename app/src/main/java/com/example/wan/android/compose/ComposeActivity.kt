@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.blankj.utilcode.util.ActivityUtils
 import com.example.wan.android.R
 import com.example.wan.android.compose.ui.theme.WanAndroidTheme
+import com.example.wan.android.index.person.BookmarkActivity
 import com.example.wan.android.index.person.HistoryActivity
 import com.example.wan.android.index.setting.ManageSpaceActivity
 import com.example.wan.android.utils.px2dp
@@ -64,6 +66,7 @@ private fun ComposeComponent() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PageList(name: String, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     val listState = rememberLazyListState()
     LazyColumn(
         state = listState,
@@ -152,6 +155,24 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
             ) {
                 Text(
                     text = "HistoryActivity 浏览历史",
+                    fontSize = 18.sp,
+                    color = colorResource(id = R.color.primaryText),
+                )
+            }
+            Spacer(modifier = Modifier.size(1.px2dp()))
+            // BookmarkActivity
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(id = R.color.wx_foreground))
+                    .clickable {
+                        ActivityUtils.startActivity(BookmarkActivity::class.java)
+                    }
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "BookmarkActivity 本地书签",
                     fontSize = 18.sp,
                     color = colorResource(id = R.color.primaryText),
                 )

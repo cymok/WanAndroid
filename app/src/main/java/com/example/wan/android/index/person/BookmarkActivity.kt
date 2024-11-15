@@ -55,7 +55,7 @@ import com.example.wan.android.utils.logd
 import com.example.wan.android.utils.px2dp
 import kotlinx.coroutines.launch
 
-class HistoryActivity : ComponentActivity() {
+class BookmarkActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +104,7 @@ class HistoryActivity : ComponentActivity() {
                             .padding(innerPadding)
 //                            .padding(Modifier.systemBarsPadding()) // Modifier.systemBarsPadding() 与 Scaffold 的 innerPadding 效果一样
                     ) {
-                        HistoryPage()
+                        BookmarkPage()
                     }
                 }
             }
@@ -113,31 +113,31 @@ class HistoryActivity : ComponentActivity() {
 }
 
 @Composable
-fun HistoryPage() {
+fun BookmarkPage() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var showDialog by remember { mutableStateOf(false) }
     var itemToDelete by remember { mutableStateOf<WebPage?>(null) }
-    val historyList = remember { mutableStateListOf<WebPage>() }
+    val bookmarkList = remember { mutableStateListOf<WebPage>() }
     val repository = WebPageRepository(dataStore = (context.applicationContext as App).dataStore)
     LaunchedEffect(Unit) {
-        repository.observeWebPageList {
-            historyList.clear()
-            historyList.add(WebPage(sticky = true))
-            historyList.addAll(it)
-            historyList.add(WebPage(sticky = true))
-            historyList.addAll(it)
-            historyList.add(WebPage(sticky = true))
-            historyList.addAll(it)
-            historyList.add(WebPage(sticky = true))
-            historyList.addAll(it)
-            historyList.add(WebPage(sticky = true))
-            historyList.addAll(it)
+        repository.observeWebPageList(isBookmark = true) {
+            bookmarkList.clear()
+            bookmarkList.add(WebPage(sticky = true))
+            bookmarkList.addAll(it)
+            bookmarkList.add(WebPage(sticky = true))
+            bookmarkList.addAll(it)
+            bookmarkList.add(WebPage(sticky = true))
+            bookmarkList.addAll(it)
+            bookmarkList.add(WebPage(sticky = true))
+            bookmarkList.addAll(it)
+            bookmarkList.add(WebPage(sticky = true))
+            bookmarkList.addAll(it)
             // （为了方便测试，数据 5 倍重复显示）
         }
     }
-    HistoryList(
-        historyList = historyList,
+    BookmarkList(
+        bookmarkList = bookmarkList,
         itemClick = {
             WebActivity.start(it.url, it.title)
         },
@@ -147,14 +147,14 @@ fun HistoryPage() {
         },
     )
     if (showDialog && itemToDelete != null) {
-        HistoryConfirmDialog(
+        BookmarkConfirmDialog(
             itemToDelete!!,
             cancel = {
                 showDialog = false
             },
             ok = {
                 lifecycleOwner.lifecycleScope.launch {
-                    repository.removeWebPageByUrl(itemToDelete!!.url)
+                    repository.removeWebPageByUrl(itemToDelete!!.url, isBookmark = true)
                 }
                 showDialog = false
             },
@@ -164,8 +164,8 @@ fun HistoryPage() {
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
-private fun HistoryList(
-    historyList: List<WebPage>,
+private fun BookmarkList(
+    bookmarkList: List<WebPage>,
     itemClick: (WebPage) -> Unit,
     itemLongClick: (WebPage) -> Unit
 ) {
@@ -188,7 +188,7 @@ private fun HistoryList(
                     .background(colorResource(R.color.icon_color_fore)),
             ) {
                 Text(
-                    "浏览历史\n（为了方便测试，数据 5 倍重复显示）[1/5]",
+                    "本地书签\n（为了方便测试，数据 5 倍重复显示）[1/5]",
                     color = colorResource(R.color.white),
                     textAlign = TextAlign.Center, // 设置文本对齐方式为居中
                     modifier = Modifier
@@ -199,11 +199,11 @@ private fun HistoryList(
 */
         // 内容
         /*
-                items(historyList.size) { index ->
-                    val data = historyList[index]
-                    HistoryItem(
+                items(bookmarkList.size) { index ->
+                    val data = bookmarkList[index]
+                    BookmarkItem(
                         data = data,
-                        count = historyList.size,
+                        count = bookmarkList.size,
                         currentIndex = index,
                         itemClick = itemClick,
                         itemLongClick = itemLongClick,
@@ -212,12 +212,12 @@ private fun HistoryList(
         */
 
         // 计算列表的 nonStickyCount
-        val nonStickyCount = historyList.count { it.sticky.not() }
+        val nonStickyCount = bookmarkList.count { it.sticky.not() }
 
-        historyList.forEachIndexed { index, data ->
+        bookmarkList.forEachIndexed { index, data ->
 
             // 计算当前项的 nonStickyIndex
-            val currentStickyCount = historyList
+            val currentStickyCount = bookmarkList
                 .take(index + 1) // 截取到当前项，需要take(当前索引+1)
                 .count { it.sticky }
 
@@ -230,7 +230,7 @@ private fun HistoryList(
                             .background(colorResource(R.color.icon_color_fore)),
                     ) {
                         Text(
-                            "浏览历史\n（为了方便测试，数据 5 倍重复显示）[${currentStickyCount}/5]",
+                            "本地书签\n（为了方便测试，数据 5 倍重复显示）[${currentStickyCount}/5]",
                             color = colorResource(R.color.white),
                             textAlign = TextAlign.Center, // 设置文本对齐方式为居中
                             modifier = Modifier
@@ -241,7 +241,7 @@ private fun HistoryList(
             } else {
                 val currentNonStickyIndex = index - currentStickyCount
                 item {
-                    HistoryItem(
+                    BookmarkItem(
                         data = data,
                         count = nonStickyCount,
                         currentIndex = currentNonStickyIndex,
@@ -297,7 +297,7 @@ private fun HistoryList(
 }
 
 @Composable
-private fun HistoryItem(
+private fun BookmarkItem(
     data: WebPage,
     count: Int = 0,
     currentIndex: Int = -1,
@@ -399,7 +399,7 @@ private fun HistoryItem(
 }
 
 @Composable
-fun HistoryConfirmDialog(
+fun BookmarkConfirmDialog(
     webPage: WebPage,
     cancel: () -> Unit,
     ok: () -> Unit
@@ -409,7 +409,7 @@ fun HistoryConfirmDialog(
             Text("删除确认", fontSize = 18.sp)
         },
         text = {
-            Text("将删除 浏览历史 [${webPage.title}]", fontSize = 14.sp)
+            Text("将删除 本地书签 [${webPage.title}]", fontSize = 14.sp)
         },
         onDismissRequest = cancel,
         confirmButton = {
@@ -437,8 +437,8 @@ fun HistoryConfirmDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun HistoryActivityPreview() {
-    val historyList = mutableListOf<WebPage>()
+fun BookmarkActivityPreview() {
+    val bookmarkList = mutableListOf<WebPage>()
     val webPage = WebPage(
         url = "https://mp.weixin.qq.com/s/Shf8Kiuj8TtMZfCaplPvjg",
         title = "Gemma 2 实例分享 | 使用 Dataflow 流式传输 ML 内容",
@@ -446,10 +446,10 @@ fun HistoryActivityPreview() {
         time = "2024/09/29 07:13:49"
     )
     for (i in 0 until 9) {
-        historyList.add(webPage)
+        bookmarkList.add(webPage)
     }
-    HistoryList(
-        historyList = historyList,
+    BookmarkList(
+        bookmarkList = bookmarkList,
         itemClick = {},
         itemLongClick = {},
     )
@@ -457,24 +457,24 @@ fun HistoryActivityPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun HistoryItemPreview() {
+fun BookmarkItemPreview() {
     val webPage = WebPage(
         url = "https://mp.weixin.qq.com/s/Shf8Kiuj8TtMZfCaplPvjg",
         title = "Gemma 2 实例分享 | 使用 Dataflow 流式传输 ML 内容",
         author = "author",
         time = "2024/09/29 07:13:49"
     )
-    HistoryItem(data = webPage)
+    BookmarkItem(data = webPage)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun HistoryDialogPreview() {
+fun BookmarkDialogPreview() {
     val webPage = WebPage(
         url = "https://mp.weixin.qq.com/s/Shf8Kiuj8TtMZfCaplPvjg",
         title = "Gemma 2 实例分享 | 使用 Dataflow 流式传输 ML 内容",
         author = "author",
         time = "2024/09/29 07:13:49"
     )
-    HistoryConfirmDialog(webPage, {}, {})
+    BookmarkConfirmDialog(webPage, {}, {})
 }

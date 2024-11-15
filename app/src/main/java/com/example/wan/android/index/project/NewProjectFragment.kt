@@ -106,6 +106,7 @@ class NewProjectFragment : VVMBaseFragment<NewProjectViewModel, FragmentArticleL
                         id = dataX.id,
                         url = dataX.link,
                         title = dataX.title,
+                        author = dataX.author,
                         like = dataX.collect,
                         position = position,
                     )

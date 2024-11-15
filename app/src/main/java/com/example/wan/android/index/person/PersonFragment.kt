@@ -151,8 +151,12 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
                     toast("开发中")
                 }
             }
+
             llHistory.onClick {
                 start<HistoryActivity> {}
+            }
+            llBookmark.onClick {
+                start<BookmarkActivity> {}
             }
 
             llSettings.onClick {

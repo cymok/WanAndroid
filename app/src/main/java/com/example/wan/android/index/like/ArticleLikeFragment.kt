@@ -109,6 +109,7 @@ class ArticleLikeFragment : VVMBaseFragment<ArticleLikeViewModel, FragmentArticl
                         originId = dataX.originId,
                         url = dataX.link,
                         title = dataX.title,
+                        author = dataX.author,
                         like = dataX.collect,
                         position = position,
                     )

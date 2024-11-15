@@ -64,7 +64,7 @@ MVVM 架构, 基于 Kotlin + JetPack 组件: Lifecycle + LiveData + ViewModel + 
 
 - [x] 查看/删除 本地浏览历史, Compose UI, 基于 DataStore 本地数据存取
 
-- [ ] TODO: 页面过度 空白页 WebView错误页 等
+- [x] 本地书签, 因接口收藏功能依赖于文章 ID, 不是所有网页都可进行收藏; 而这个本地书签功能只是依赖 URL, 可以将任意网页保存为书签 
 
 - 其它 工具类 便捷库
 

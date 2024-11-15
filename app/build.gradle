@@ -10,7 +10,7 @@ plugins {
 
 apply from: "../config_source.gradle"
 
-String composeBoMVersion = "2024.10.01"
+String composeBoMVersion = "2024.11.00"
 
 def time = new Date()
 
@@ -33,11 +33,13 @@ static def executeCmd(String cmd) {
 android {
     namespace 'com.example.wan.android'
 //    testNamespace  'com.example.wan.android.test'
+    // 确定编译应用时，项目代码可以使用哪些 API。不影响应用运行时的行为，只影响编译时可以访问到哪些类和方法
     compileSdk 35
 
     defaultConfig {
         applicationId "com.example.wan.android"
         minSdk 21
+        // 指定应用在运行时目标的 Android 版本。不影响可以使用的 API，而是影响应用在运行时的行为
         targetSdk 35
 //        versionCode 1
         versionName "0.0.1"
@@ -137,12 +139,17 @@ android {
     }
 
     lint {
+        // https://developer.android.google.cn/studio/write/lint?hl=zh-cn#snapshot
+        // Lint 检测: `./gradlew lint`，可加变体: `./gradlew lintRelease`
+        // baseline 忽略已有的 Lint 问题，Lint 只会报告自上次生成基准文件之后新增的
+        // 如果要创建新基准，请手动删除该文件并再次运行 lint
         baseline = file("lint-baseline.xml")
     }
 /*
     lintOptions {
         textReport true // 输出lint报告
         textOutput 'stdout'
+        ignoreWarnings = true // 忽略警告
         abortOnError false // 遇到错误不停止
     }
 */
@@ -241,9 +248,6 @@ dependencies {
     // https://github.com/google/accompanist/tree/main/drawablepainter
     implementation("com.google.accompanist:accompanist-drawablepainter:0.36.0")
 
-    // paging
-    implementation("androidx.paging:paging-compose:3.3.2") // compose
-
     // Compose 图片视频加载
     // https://github.com/coil-kt/coil
     implementation(platform("io.coil-kt:coil-bom:2.4.0"))
@@ -276,7 +280,7 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.1.0"
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycleVersion}") // compose
     // 1.1 新特性 registerFragmentTransactionCallback
-    def navigationVersion = "2.8.3"
+    def navigationVersion = "2.8.4"
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     implementation("androidx.navigation:navigation-compose:${navigationVersion}") // compose
@@ -293,7 +297,8 @@ dependencies {
     ksp("androidx.room:room-compiler:${roomVersion}")
     testImplementation("androidx.room:room-testing:${roomVersion}")
     implementation "androidx.work:work-runtime-ktx:2.10.0"
-    implementation "androidx.paging:paging-runtime-ktx:3.3.2"
+    implementation("androidx.paging:paging-runtime-ktx:3.3.4")
+    implementation("androidx.paging:paging-compose:3.3.4") // paging compose
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     // 快乐库 - 扩展
     // https://github.com/LouisCAD/Splitties
@@ -342,7 +347,9 @@ dependencies {
     implementation "com.guolindev.permissionx:permissionx:1.8.1"
     // 消息
     // https://github.com/JeremyLiao/LiveEventBus
-    implementation "io.github.jeremyliao:live-event-bus-x:1.8.0"
+//    implementation "io.github.jeremyliao:live-event-bus-x:1.8.0"
+    // https://github.com/michaellee123/LiveEventBus
+    implementation "com.github.michaellee123:LiveEventBus:1.8.14" // 适配 Android 14
     // 快乐库 - UI
     // https://github.com/RuffianZhong/RWidgetHelper
     implementation "com.github.RuffianZhong:RWidgetHelper:androidx.v0.0.14"

@@ -19,6 +19,7 @@ import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.data.model.WebData
+import com.example.wan.android.data.model.WebPage
 import com.example.wan.android.databinding.ActivityQaWebBinding
 import com.example.wan.android.index.web.WebPageRepository
 import com.example.wan.android.utils.ext.visible
@@ -39,6 +40,8 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
     override val binding by lazy { ActivityQaWebBinding.inflate(layoutInflater) }
 
     override val viewModel: QaWebViewModel get() = getViewModel()
+
+    lateinit var repository: WebPageRepository
 
     override fun onDestroy() {
         // 解决 WebView 内存泄漏 2/2
@@ -106,7 +109,7 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
             }
         }
 
-        val repository = WebPageRepository(dataStore = (application as App).dataStore)
+        repository = WebPageRepository(dataStore = (application as App).dataStore)
 
         webView.run {
             settings.run {
@@ -148,7 +151,12 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
 
                     logd("onReceivedTitle: url = ${view.url}, title = $title")
                     lifecycleScope.launch {
-                        repository.updateWebPage(view.url!!, title ?: "No Title")
+                        repository.updateWebPage(
+                            url = view.url!!,
+                            title = title ?: "No Title",
+                            author = webData.author,
+                            isBookmark = false,
+                        )
                     }
 
                 }
@@ -229,6 +237,19 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
                 webView.reload()
             }
 
+            R.id.menu_item_bookmark -> {
+                // 保存书签
+                lifecycleScope.launch {
+                    repository.searchWebPage(url, true) {
+                        if (it.isNotEmpty()) {
+                            confirmUpdateBookmark(it, url, title)
+                        } else {
+                            updateBookmark(url, title)
+                        }
+                    }
+                }
+            }
+
             R.id.menu_item_copy -> {
                 ClipboardUtils.copyText(url)
                 toastLong("复制成功:\n${url}")
@@ -252,6 +273,55 @@ class QaWebActivity : VVMBaseActivity<QaWebViewModel, ActivityQaWebBinding>() {
             }
         }
         return true
+    }
+
+    private fun confirmUpdateBookmark(
+        it: List<WebPage>,
+        url: String,
+        title: String?
+    ) {
+        val joinToString = it.map {
+            "- ${it.title}"
+        }.joinToString("\n")
+        XPopup.Builder(activity)
+            .asConfirm(
+                "提示",
+                "此页面已存在书签\n$joinToString",
+                "取消",
+                "更新",
+                {
+                    // 更新书签
+                    updateBookmark(url, title)
+                },
+                {},
+                false
+            ).show()
+    }
+
+    private fun updateBookmark(url: String, title: String?) {
+        XPopup.Builder(activity)
+            .asInputConfirm(
+                "保存书签",
+                url,
+                title!!
+            ) {
+                val bookmarkName =
+                    if (it.isNullOrEmpty() || it.isBlank()) {
+                        // 无输入内容
+                        title
+                    } else {
+                        it
+                    }.trim()
+                lifecycleScope.launch {
+                    repository.updateWebPage(
+                        url = url,
+                        title = bookmarkName,
+                        author = webData.author,
+                        isBookmark = true,
+                    )
+                    toast("更新成功")
+                }
+            }.show()
     }
 
 }

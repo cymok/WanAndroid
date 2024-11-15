@@ -19,12 +19,15 @@ import com.blankj.utilcode.util.ClipboardUtils
 import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VBaseActivity
+import com.example.wan.android.data.model.WebPage
 import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.utils.ext.visible
 import com.example.wan.android.utils.logd
 import com.example.wan.android.utils.startBrowser
 import com.example.wan.android.utils.toJson
+import com.example.wan.android.utils.toast
 import com.example.wan.android.utils.toastLong
+import com.lxj.xpopup.XPopup
 import kotlinx.coroutines.launch
 
 class WebActivity : VBaseActivity<ActivityWebBinding>() {
@@ -50,6 +53,8 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
     private val webUrl by lazy { intent.getStringExtra("url")!! }
     private val webTitle by lazy { intent.getStringExtra("title") }
 
+    lateinit var repository: WebPageRepository
+
     override fun onDestroy() {
         // 解决 WebView 内存泄漏 2/2
         webView.stopLoading()
@@ -71,7 +76,7 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
 //        supportActionBar?.title = Html.fromHtml(webTitle ?: "")
         titleView.text = Html.fromHtml(webTitle ?: "")
 
-        val repository = WebPageRepository(dataStore = (application as App).dataStore)
+        repository = WebPageRepository(dataStore = (application as App).dataStore)
 
         webView.run {
             settings.run {
@@ -113,7 +118,12 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
 
                     logd("onReceivedTitle: url = ${view.url}, title = $title")
                     lifecycleScope.launch {
-                        repository.updateWebPage(view.url!!, title ?: "No Title")
+                        repository.updateWebPage(
+                            url = view.url!!,
+                            title = title ?: "No Title",
+                            author = null,
+                            isBookmark = false,
+                        )
                     }
 
                 }
@@ -172,6 +182,19 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
                 webView.reload()
             }
 
+            R.id.menu_item_bookmark -> {
+                // 保存书签
+                lifecycleScope.launch {
+                    repository.searchWebPage(url, true) {
+                        if (it.isNotEmpty()) {
+                            confirmUpdateBookmark(it, url, title)
+                        } else {
+                            updateBookmark(url, title)
+                        }
+                    }
+                }
+            }
+
             R.id.menu_item_copy -> {
                 ClipboardUtils.copyText(url)
                 toastLong("复制成功:\n${url}")
@@ -201,6 +224,55 @@ class WebActivity : VBaseActivity<ActivityWebBinding>() {
             }
         }
         return true
+    }
+
+    private fun confirmUpdateBookmark(
+        it: List<WebPage>,
+        url: String,
+        title: String?
+    ) {
+        val joinToString = it.map {
+            "- ${it.title}"
+        }.joinToString("\n")
+        XPopup.Builder(activity)
+            .asConfirm(
+                "提示",
+                "此页面已存在书签\n$joinToString",
+                "取消",
+                "更新",
+                {
+                    // 更新书签
+                    updateBookmark(url, title)
+                },
+                {},
+                false
+            ).show()
+    }
+
+    private fun updateBookmark(url: String, title: String?) {
+        XPopup.Builder(activity)
+            .asInputConfirm(
+                "保存书签",
+                url,
+                title!!
+            ) {
+                val bookmarkName =
+                    if (it.isNullOrEmpty() || it.isBlank()) {
+                        // 无输入内容
+                        title
+                    } else {
+                        it
+                    }.trim()
+                lifecycleScope.launch {
+                    repository.updateWebPage(
+                        url = url,
+                        title = bookmarkName,
+                        author = null,
+                        isBookmark = true,
+                    )
+                    toast("更新成功")
+                }
+            }.show()
     }
 
     private fun getHttpHttpsApps(context: Context): List<String> {

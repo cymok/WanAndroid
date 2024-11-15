@@ -26,13 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.ToastUtils
 import com.example.wan.android.R
 import com.example.wan.android.composable.ImageFromDrawableRes
 import com.example.wan.android.composable.ImageFromRes
 import com.example.wan.android.compose.ui.theme.WanAndroidTheme
 import com.example.wan.android.index.person.PersonViewModel
 import com.example.wan.android.index.setting.SettingActivity
+import com.example.wan.android.utils.toast
 
 @Composable
 fun AccountComponent(viewModel: PersonViewModel) {
@@ -55,7 +55,7 @@ fun AccountComponent(viewModel: PersonViewModel) {
                     indication = null, // 去除 ripple 效果
                     interactionSource = remember { MutableInteractionSource() },
                 ) {
-                    ToastUtils.showShort("未登录时跳转登录页面")
+                    toast("未登录时跳转登录页面")
                 }
                 .padding(28.dp, 50.dp, 16.dp, 30.dp),
         ) {
@@ -109,7 +109,7 @@ fun AccountComponent(viewModel: PersonViewModel) {
             modifier = Modifier
                 .background(colorResource(id = R.color.wx_foreground))
                 .clickable {
-                    ToastUtils.showShort("开发中")
+                    toast("开发中")
                 }
                 .padding(16.dp)
         ) {
@@ -147,7 +147,7 @@ fun AccountComponent(viewModel: PersonViewModel) {
             modifier = Modifier
                 .background(colorResource(id = R.color.wx_foreground))
                 .clickable {
-                    ToastUtils.showShort("开发中")
+                    toast("开发中")
                 }
                 .padding(16.dp)
         ) {
@@ -179,7 +179,7 @@ fun AccountComponent(viewModel: PersonViewModel) {
             modifier = Modifier
                 .background(colorResource(id = R.color.wx_foreground))
                 .clickable {
-                    ToastUtils.showShort("开发中")
+                    toast("开发中")
                 }
                 .padding(16.dp)
         ) {
@@ -205,7 +205,7 @@ fun AccountComponent(viewModel: PersonViewModel) {
             modifier = Modifier
                 .background(colorResource(id = R.color.wx_foreground))
                 .clickable {
-                    ToastUtils.showShort("开发中")
+                    toast("开发中")
                 }
                 .padding(16.dp)
         ) {

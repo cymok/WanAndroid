@@ -18,6 +18,7 @@ import com.example.wan.android.App
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.data.model.WebData
+import com.example.wan.android.data.model.WebPage
 import com.example.wan.android.databinding.ActivityWebBinding
 import com.example.wan.android.index.web.WebPageRepository
 import com.example.wan.android.utils.ext.visible
@@ -36,6 +37,8 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
     override val binding by lazy { ActivityWebBinding.inflate(layoutInflater) }
 
     override val viewModel: ArticleWebViewModel get() = getViewModel()
+
+    lateinit var repository: WebPageRepository
 
     override fun onDestroy() {
         // 解决 WebView 内存泄漏 2/2
@@ -70,7 +73,7 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
 //        supportActionBar?.title = Html.fromHtml(webData.title ?: "文章")
         titleView.text = Html.fromHtml(webData.title ?: "文章")
 
-        val repository = WebPageRepository(dataStore = (application as App).dataStore)
+        repository = WebPageRepository(dataStore = (application as App).dataStore)
 
         webView.run {
             settings.run {
@@ -112,7 +115,12 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
 
                     logd("onReceivedTitle: url = ${view.url}, title = $title")
                     lifecycleScope.launch {
-                        repository.updateWebPage(view.url!!, title ?: "No Title")
+                        repository.updateWebPage(
+                            url = view.url!!,
+                            title = title ?: "No Title",
+                            author = webData.author,
+                            isBookmark = false,
+                        )
                     }
 
                 }
@@ -203,7 +211,7 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
                     XPopup.Builder(this)
                         .asConfirm(
                             "操作受限",
-                            "因接口问题的限制，目前仅能对页面跳转前的原始文章《${webData.title}》进行收藏/取消"
+                            "因接口限制，\n跳转后的页面无法获取文章ID\n\n仅能对页面跳转前的原始文章《${webData.title}》进行收藏/取消\n\n但您可尝试将本页面保存为本地书签~"
                         ) {
 
                         }.show()
@@ -222,6 +230,19 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
 
             R.id.menu_item_refresh -> {
                 webView.reload()
+            }
+
+            R.id.menu_item_bookmark -> {
+                // 保存书签
+                lifecycleScope.launch {
+                    repository.searchWebPage(url, true) {
+                        if (it.isNotEmpty()) {
+                            confirmUpdateBookmark(it, url, title)
+                        } else {
+                            updateBookmark(url, title)
+                        }
+                    }
+                }
             }
 
             R.id.menu_item_copy -> {
@@ -247,6 +268,55 @@ class ArticleWebActivity : VVMBaseActivity<ArticleWebViewModel, ActivityWebBindi
             }
         }
         return true
+    }
+
+    private fun confirmUpdateBookmark(
+        it: List<WebPage>,
+        url: String,
+        title: String?
+    ) {
+        val joinToString = it.map {
+            "- ${it.title}"
+        }.joinToString("\n")
+        XPopup.Builder(activity)
+            .asConfirm(
+                "提示",
+                "此页面已存在书签\n$joinToString",
+                "取消",
+                "更新",
+                {
+                    // 更新书签
+                    updateBookmark(url, title)
+                },
+                {},
+                false
+            ).show()
+    }
+
+    private fun updateBookmark(url: String, title: String?) {
+        XPopup.Builder(activity)
+            .asInputConfirm(
+                "保存书签",
+                url,
+                title!!
+            ) {
+                val bookmarkName =
+                    if (it.isNullOrEmpty() || it.isBlank()) {
+                        // 无输入内容
+                        title
+                    } else {
+                        it
+                    }.trim()
+                lifecycleScope.launch {
+                    repository.updateWebPage(
+                        url = url,
+                        title = bookmarkName,
+                        author = webData.author,
+                        isBookmark = true,
+                    )
+                    toast("更新成功")
+                }
+            }.show()
     }
 
 }

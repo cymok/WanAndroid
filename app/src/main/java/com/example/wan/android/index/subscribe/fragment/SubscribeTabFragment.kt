@@ -134,6 +134,7 @@ class SubscribeTabFragment : VVMBaseFragment<SubscribeTabViewModel, FragmentSubs
                         id = dataX.id,
                         url = dataX.link,
                         title = dataX.title,
+                        author = dataX.author,
                         like = dataX.collect,
                         position = position,
                     )

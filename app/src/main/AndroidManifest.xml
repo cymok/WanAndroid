@@ -54,8 +54,12 @@
         <activity
             android:name=".compose.XhsActivity"
             android:exported="false" />
+
         <activity
             android:name=".index.person.HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".index.person.BookmarkActivity"
             android:exported="false" />
 
         <activity

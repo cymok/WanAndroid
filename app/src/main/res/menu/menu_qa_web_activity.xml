@@ -9,6 +9,12 @@
         app:showAsAction="collapseActionView" />
 
     <item
+        android:id="@+id/menu_item_bookmark"
+        android:icon="@drawable/icon_bookmark"
+        android:title="保存书签"
+        app:showAsAction="collapseActionView" />
+
+    <item
         android:id="@+id/menu_item_copy"
         android:icon="@drawable/icon_copy"
         android:title="复制链接"

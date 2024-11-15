@@ -6,6 +6,9 @@ import android.net.Uri
 import com.example.wan.android.App
 
 fun Activity.startBrowser(url: String) {
+
+    loge("startBrowser url = $url")
+
     val intent = Intent().apply {
         action = Intent.ACTION_VIEW
         data = Uri.parse(url)
@@ -21,6 +24,7 @@ fun Activity.startBrowser(url: String) {
         }
 
         "wanandroid" -> {
+            // 自定义 scheme
             intent.setPackage(AppPkg.WanAndroid.pkg)
         }
     }

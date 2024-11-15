@@ -15,10 +15,8 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
 import com.blankj.utilcode.util.SPUtils
-import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.ZipUtils
 import com.bumptech.glide.Glide
-import com.example.wan.android.BuildConfig
 import com.example.wan.android.R
 import com.example.wan.android.base.activity.VVMBaseActivity
 import com.example.wan.android.constant.AppConst
@@ -266,7 +264,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 }
             startActivity(intentChooser)
         } else {
-            ToastUtils.showShort("没有可用的应用")
+            toast("没有可用的应用")
         }
     }
 

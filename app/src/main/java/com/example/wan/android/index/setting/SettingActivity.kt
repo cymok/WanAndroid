@@ -212,6 +212,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
 
     }
 
+    // 提供自定义应用列表 若系统可解析的列表中的应用不包含在内 则过滤掉
     private fun sendEmail(intent: Intent) {
         // 可得到匹配的应用列表
         val resolveInfoList = packageManager.queryIntentActivities(
@@ -246,7 +247,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 Intent(intent).apply {
                     // 由于 Intent.createChooser 中的 initialIntents 列表中的 Intent 对象没有设置正确的 ComponentName 或 PackageName，导致系统无法找到对应的应用程序图标
 //                    setPackage(resolveInfo.activityInfo.packageName)
-                    // component 可解决上述问题
+                    // 解决上述问题：component 可指定 className 入口
                     component = ComponentName(
                         resolveInfo.activityInfo.packageName,
                         resolveInfo.activityInfo.name

@@ -7,6 +7,7 @@ enum class AppPkg(val pkg: String, val app: String) {
     WeChat("com.tencent.mm", "微信"), // 适配打开 weixin 协议
 
     // 以下是浏览器 可适配打开 http(s) 协议
+    Browser("com.android.browser", "浏览器"),
     Chrome("com.android.chrome", "Chrome"),
     Edge("com.microsoft.emmx", "Edge"),
     Firefox("org.mozilla.firefox", "Firefox"),

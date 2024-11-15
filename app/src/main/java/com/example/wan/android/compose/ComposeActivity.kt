@@ -37,6 +37,8 @@ import com.example.wan.android.index.person.BookmarkActivity
 import com.example.wan.android.index.person.HistoryActivity
 import com.example.wan.android.index.setting.ManageSpaceActivity
 import com.example.wan.android.utils.px2dp
+import com.example.wan.android.utils.startBrowser
+import com.example.wan.android.utils.startUrl
 import com.example.wan.android.utils.toast
 
 class ComposeActivity : ComponentActivity() {
@@ -173,6 +175,42 @@ fun PageList(name: String, modifier: Modifier = Modifier) {
             ) {
                 Text(
                     text = "BookmarkActivity 本地书签",
+                    fontSize = 18.sp,
+                    color = colorResource(id = R.color.primaryText),
+                )
+            }
+            Spacer(modifier = Modifier.size(1.px2dp()))
+            // 系统浏览器列表
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(id = R.color.wx_foreground))
+                    .clickable {
+                        context.startUrl("https://www.wanandroid.com")
+                    }
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "从 系统浏览器列表 打开",
+                    fontSize = 18.sp,
+                    color = colorResource(id = R.color.primaryText),
+                )
+            }
+            Spacer(modifier = Modifier.size(1.px2dp()))
+            // 自定义浏览器列表
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(id = R.color.wx_foreground))
+                    .clickable {
+                        context.startBrowser("https://www.wanandroid.com")
+                    }
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "从 自定义浏览器列表 打开",
                     fontSize = 18.sp,
                     color = colorResource(id = R.color.primaryText),
                 )

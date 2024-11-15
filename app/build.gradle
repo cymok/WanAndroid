@@ -15,7 +15,7 @@ String composeBoMVersion = "2024.11.00"
 def time = new Date()
 
 def gitCommitCount = executeCmd("git rev-list --count HEAD")?.toInteger() ?: 1
-//def gitLastTag = executeCmd("git describe --tags --always") ?: "1.0"
+def gitLastTag = executeCmd("git describe --tags --always") ?: "1.0"
 def gitCommitId = executeCmd("git rev-parse --short HEAD") ?: "nocommitid"
 
 static def executeCmd(String cmd) {
@@ -32,7 +32,6 @@ static def executeCmd(String cmd) {
 
 android {
     namespace 'com.example.wan.android'
-//    testNamespace  'com.example.wan.android.test'
     // 确定编译应用时，项目代码可以使用哪些 API。不影响应用运行时的行为，只影响编译时可以访问到哪些类和方法
     compileSdk 35
 
@@ -41,10 +40,8 @@ android {
         minSdk 21
         // 指定应用在运行时目标的 Android 版本。不影响可以使用的 API，而是影响应用在运行时的行为
         targetSdk 35
-//        versionCode 1
-        versionName "0.0.1"
         versionCode gitCommitCount
-//        versionName gitLastTag // 假如每个 tag 都是一个 release
+        versionName gitLastTag // 假如每个 tag 都是一个 release
 
         multiDexEnabled true
 
@@ -75,24 +72,71 @@ android {
 
 //    ndkVersion project.properties.ndkVersion
 
+/*
+    signingConfigs {
+        config {
+            storeFile file(rootProject.ext.sign.filePath)
+            storePassword rootProject.ext.sign.storePassword
+            keyAlias rootProject.ext.sign.keyAlias
+            keyPassword rootProject.ext.sign.keyPassword
+        }
+    }
+*/
+
     // https://developer.android.com/build/build-variants
     buildTypes {
         debug {
             debuggable true
             minifyEnabled false
             shrinkResources false
+            signingConfig signingConfigs.debug
         }
         release {
             debuggable false
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
-    flavorDimensions += "mode"
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            def flavorType = variant.productFlavors.collect { it.name.capitalize() }.join() + variant.buildType.name.capitalize() // 格式 GithubRelease
+            def name
+            if (variant.productFlavors[0].name == "github") {
+                // 与 github actions 脚本获取的名称对应
+                name = ("${model.name}" +
+                        "-${variant.buildType.name}" +
+                        ".apk")
+            } else {
+                name = ("${model.name}" +
+                        "_${variant.versionName}" +
+                        "_${variant.versionCode}" +
+//                        "_${variant.buildType.name}" +
+                        "_${flavorType}" +
+                        "_${gitCommitId}" +
+                        "_${time.time}" +
+                        ".apk")
+            }
+            println("${flavorType} outputFileName = ${name}")
+            outputFileName = name
+        }
+    }
+    // 变体、维度
+    // https://developer.android.com/build/build-variants
+    flavorDimensions += ["channel"] // 可以使用多个维度，最终构建的安装包会包含每个维度的一个变体
     productFlavors {
-        app {
-            dimension "mode"
+        // 维度1 渠道
+        normal {
+            dimension "channel"
+            manifestPlaceholders = [app_channel: "\"${name}\""]
+            buildConfigField "String", "APP_CHANNEL", "\"${name}\""
+        }
+        github {
+            // github
+            dimension "channel"
+            applicationIdSuffix ".github"
+            versionNameSuffix ".github"
             manifestPlaceholders = [app_channel: "\"${name}\""]
             buildConfigField "String", "APP_CHANNEL", "\"${name}\""
         }
@@ -110,8 +154,7 @@ android {
     }
     kotlin {
         // gradle 项目构建的 java 和 kotlin 编译版本
-//        jvmToolchain(8)
-        jvmToolchain(17) // default
+        jvmToolchain(17) // 最低版本与 Gradle 版本有关
     }
 
     buildFeatures {
@@ -138,19 +181,16 @@ android {
         }
     }
 
+/*
     lint {
         // https://developer.android.google.cn/studio/write/lint?hl=zh-cn#snapshot
         // Lint 检测: `./gradlew lint`，可加变体: `./gradlew lintRelease`
         // baseline 忽略已有的 Lint 问题，Lint 只会报告自上次生成基准文件之后新增的
         // 如果要创建新基准，请手动删除该文件并再次运行 lint
         baseline = file("lint-baseline.xml")
-    }
-/*
-    lintOptions {
-        textReport true // 输出lint报告
-        textOutput 'stdout'
         ignoreWarnings = true // 忽略警告
         abortOnError false // 遇到错误不停止
+        textReport true // 输出lint报告
     }
 */
 }
@@ -205,6 +245,7 @@ dependencies {
 //    def composeBoMVersion = "2024.08.00"
 //    def composeBoMVersion = "2024.09.03"
 //    def composeBoMVersion = "2024.10.01"
+//    def composeBoMVersion = "2024.11.00"
     implementation(platform("androidx.compose:compose-bom:${composeBoMVersion}"))
     androidTestImplementation(platform("androidx.compose:compose-bom:${composeBoMVersion}"))
     implementation("androidx.compose.runtime:runtime")

@@ -13,7 +13,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.wan.android.R
 import com.example.wan.android.base.fragment.VVMBaseFragment
 import com.example.wan.android.constant.EventBus
-import com.example.wan.android.data.model.SupperUserInfo
+import com.example.wan.android.data.model.SuperUserInfo
 import com.example.wan.android.databinding.FragmentPersonBinding
 import com.example.wan.android.index.like.ArticleLikeActivity
 import com.example.wan.android.index.login.LoginActivity
@@ -60,12 +60,12 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
     }
 
     private fun resetInfo() {
-        val supperUserInfo = SupperUserInfo()
-        setInfo(supperUserInfo)
+        val superUserInfo = SuperUserInfo()
+        setInfo(superUserInfo)
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setInfo(it: SupperUserInfo) {
+    private fun setInfo(it: SuperUserInfo) {
         binding.run {
             it.collectArticleInfo?.let {
                 tvLikeNum.text = "收藏量: ${it.count} 篇"
@@ -90,9 +90,9 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
 
     private fun initView() {
         resetInfo()
-        val supperUserInfo = UserUtils.getSupperUserInfo()
-        if (supperUserInfo != null) {
-            setInfo(supperUserInfo)
+        val superUserInfo = UserUtils.getSuperUserInfo()
+        if (superUserInfo != null) {
+            setInfo(superUserInfo)
         }
 
         binding.refresh.setOnRefreshListener {
@@ -198,7 +198,10 @@ class PersonFragment : VVMBaseFragment<PersonViewModel, FragmentPersonBinding>()
     }
 
     override fun onLoginSucceed() {
-        setInfo(UserUtils.getSupperUserInfo()!!)
+        val superUserInfo = UserUtils.getSuperUserInfo()
+        if (superUserInfo != null) {
+            setInfo(superUserInfo)
+        }
         // 登录注册接口没有返回其它信息 获取完整的信息
         initData()
     }

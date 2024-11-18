@@ -162,7 +162,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                         putExtra(
                             Intent.EXTRA_TEXT, MyAppUtils.getAppInfo(
                                 "null",
-                                UserUtils.getSupperUserInfo()?.userInfo?.username ?: "null"
+                                UserUtils.getSuperUserInfo()?.userInfo?.username ?: "null"
                             )
                         )
                         putExtra(Intent.EXTRA_STREAM, File(zipFilePath).getUri())
@@ -192,7 +192,7 @@ class SettingActivity : VVMBaseActivity<SettingViewModel, ActivitySettingBinding
                 AppDetailDialog(
                     context = activity,
                     env = AppConst.BASE_URL,
-                    uid = "${UserUtils.getSupperUserInfo()?.userInfo?.id ?: "null"}",
+                    uid = "${UserUtils.getSuperUserInfo()?.userInfo?.id ?: "null"}",
                 ).show()
             }
         }

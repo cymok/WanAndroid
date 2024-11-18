@@ -1,6 +1,6 @@
 package com.example.wan.android.data.model
 
-data class SupperUserInfo(
+data class SuperUserInfo(
     val coinInfo: CoinInfo?,
     val collectArticleInfo: CollectArticleInfo?,
     val userInfo: UserInfo

@@ -1,6 +1,6 @@
 package com.example.wan.android.network.api
 
-import com.example.wan.android.data.model.SupperUserInfo
+import com.example.wan.android.data.model.SuperUserInfo
 import com.example.wan.android.data.model.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.http.Field
@@ -37,7 +37,7 @@ interface UserService {
 
     // 个人信息接口
     @GET("/user/lg/userinfo/json")
-    suspend fun getUserInfo(): ApiResult<SupperUserInfo>
+    suspend fun getUserInfo(): ApiResult<SuperUserInfo>
 
     // 未读消息数量
     @GET("/message/lg/count_unread/json")

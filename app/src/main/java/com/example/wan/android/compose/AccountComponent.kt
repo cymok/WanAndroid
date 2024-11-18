@@ -38,7 +38,7 @@ import com.example.wan.android.utils.toast
 fun AccountComponent(viewModel: PersonViewModel) {
 
     // 将 LiveData 的数据状态化
-    val supperUserInfo by viewModel.superUserInfo.observeAsState()
+    val superUserInfo by viewModel.superUserInfo.observeAsState()
 
     Column(
         modifier = Modifier
@@ -72,27 +72,27 @@ fun AccountComponent(viewModel: PersonViewModel) {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = supperUserInfo?.userInfo?.nickname ?: "未登录",
+                        text = superUserInfo?.userInfo?.nickname ?: "未登录",
                         fontSize = 18.sp,
                         color = colorResource(id = R.color.primaryText)
                     )
                     Spacer(modifier = Modifier.height(15.dp))
                     Row {
                         Text(
-                            text = "用户名: ${supperUserInfo?.userInfo?.username ?: "null"}",
+                            text = "用户名: ${superUserInfo?.userInfo?.username ?: "null"}",
                             fontSize = 14.sp,
                             color = colorResource(id = R.color.secondaryText)
                         )
                         Spacer(modifier = Modifier.width(15.dp))
                         Text(
-                            text = "id: ${supperUserInfo?.userInfo?.id ?: "-1"}",
+                            text = "id: ${superUserInfo?.userInfo?.id ?: "-1"}",
                             fontSize = 14.sp,
                             color = colorResource(id = R.color.secondaryText)
                         )
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Text(
-                        text = "邮箱: ${supperUserInfo?.userInfo?.email ?: "null"}",
+                        text = "邮箱: ${superUserInfo?.userInfo?.email ?: "null"}",
                         fontSize = 14.sp,
                         color = colorResource(id = R.color.secondaryText)
                     )
@@ -125,13 +125,13 @@ fun AccountComponent(viewModel: PersonViewModel) {
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "积分: ${supperUserInfo?.coinInfo?.coinCount}",
+                text = "积分: ${superUserInfo?.coinInfo?.coinCount}",
                 fontSize = 14.sp,
                 color = colorResource(id = R.color.secondaryText)
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = "排行: ${supperUserInfo?.coinInfo?.rank}",
+                text = "排行: ${superUserInfo?.coinInfo?.rank}",
                 fontSize = 14.sp,
                 color = colorResource(id = R.color.secondaryText)
             )
@@ -163,7 +163,7 @@ fun AccountComponent(viewModel: PersonViewModel) {
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "收藏量: ${supperUserInfo?.collectArticleInfo?.count} 篇",
+                text = "收藏量: ${superUserInfo?.collectArticleInfo?.count} 篇",
                 fontSize = 14.sp,
                 color = colorResource(id = R.color.secondaryText)
             )

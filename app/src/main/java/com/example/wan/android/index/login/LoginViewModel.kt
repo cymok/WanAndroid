@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wan.android.base.BaseViewModel
 import com.example.wan.android.constant.AppConst
 import com.example.wan.android.data.model.LoginFormState
-import com.example.wan.android.data.model.SupperUserInfo
+import com.example.wan.android.data.model.SuperUserInfo
 import com.example.wan.android.data.repository.WanRepository
 import com.example.wan.android.utils.UserUtils
 
@@ -21,8 +21,8 @@ class LoginViewModel : BaseViewModel() {
             val result = WanRepository.login(username, password)
             // 保存用户信息
             // 获取用户信息接口返回的数据包含 UserInfo 和其它信息, 而登录注册只返回 UserInfo
-            UserUtils.saveSupperUserInfo(
-                SupperUserInfo(
+            UserUtils.saveSuperUserInfo(
+                SuperUserInfo(
                     userInfo = result,
                     coinInfo = null,
                     collectArticleInfo = null,
@@ -37,8 +37,8 @@ class LoginViewModel : BaseViewModel() {
         launch {
             changeLoadingState(AppConst.loading)
             val result = WanRepository.register(username, password)
-            UserUtils.saveSupperUserInfo(
-                SupperUserInfo(
+            UserUtils.saveSuperUserInfo(
+                SuperUserInfo(
                     userInfo = result,
                     coinInfo = null,
                     collectArticleInfo = null,
